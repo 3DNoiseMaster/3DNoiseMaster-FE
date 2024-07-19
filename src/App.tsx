@@ -1,26 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import MainPage from './pages/MainPage';
+import LoginPage from './pages/LoginPage';
+import SignUpPage from './pages/SignUpPage';
+import WorkspacePage from './pages/WorkspacePage';
+import NewTaskPage from './pages/NewTaskPage';
+import NoiseGenPage from './pages/NoiseGenPage';
+import NoiseRemPage from './pages/NoiseRemPage';
+import ErrorCompPage from './pages/ErrorCompPage';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<Navigate to="/api/display/main" />} />
+      <Route path="/api/display/main" element={<MainPage />} />
+      <Route path="/api/display/login" element={<LoginPage />} />
+      <Route path="/api/display/signup" element={<SignUpPage />} />
+      <Route path="/api/display/workspace" element={<WorkspacePage />} />
+      <Route path="/api/display/workspace/newtask" element={<NewTaskPage />} />
+      <Route path="/api/display/workspace/noiseGen" element={<NoiseGenPage />} />
+      <Route path="/api/display/workspace/noiseRem" element={<NoiseRemPage />} />
+      <Route path="/api/display/workspace/errorComp" element={<ErrorCompPage />} />
+    </Routes>
   );
-}
+};
 
 export default App;
