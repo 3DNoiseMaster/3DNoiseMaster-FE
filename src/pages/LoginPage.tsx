@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../styles/LoginPage.css'; 
+
+import '../styles/LoginPage.css';
+import useDynamicCss from '../hooks/UseDynamicCss';
 
 interface LoginResponse {
   message: string;
@@ -10,6 +12,7 @@ interface LoginResponse {
 }
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     id: '',
     password: ''
@@ -40,35 +43,47 @@ const LoginPage: React.FC = () => {
       });
   };
 
+  useDynamicCss(`${process.env.PUBLIC_URL}/styles/LoginPage.css`);
+  
+  useEffect(() => {
+    document.body.classList.add('login-page');
+    return () => {
+      document.body.classList.remove('login-page');
+    };
+  }, []);
+
   return (
-    <div className="container">
-      <h1>로그인</h1>
-      <form onSubmit={handleSubmit} className="form">
-        <label>
-          ID:
-          <input type="text" name="id" value={formData.id} onChange={handleChange} className="input" required />
-        </label>
-        <label>
-          Password:
-          <input type="password" name="password" value={formData.password} onChange={handleChange} className="input" required />
-        </label>
-        <button type="submit" className="button">로그인</button>
-      </form>
-      {response && (
-        <div className="response">
-          <p>{response.message}</p>
-          {response.user_name && response.token && (
-            <div>
-              <p>User Name: {response.user_name}</p>
-              <p className="token">Token: {response.token}</p>
-            </div>
-          )}
+    <div className='login-page'>
+      <div className='login-container'>
+        <h1 className='title'>LOGIN</h1>
+        <form onSubmit={handleSubmit} className="form">
+          <label>
+            ID
+            <input type="text" name="id" value={formData.id} onChange={handleChange} className="input-info" required />
+          </label>
+          <label>
+            Password
+            <input type="password" name="password" value={formData.password} onChange={handleChange} className="input-info" required />
+          </label>
+          <div className="spacer_type_1"></div>
+          <button type="submit" className="button-submit">login</button>
+        </form>
+        {response && (
+          <div className="response">
+            <p>{response.message}</p>
+            {response.user_name && response.token && (
+              <div>
+                <p>User Name: {response.user_name}</p>
+                <p className="token">Token: {response.token}</p>
+              </div>
+            )}
+          </div>
+        )}
+        <div className="links">
+          <Link to="/api/display/signup" className="linkButton">회원가입</Link>
+          <Link to="/api/display/main" className="linkButton">홈</Link>
+          <Link to="/api/display/workspace" className="linkButton">작업공간</Link>
         </div>
-      )}
-      <div className="links">
-        <Link to="/api/display/signup" className="linkButton">회원가입</Link>
-        <Link to="/api/display/main" className="linkButton">홈</Link>
-        <Link to="/api/display/workspace" className="linkButton">작업공간</Link>
       </div>
     </div>
   );
