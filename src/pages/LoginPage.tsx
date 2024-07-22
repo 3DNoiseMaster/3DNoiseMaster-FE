@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import '../styles/LoginPage.css'; 
 
 interface LoginResponse {
   message: string;
@@ -41,81 +42,37 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div style={styles.container}>
+    <div className="container">
       <h1>로그인</h1>
-      <form onSubmit={handleSubmit} style={styles.form}>
+      <form onSubmit={handleSubmit} className="form">
         <label>
           ID:
-          <input type="text" name="id" value={formData.id} onChange={handleChange} style={styles.input} required />
+          <input type="text" name="id" value={formData.id} onChange={handleChange} className="input" required />
         </label>
         <label>
           Password:
-          <input type="password" name="password" value={formData.password} onChange={handleChange} style={styles.input} required />
+          <input type="password" name="password" value={formData.password} onChange={handleChange} className="input" required />
         </label>
-        <button type="submit" style={styles.button}>로그인</button>
+        <button type="submit" className="button">로그인</button>
       </form>
       {response && (
-        <div style={styles.response}>
+        <div className="response">
           <p>{response.message}</p>
           {response.user_name && response.token && (
             <div>
               <p>User Name: {response.user_name}</p>
-              <p style={styles.token}>Token: {response.token}</p>
+              <p className="token">Token: {response.token}</p>
             </div>
           )}
         </div>
       )}
-      <div style={styles.links}>
-        <Link to="/api/display/signup" style={styles.linkButton}>회원가입</Link>
-        <Link to="/api/display/main" style={styles.linkButton}>홈</Link>
-        <Link to="/api/display/workspace" style={styles.linkButton}>작업공간</Link>
+      <div className="links">
+        <Link to="/api/display/signup" className="linkButton">회원가입</Link>
+        <Link to="/api/display/main" className="linkButton">홈</Link>
+        <Link to="/api/display/workspace" className="linkButton">작업공간</Link>
       </div>
     </div>
   );
-};
-
-const styles: { [key: string]: React.CSSProperties } = {
-  container: {
-    textAlign: 'center',
-    marginTop: '50px',
-  },
-  form: {
-    display: 'inline-block',
-    textAlign: 'left',
-  },
-  input: {
-    display: 'block',
-    marginBottom: '10px',
-    padding: '8px',
-    fontSize: '16px',
-    width: '100%',
-  },
-  button: {
-    padding: '10px 20px',
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-  },
-  response: {
-    marginTop: '20px',
-  },
-  token: {
-    wordBreak: 'break-all',
-  },
-  links: {
-    marginTop: '20px',
-  },
-  linkButton: {
-    display: 'inline-block',
-    margin: '0 10px',
-    padding: '10px 20px',
-    backgroundColor: '#28a745',
-    color: 'white',
-    textDecoration: 'none',
-    borderRadius: '5px',
-  }
 };
 
 export default LoginPage;

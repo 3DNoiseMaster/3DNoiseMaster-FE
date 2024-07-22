@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import '../styles/SignUpPage.css'; 
 
 interface SignUpResponse {
   success: boolean;
@@ -55,36 +56,36 @@ const SignUpPage: React.FC = () => {
   };
 
   return (
-    <div style={styles.container}>
+    <div className="container">
       <h1>회원가입</h1>
-      <form onSubmit={handleSubmit} style={styles.form}>
+      <form onSubmit={handleSubmit} className="form">
         <label>
           ID:
-          <input type="text" name="id" value={formData.id} onChange={handleChange} style={styles.input} required />
+          <input type="text" name="id" value={formData.id} onChange={handleChange} className="input" required />
         </label>
         <label>
           Phone:
-          <input type="text" name="phone" value={formData.phone} onChange={handleChange} style={styles.input} required />
+          <input type="text" name="phone" value={formData.phone} onChange={handleChange} className="input" required />
         </label>
         <label>
           Username:
-          <input type="text" name="user_name" value={formData.user_name} onChange={handleChange} style={styles.input} required />
+          <input type="text" name="user_name" value={formData.user_name} onChange={handleChange} className="input" required />
         </label>
         <label>
           Password:
-          <div style={styles.passwordContainer}>
+          <div className="passwordContainer">
             <input 
               type={showPassword ? 'text' : 'password'} 
               name="password" 
               value={formData.password} 
               onChange={handleChange} 
-              style={styles.input} 
+              className="input" 
               required 
             />
             <button 
               type="button" 
               onClick={() => setShowPassword(!showPassword)} 
-              style={styles.showButton}
+              className="showButton"
             >
               {showPassword ? 'Hide' : 'Show'}
             </button>
@@ -92,29 +93,29 @@ const SignUpPage: React.FC = () => {
         </label>
         <label>
           Confirm Password:
-          <div style={styles.passwordContainer}>
+          <div className="passwordContainer">
             <input 
               type={showConfirmPassword ? 'text' : 'password'} 
               name="confirmPassword" 
               value={formData.confirmPassword} 
               onChange={handleChange} 
-              style={styles.input}
+              className="input"
               required 
             />
             <button 
               type="button" 
               onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
-              style={styles.showButton}
+              className="showButton"
             >
               {showConfirmPassword ? 'Hide' : 'Show'}
             </button>
           </div>
         </label>
-        {passwordError && <p style={styles.error}>{passwordError}</p>}
-        <button type="submit" style={styles.button}>회원가입</button>
+        {passwordError && <p className="error">{passwordError}</p>}
+        <button type="submit" className="button">회원가입</button>
       </form>
       {response && (
-        <div style={styles.response}>
+        <div className="response">
           <p>{response.message}</p>
           {response.data && (
             <div>
@@ -128,64 +129,9 @@ const SignUpPage: React.FC = () => {
           )}
         </div>
       )}
-      <Link to="/api/display/main" style={styles.homeButton}>홈</Link>
+      <Link to="/api/display/main" className="homeButton">홈</Link>
     </div>
   );
-};
-
-const styles: { [key: string]: React.CSSProperties } = {
-  container: {
-    textAlign: 'center',
-    marginTop: '50px',
-  },
-  form: {
-    display: 'inline-block',
-    textAlign: 'left',
-  },
-  input: {
-    display: 'block',
-    marginBottom: '10px',
-    padding: '8px',
-    fontSize: '16px',
-    width: 'calc(100% - 40px)',
-  },
-  passwordContainer: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  showButton: {
-    marginLeft: '10px',
-    padding: '8px 10px',
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-  },
-  button: {
-    padding: '10px 20px',
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-  },
-  response: {
-    marginTop: '20px',
-  },
-  error: {
-    color: 'red',
-    fontSize: '14px',
-  },
-  homeButton: {
-    display: 'inline-block',
-    margin: '0 10px',
-    padding: '10px 20px',
-    backgroundColor: '#28a745',
-    color: 'white',
-    textDecoration: 'none',
-    borderRadius: '5px',
-  }
 };
 
 export default SignUpPage;

@@ -19,7 +19,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "src",  // 추가된 부분
+    "baseUrl": "src",
     "paths": {
       "@components/*": ["components/*"]
     }
