@@ -3,19 +3,23 @@ import React from 'react';
 const Footer: React.FC = () => {
   return (
     <footer style={styles.footer}>
-      <div style={styles.languageSwitch}>
-        <span>한국어</span>
+      <div style={styles.column}>
+        <h3 style={styles.title}>INFORMATION</h3>
+        <p style={styles.text}>Git : <a href="https://github.com/3DNoiseMaster" style={styles.link}>https://github.com/3DNoiseMaster</a></p>
       </div>
-      <div style={styles.links}>
-        <a href="https://www.remove.bg" style={styles.link}>remove.bg</a> | 
-        <a href="https://www.unscreen.com" style={styles.link}>unscreen</a> | 
-        <a href="https://www.designify.com" style={styles.link}>designify</a> | 
-        <a href="/terms-of-service" style={styles.link}>서비스 약관</a> | 
-        <a href="/cookie-policy" style={styles.link}>쿠키 정책</a> | 
-        <a href="/privacy-policy" style={styles.link}>개인정보 보호정책</a>
+      <div style={styles.column}>
+        <h3 style={styles.title}>HELP</h3>
+        <p style={styles.text}>jominhyeok0103@gmail.com</p>
+        <p style={styles.text}>dayoung2975@gmail.com</p>
+        <p style={styles.text}>minhe8564@gmail.com</p>
+        <p style={styles.text}>wlsdka12@gmail.com</p>
       </div>
-      <div style={styles.brand}>
-        © Kaleido, a Canva Austria GmbH brand
+      <div style={styles.column}>
+        <h3 style={styles.title}>DEVELOPER</h3>
+        <p style={styles.text}>조민혁</p>
+        <p style={styles.text}>강다영</p>
+        <p style={styles.text}>이민희</p>
+        <p style={styles.text}>백진암</p>
       </div>
     </footer>
   );
@@ -23,28 +27,29 @@ const Footer: React.FC = () => {
 
 const styles: { [key: string]: React.CSSProperties } = {
   footer: {
-    textAlign: 'center',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
     padding: '20px',
-    backgroundColor: '#f1f1f1',
-    borderTop: '1px solid #ddd',
+    backgroundColor: '#666',
+    color: '#fff',
   },
-  languageSwitch: {
-    marginBottom: '10px',
+  column: {
+    flex: '1',
+    padding: '10px',
   },
-  links: {
+  title: {
+    fontSize: '16px',
     marginBottom: '10px',
+    fontWeight: 'bold',
+  },
+  text: {
+    fontSize: '14px',
+    margin: '5px 0',
   },
   link: {
-    margin: '0 5px',
-    color: '#007bff',
+    color: '#fff',
     textDecoration: 'none',
-    transition: 'color 0.3s ease',
-  },
-  linkHover: {
-    color: '#0056b3',
-  },
-  brand: {
-    color: '#777',
   },
 };
 

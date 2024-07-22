@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import noiseGenIcon from '../assets/noiseGen.png';
-import noiseRemIcon from '../assets/noiseRem.png';
-import errorCompIcon from '../assets/errorComp.png';
+import noiseGenIcon from '../assets/icon/noiseGen.png';
+import noiseRemIcon from '../assets/icon/noiseRem.png';
+import errorCompIcon from '../assets/icon/errorComp.png';
 
 const NewTaskPage: React.FC = () => {
   const navigate = useNavigate();

@@ -2,22 +2,31 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Canvas, useLoader } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import { OrbitControls, useProgress, Html } from '@react-three/drei';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { Group } from 'three';
+
+const Loader = () => {
+  const { progress } = useProgress();
+  return <Html center>{progress} % loaded</Html>;
+};
+
+const ObjModel = ({ url }: { url: string }) => {
+  const obj = useLoader(OBJLoader, url) as Group;
+  return <primitive object={obj} />;
+};
 
 const NoiseGenPage: React.FC = () => {
   const navigate = useNavigate();
   const [taskName, setTaskName] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | ArrayBuffer | null>(null);
-  const [fileURL, setFileURL] = useState<string | null>(null); // for .obj files
+  const [fileURL, setFileURL] = useState<string | null>(null);
   const [noiseType, setNoiseType] = useState<string>('');
   const [noiseLevel, setNoiseLevel] = useState<string>('');
 
   useEffect(() => {
     return () => {
-      // Clean up the object URL when the component unmounts
       if (fileURL) {
         URL.revokeObjectURL(fileURL);
       }
@@ -29,19 +38,21 @@ const NoiseGenPage: React.FC = () => {
       const selectedFile = e.target.files[0];
       setFile(selectedFile);
 
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target) {
-          setFilePreview(event.target.result);
-          if (selectedFile.name.endsWith('.obj')) {
-            const url = URL.createObjectURL(selectedFile);
-            setFileURL(url);
-          } else {
-            setFileURL(null);
+      if (selectedFile.name.endsWith('.obj')) {
+        const url = URL.createObjectURL(selectedFile);
+        setFileURL(url);
+        setFilePreview(null);
+      } else {
+        alert('.obj 파일을 업로드해주세요.');
+        setFileURL(null);
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          if (event.target) {
+            setFilePreview(event.target.result);
           }
-        }
-      };
-      reader.readAsDataURL(selectedFile);
+        };
+        reader.readAsDataURL(selectedFile);
+      }
     }
   };
 
@@ -59,7 +70,7 @@ const NoiseGenPage: React.FC = () => {
     formData.append('noiseLevel', noiseLevel);
 
     try {
-      await axios.post(`${process.env.REACT_APP_API_WORKSPACE_URL}/noise-gen`, formData, {
+      await axios.post(`${process.env.REACT_APP_API_WORKSPACE_URL}/request/noiseGen`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -73,19 +84,14 @@ const NoiseGenPage: React.FC = () => {
     }
   };
 
-  const ObjModel = ({ url }: { url: string }) => {
-    const obj = useLoader(OBJLoader, url) as Group;
-    return <primitive object={obj} />;
-  };
-
   return (
     <div style={styles.container}>
-      <div style={styles.leftPane}>
-        {fileURL && fileURL.endsWith('.obj') ? (
-          <Canvas>
+      <div style={styles.uploadSection}>
+        {fileURL ? (
+          <Canvas style={styles.canvas}>
             <ambientLight />
-            <pointLight position={[10, 10, 10]} />
-            <Suspense fallback={null}>
+            <pointLight position={[100, 100, 100]} />
+            <Suspense fallback={<Loader />}>
               <ObjModel url={fileURL} />
             </Suspense>
             <OrbitControls />
@@ -150,7 +156,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     height: '100vh',
   },
-  leftPane: {
+  uploadSection: {
     flex: 2,
     display: 'flex',
     alignItems: 'center',
@@ -195,6 +201,10 @@ const styles: { [key: string]: React.CSSProperties } = {
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
+  },
+  canvas: {
+    width: '100%',
+    height: '100%',
   },
 };
 

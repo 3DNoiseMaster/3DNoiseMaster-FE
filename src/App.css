@@ -36,3 +36,31 @@
     transform: rotate(360deg);
   }
 }
+
+@font-face {
+  font-family: 'NanumSquare_EB';
+  src: url('./assets/font/NanumSquareOTF_acEB.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NanumSquare_B';
+  src: url('./assets/font/NanumSquareOTF_acB.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NanumSquare_R';
+  src: url('./assets/font/NanumSquareOTF_acR.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NanumSquare_L';
+  src: url('./assets/font/NanumSquareOTF_acL.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}

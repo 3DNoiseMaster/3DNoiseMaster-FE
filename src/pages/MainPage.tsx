@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import GlobalStyles from '../styles/GlobalStyles';
-import noiseImage from '../assets/noise.png';
-import denoisingImage from '../assets/denoising.png';
-import originalImage from '../assets/original.png';
+import noiseImage from '../assets/image/noise.png';
+import denoisingImage from '../assets/image/denoising.png';
+import originalImage from '../assets/image/original.png';
 import '../styles/MainPage.css'; 
 
 const MainPage: React.FC = () => {

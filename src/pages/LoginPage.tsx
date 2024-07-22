@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/LoginPage.css'; 
 
@@ -10,7 +10,6 @@ interface LoginResponse {
 }
 
 const LoginPage: React.FC = () => {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     id: '',
     password: ''
