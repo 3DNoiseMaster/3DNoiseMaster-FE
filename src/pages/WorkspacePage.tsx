@@ -39,6 +39,7 @@ const WorkspacePage: React.FC = () => {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       .then(response => {
+        console.log('Login status response:', response);
         if (response.data.success) {
           const user_name = response.data.data?.user?.user_name;
           if (user_name) {
@@ -53,38 +54,52 @@ const WorkspacePage: React.FC = () => {
         console.error('Error verifying token:', error);
         setIsModalOpen(true);
       });
-
-      axios.get<{ success: boolean; data: { tasks: Task[] } }>(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      .then(response => {
-        if (response.data.success) {
-          setTasks(response.data.data.tasks);
-        } else {
-          console.error('Error fetching tasks: ', response.data);
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching tasks:', error);
-      });
-
-      axios.get<{ success: boolean; data: { count: TaskCount } }>(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks/count`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      .then(response => {
-        if (response.data.success) {
-          setTaskCount(response.data.data.count);
-        } else {
-          console.error('Error fetching task count: ', response.data);
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching task count:', error);
-      });
     } else {
       setIsModalOpen(true);
     }
   }, [navigate]);
+
+  useEffect(() => {
+    const fetchData = () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        axios.get<{ success: boolean; data: { tasks: Task[] } }>(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
+        .then(response => {
+          console.log('Tasks response:', response);
+          if (response.data.success) {
+            setTasks(response.data.data.tasks);
+          } else {
+            console.error('Error fetching tasks: ', response.data);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching tasks:', error);
+        });
+
+        axios.get<{ success: boolean; data: { count: TaskCount } }>(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks/count`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
+        .then(response => {
+          console.log('Task count response:', response);
+          if (response.data.success) {
+            setTaskCount(response.data.data.count);
+          } else {
+            console.error('Error fetching task count: ', response.data);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching task count:', error);
+        });
+      }
+    };
+
+    fetchData();
+    const intervalId = setInterval(fetchData, 10000);
+    return () => clearInterval(intervalId);
+
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('user_name');
@@ -105,7 +120,9 @@ const WorkspacePage: React.FC = () => {
     <div style={styles.container}>
       <div style={styles.header}>
         <Link to="/api/display/main" style={styles.homeButton}>홈</Link>
-        <button onClick={handleLogout} style={styles.logoutButton}>로그아웃</button>
+        <div style={styles.buttonGroup}>
+          <button onClick={handleLogout} style={styles.logoutButton}>로그아웃</button>
+        </div>
       </div>
       {user ? (
         <div style={styles.userInfo}>
@@ -160,7 +177,12 @@ const styles: { [key: string]: React.CSSProperties } = {
   header: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: '20px',
+  },
+  buttonGroup: {
+    display: 'flex',
+    gap: '10px',
   },
   homeButton: {
     padding: '10px 20px',
