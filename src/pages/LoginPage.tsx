@@ -59,14 +59,20 @@ const LoginPage: React.FC = () => {
         <form onSubmit={handleSubmit} className="form">
           <label>
             ID
-            <input type="text" name="id" value={formData.id} onChange={handleChange} className="input-info" required />
+            <input type="text" name="id"
+              value={formData.id} 
+              onChange={handleChange} 
+              className="input-info" required />
           </label>
           <label>
             Password
-            <input type="password" name="password" value={formData.password} onChange={handleChange} className="input-info" required />
+            <input type="password" name="password" 
+            value={formData.password} 
+            onChange={handleChange} 
+            className="input-info" required />
           </label>
           <div className="spacer_type_1"></div>
-          <button type="submit" className="button-submit">login</button>
+          <button type="submit" className="button-submit">로그인</button>
         </form>
         {response && (
           <div className="response">
@@ -79,10 +85,13 @@ const LoginPage: React.FC = () => {
             )}
           </div>
         )}
+        <div className='spacer_type_1'></div>
         <div className="links">
-          <Link to="/api/display/signup" className="linkButton">회원가입</Link>
-          <Link to="/api/display/main" className="linkButton">홈</Link>
-          <Link to="/api/display/workspace" className="linkButton">작업공간</Link>
+          <Link to="/api/display/signup" className="Button-link">회원가입</Link>
+          <span className="divider">|</span>
+          <Link to="/api/display/main" className="Button-link">홈</Link>
+          <span className="divider">|</span>
+          <Link to="/api/display/workspace" className="Button-link">작업공간</Link>
         </div>
       </div>
     </div>

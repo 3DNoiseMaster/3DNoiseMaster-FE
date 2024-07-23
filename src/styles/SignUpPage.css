@@ -12,7 +12,7 @@
   .signup-container {
     background-color: #ffffff;
     width: 350px;
-    height: 600px;
+    height: auto;
     padding: 80px 60px 60px;
     display: flex;
     flex-direction: column;
@@ -65,13 +65,24 @@
 
   .button-signup {
     font-size: 14px;
-    width: 50%;
+    width: 100%;
     padding: 10px 20px;
     background-color: #000000;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin-top: 30px;
+    margin-bottom: 50px;
+  }
+
+  .Button-link {
+    display: inline-block;
+    margin: 0 10px;
+    padding: 10px 10px;
+    color: #000000;
+    text-decoration: none;
+    border-radius: 5px;
   }
   
   .response {
@@ -83,13 +94,8 @@
     font-size: 14px;
   }
   
-  .homeButton {
-    display: inline-block;
-    margin: 0 10px;
-    padding: 10px 20px;
-    color: #000000;
-    text-decoration: none;
-    border-radius: 5px;
+  .links {
+    margin-top: 20px;
   }
 
   .spacer_type_1 {
@@ -97,3 +103,9 @@
     width: 100%;
   }
   
+  .divider {
+    margin: 0 10px;
+    color: #000;
+    font-size: 24px;
+    line-height: 1;
+  }

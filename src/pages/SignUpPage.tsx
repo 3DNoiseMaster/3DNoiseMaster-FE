@@ -4,8 +4,8 @@ import axios from 'axios';
 
 import '../styles/SignUpPage.css'; 
 import useDynamicCss from '../hooks/UseDynamicCss';
-import EyeOpenImage from '../assets/eye_open.png';
-import EyeCloseImage from '../assets/eye_close.png';
+import EyeOpenImage from '../assets/icon/eye_open.png';
+import EyeCloseImage from '../assets/icon/eye_close.png';
 
 interface SignUpResponse {
   success: boolean;
@@ -126,7 +126,7 @@ const SignUpPage: React.FC = () => {
             </div>
           </label>
           {passwordError && <p className="error">{passwordError}</p>}
-          <button type="submit" className="button-signup">sign-up</button>
+          <button type="submit" className="button-signup">회원가입</button>
         </form>
         {response && (
           <div className="response">
@@ -144,7 +144,11 @@ const SignUpPage: React.FC = () => {
           </div>
         )}
         <div className="spacer_type_1"></div>
-        <Link to="/api/display/main" className="homeButton">home</Link>
+        <div className="links">
+          <Link to="/api/display/login" className="Button-link">로그인</Link>
+          <span className="divider">|</span>
+          <Link to="/api/display/main" className="Button-link">홈</Link>
+        </div>
       </div>
     </div>
   );
