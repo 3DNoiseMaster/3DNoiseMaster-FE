@@ -1,20 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Canvas, useLoader } from '@react-three/fiber';
+import { OrbitControls, useProgress, Html } from '@react-three/drei';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { Group } from 'three';
+
+const Loader = () => {
+  const { progress } = useProgress();
+  return <Html center>{progress} % loaded</Html>;
+};
+
+const ObjModel = ({ url }: { url: string }) => {
+  const obj = useLoader(OBJLoader, url) as Group;
+  obj.scale.set(0.1, 0.1, 0.1);
+  return <primitive object={obj} />;
+};
 
 const ErrorCompPage: React.FC = () => {
   const navigate = useNavigate();
   const [taskName, setTaskName] = useState<string>('');
   const [file1, setFile1] = useState<File | null>(null);
   const [file2, setFile2] = useState<File | null>(null);
+  const [fileURL1, setFileURL1] = useState<string | null>(null);
+  const [fileURL2, setFileURL2] = useState<string | null>(null);
   const [filePreview1, setFilePreview1] = useState<string | ArrayBuffer | null>(null);
   const [filePreview2, setFilePreview2] = useState<string | ArrayBuffer | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (fileURL1) {
+        URL.revokeObjectURL(fileURL1);
+      }
+    };
+  }, [fileURL1]);
+
+  useEffect(() => {
+    return () => {
+      if (fileURL2) {
+        URL.revokeObjectURL(fileURL2);
+      }
+    };
+  }, [fileURL2]);
 
   const handleFile1Change = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
       setFile1(selectedFile);
-
+  
+      const url = URL.createObjectURL(selectedFile);
+      setFileURL1(url);
+      setFilePreview1(null);
+  
       const reader = new FileReader();
       reader.onload = (event) => {
         if (event.target) {
@@ -29,7 +66,11 @@ const ErrorCompPage: React.FC = () => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
       setFile2(selectedFile);
-
+  
+      const url = URL.createObjectURL(selectedFile);
+      setFileURL2(url);
+      setFilePreview2(null);
+  
       const reader = new FileReader();
       reader.onload = (event) => {
         if (event.target) {
@@ -70,14 +111,32 @@ const ErrorCompPage: React.FC = () => {
   return (
     <div style={styles.container}>
       <div style={styles.leftPane}>
-        {filePreview1 ? (
+        {fileURL1 ? (
+          <Canvas style={styles.canvas}>
+            <ambientLight />
+            <pointLight position={[100, 100, 100]} />
+            <Suspense fallback={<Loader />}>
+              <ObjModel url={fileURL1} />
+            </Suspense>
+            <OrbitControls />
+          </Canvas>
+        ) : filePreview1 ? (
           <img src={filePreview1 as string} alt="파일 미리보기 1" style={styles.imagePreview} />
         ) : (
           <p>첫 번째 파일을 업로드하면 여기에 미리보기가 표시됩니다.</p>
         )}
       </div>
       <div style={styles.leftPane}>
-        {filePreview2 ? (
+        {fileURL2 ? (
+          <Canvas style={styles.canvas}>
+            <ambientLight />
+            <pointLight position={[100, 100, 100]} />
+            <Suspense fallback={<Loader />}>
+              <ObjModel url={fileURL2} />
+            </Suspense>
+            <OrbitControls />
+          </Canvas>
+        ) : filePreview2 ? (
           <img src={filePreview2 as string} alt="파일 미리보기 2" style={styles.imagePreview} />
         ) : (
           <p>두 번째 파일을 업로드하면 여기에 미리보기가 표시됩니다.</p>

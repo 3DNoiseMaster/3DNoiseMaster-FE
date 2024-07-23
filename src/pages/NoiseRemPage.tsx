@@ -1,18 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Canvas, useLoader } from '@react-three/fiber';
+import { OrbitControls, useProgress, Html } from '@react-three/drei';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { Group } from 'three';
+
+const Loader = () => {
+  const { progress } = useProgress();
+  return <Html center>{progress} % loaded</Html>;
+};
+
+const ObjModel = ({ url }: { url: string }) => {
+  const obj = useLoader(OBJLoader, url) as Group;
+  return <primitive object={obj} />;
+};
 
 const NoiseRemPage: React.FC = () => {
   const navigate = useNavigate();
   const [taskName, setTaskName] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | ArrayBuffer | null>(null);
+  const [fileURL, setFileURL] = useState<string | null>(null);
 
+  useEffect(() => {
+    return () => {
+      if (fileURL) {
+        URL.revokeObjectURL(fileURL);
+      }
+    };
+  }, [fileURL]);
+  
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
       setFile(selectedFile);
-
+  
+      const url = URL.createObjectURL(selectedFile);
+      setFileURL(url);
+      setFilePreview(null);
+  
       const reader = new FileReader();
       reader.onload = (event) => {
         if (event.target) {
@@ -51,8 +78,17 @@ const NoiseRemPage: React.FC = () => {
 
   return (
     <div style={styles.container}>
-      <div style={styles.leftPane}>
-        {filePreview ? (
+      <div style={styles.uploadSection}>
+        {fileURL ? (
+          <Canvas style={styles.canvas}>
+            <ambientLight />
+            <pointLight position={[100, 100, 100]} />
+            <Suspense fallback={<Loader />}>
+              <ObjModel url={fileURL} />
+            </Suspense>
+            <OrbitControls />
+          </Canvas>
+        ) : filePreview ? (
           <img src={filePreview as string} alt="파일 미리보기" style={styles.imagePreview} />
         ) : (
           <p>파일을 업로드하면 여기에 미리보기가 표시됩니다.</p>
@@ -91,6 +127,14 @@ const styles: { [key: string]: React.CSSProperties } = {
   container: {
     display: 'flex',
     height: '100vh',
+  },
+  uploadSection: {
+    flex: 2,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f0f0f0',
+    borderRight: '1px solid #ccc',
   },
   leftPane: {
     flex: 2,
@@ -137,6 +181,10 @@ const styles: { [key: string]: React.CSSProperties } = {
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
+  },
+  canvas: {
+    width: '100%',
+    height: '100%',
   },
 };
 
