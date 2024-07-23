@@ -1,3 +1,27 @@
+@font-face {
+  font-family: 'Amasis-MT-Std-Font';
+  src: url('../assets/font/Amasis-MT-Std-Font.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('../assets/font/AGENCYB.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
 .main-container {
   text-align: center;
   background-color: #222;
@@ -7,86 +31,118 @@
   flex-direction: column;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background-color: #333;
-}
+  .header {
+    display: flex;
+    justify-content: space-between;
+    flex-basis: auto;
+    align-items: center;
+    padding: 15px;
+    max-width: 100%;
+    background-color: #ffffff;
+    box-sizing: border-box;
+  }
 
-.title {
-  font-size: 2rem;
-  margin: 0;
-  color: #fff;
-}
+  .title {
+    font-family: 'Amasis-MT-Std-Font';
+    font-weight: bolder;
+    font-size: 48px;
+    margin: 0;
+    color: #000000;
+  }
 
-.login-container {
-  display: flex;
-  align-items: center;
-}
+  .image-bunny {
+    width: 50px;
+    height: 50px;
+    margin: 0 10px;
+    line-height: 1;
+  }
 
-.login {
-  color: #fff;
-  text-decoration: none;
-  font-size: 1rem;
-}
+  .login-container {
+    display: flex;
+    align-items: center;
+  }
 
-.logout {
-  background-color: #dc3545;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  cursor: pointer;
-  margin-left: 10px;
-}
+  .button-login {
+    font-family: 'AGENCYB', sans-serif;
+    font-weight: bolder;
+    color: #000000;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
 
-.user-name {
-  color: #fff;
-  font-size: 1rem;
-}
+  .button-logout {
+    font-family: 'AGENCYB', sans-serif;
+    font-weight: bolder;
+    color: #000000;
+    text-decoration: none;
+    cursor: pointer;
+    margin-left: 16px;
+  }
 
-.page-container {
-  padding: 40px 20px;
-  background-color: #000;
+  .user-name {
+    color: #fff;
+    font-size: 1rem;
+  }
+
+.page-container-1 {
+  width: auto;
+  height: 600px;
+  background-color: #000000;
   flex: 1;
+  flex-basis: auto;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  text-align: left;
 }
 
-.heading {
-  font-size: 2rem;
-  color: #fff;
-  line-height: 1.5;
-}
+  .image-slider-container {
+    width: 50%;
+    height: 600px; /* 원하는 높이로 조정하세요 */
+    position: absolute;
+    right: 0px;
+  }
 
-.subheading {
-  font-size: 1rem;
-  color: #ccc;
-  line-height: 1.5;
-  margin-top: 20px;
-}
+  .heading {
+    font-size: 50px;
+    font-weight: bold;
+    color: #fff;
+    line-height: 1.5;
+    position: absolute;
+    top: 120px;
+    left: 50px;
+  }
 
-.work-space {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #28a745;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
+  .subheading {
+    font-size: 20px;
+    color: #ccc;
+    line-height: 1.5;
+    margin-top: 20px;
+    position: absolute;
+    top: 300px;
+    left: 50px;
+  }
 
 .image-container {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-basis: auto;
   width: 100%;
   background-color: #333;
+}
+
+.work-space {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;   
+  background-color: #2885a7;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  position: absolute;
+  bottom: 70px;
+  left: 70px;
 }
 
 .image-section {
