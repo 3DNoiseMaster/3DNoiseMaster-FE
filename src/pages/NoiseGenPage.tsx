@@ -37,22 +37,18 @@ const NoiseGenPage: React.FC = () => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
       setFile(selectedFile);
-
-      if (selectedFile.name.endsWith('.obj')) {
-        const url = URL.createObjectURL(selectedFile);
-        setFileURL(url);
-        setFilePreview(null);
-      } else {
-        alert('.obj 파일을 업로드해주세요.');
-        setFileURL(null);
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          if (event.target) {
-            setFilePreview(event.target.result);
-          }
-        };
-        reader.readAsDataURL(selectedFile);
-      }
+  
+      const url = URL.createObjectURL(selectedFile);
+      setFileURL(url);
+      setFilePreview(null);
+  
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target) {
+          setFilePreview(event.target.result);
+        }
+      };
+      reader.readAsDataURL(selectedFile);
     }
   };
 
