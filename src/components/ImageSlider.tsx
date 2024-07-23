@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-
-import noiseImage from '../assets/image/noise.png';
-import denoisingImage from '../assets/image/denoising.png';
+import noiseImage from '../assets/image/noise_addText.png';
+import denoisingImage from '../assets/image/denoising_addText.png';
 
 const SliderContainer = styled.div`
   position: relative;
@@ -23,11 +22,13 @@ const BackgroundWrapper = styled.div`
 const LeftBackground = styled.div<{ position: number }>`
   background-color: black;
   width: ${(props) => props.position}px;
+  height: 100%;
 `;
 
 const RightBackground = styled.div<{ position: number }>`
   background-color: #2c2c2c;
-  flex-grow: 1;
+  width: calc(100% - ${(props) => props.position}px);
+  height: 100%;
 `;
 
 const ImageWrapper = styled.div`
@@ -36,13 +37,14 @@ const ImageWrapper = styled.div`
   height: 100%;
 `;
 
-const Image = styled.img`
+const Image = styled.img<{ clipPath: string }>`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain; /* 이미지가 잘리지 않도록 설정 */
+  object-fit: contain;
+  clip-path: ${(props) => props.clipPath};
 `;
 
 const Divider = styled.div<{ position: number }>`
@@ -50,13 +52,9 @@ const Divider = styled.div<{ position: number }>`
   top: 0;
   width: 2px;
   height: 100%;
-  background-color: #ffffff00;;
+  background-color: #fffcc;
   cursor: ew-resize;
   left: ${(props) => props.position}px;
-`;
-
-const SecondImage = styled(Image)<{ position: number }>`
-  clip-path: inset(0 0 0 ${(props) => props.position}px);
 `;
 
 const ImageSlider: React.FC = () => {
@@ -67,7 +65,12 @@ const ImageSlider: React.FC = () => {
     if (sliderRef.current) {
       const rect = sliderRef.current.getBoundingClientRect();
       const newDividerPosition = event.clientX - rect.left;
-      setDividerPosition(newDividerPosition);
+      // 가로 이동 폭 제한
+      const minPosition = rect.width * 0.1;
+      const maxPosition = rect.width * 0.9;
+      if (newDividerPosition >= minPosition && newDividerPosition <= maxPosition) {
+        setDividerPosition(newDividerPosition);
+      }
     }
   };
 
@@ -89,8 +92,16 @@ const ImageSlider: React.FC = () => {
         <RightBackground position={dividerPosition} />
       </BackgroundWrapper>
       <ImageWrapper>
-        <Image src={noiseImage} alt="First Image" />
-        <SecondImage src={denoisingImage} alt="Second Image" position={dividerPosition} />
+        <Image
+          src={noiseImage}
+          alt="First Image"
+          clipPath={`polygon(0 0, ${dividerPosition}px 0, ${dividerPosition}px 100%, 0 100%)`}
+        />
+        <Image
+          src={denoisingImage}
+          alt="Second Image"
+          clipPath={`polygon(${dividerPosition}px 0, 100% 0, 100% 100%, ${dividerPosition}px 100%)`}
+        />
       </ImageWrapper>
       <Divider position={dividerPosition} />
     </SliderContainer>
