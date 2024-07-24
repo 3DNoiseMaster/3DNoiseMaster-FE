@@ -31,12 +31,12 @@ const MainPage: React.FC = () => {
         </h2>
         {userName ? (
         <div className="login-container">
-          <span className="user-name">Hello, {userName}</span>
           <button onClick={() => {
             localStorage.removeItem('token');
             localStorage.removeItem('user_name');
             setUserName(null);
-          }} className="button-logout">로그아웃</button>
+          }} className="button-logout">LOGOUT</button>
+          <span className="user-name">Hello, {userName}</span>
         </div>
         ) : (
           <Link to="/api/display/login" className="button-login">LOGIN</Link>

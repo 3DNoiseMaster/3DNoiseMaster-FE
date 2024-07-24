@@ -80,10 +80,12 @@
 
     .response {
       margin-top: 20px;
+      color: #000;
     }
 
     .token {
       word-break: break-all;
+      color: #000;
     }
 
     .links {

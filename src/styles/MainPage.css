@@ -14,8 +14,6 @@
 
 body {
   text-align: center;
-  margin: 0;
-  padding: 0;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -33,57 +31,66 @@ body {
 
   .header {
     display: flex;
+    flex-flow: row nowrap;
     justify-content: space-between;
-    flex-basis: auto;
     align-items: center;
+    flex-basis: auto;
     padding: 15px;
-    max-width: 100%;
+    width: 100%;
+    height: 100px;
     background-color: #ffffff;
     box-sizing: border-box;
   }
 
-  .title {
-    font-family: 'Amasis-MT-Std-Font';
-    font-weight: bolder;
-    font-size: 48px;
-    margin: 0;
-    color: #000000;
-  }
+    .header .title {
+      font-family: 'Amasis-MT-Std-Font';
+      font-weight: bolder;
+      font-size: 48px;
+      margin: 0;
+      color: #000000;
+    }
 
-  .image-bunny {
-    width: 50px;
-    height: 50px;
-    margin: 0 10px;
-    line-height: 1;
-  }
+    .header .image-bunny {
+      width: 50px;
+      height: 50px;
+      margin: 0 10px;
+      line-height: 1;
+    }
 
-  .login-container {
-    display: flex;
-    align-items: center;
-  }
+    .header .button-login {
+      font-family: 'AGENCYB', sans-serif;
+      font-weight: bolder;
+      color: #000000;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 16px;
+      text-decoration: none;
+    }
 
-  .button-login {
-    font-family: 'AGENCYB', sans-serif;
-    font-weight: bolder;
-    color: #000000;
-    text-decoration: none;
-    cursor: pointer;
-    font-size: 16px;
-  }
+    .header .login-container {
+      display: flex;  
+      flex-direction: row-reverse;
+      gap: 10px;
+      margin: -20px -70px 0px 0px;
+    }
 
-  .button-logout {
-    font-family: 'AGENCYB', sans-serif;
-    font-weight: bolder;
-    color: #000000;
-    text-decoration: none;
-    cursor: pointer;
-    margin-left: 16px;
-  }
+      .login-container .user-name {
+        color: #000000;
+        font-size: 1rem;
+        margin: 20px;
+      }
 
-  .user-name {
-    color: #fff;
-    font-size: 1rem;
-  }
+      .login-container .button-logout {
+        font-family: 'AGENCYB', sans-serif;
+        font-weight: bolder;
+        color: #000000;
+        text-decoration: none;
+        cursor: pointer;
+        font-size: 16px;
+        text-decoration: none;  
+        background-color: #ffffff;
+        border: none;
+      }
 
 .page-container-1 {
   width: auto;
@@ -95,14 +102,14 @@ body {
   text-align: left;
 }
 
-  .image-slider-container {
+  .page-container-1 .image-slider-container {
     width: 50%;
     height: 600px; /* 원하는 높이로 조정하세요 */
     position: absolute;
     right: 0px;
   }
 
-  .heading {
+  .page-container-1 .heading {
     font-size: 50px;
     font-weight: bold;
     color: #fff;
@@ -112,7 +119,7 @@ body {
     left: 50px;
   }
 
-  .subheading {
+  .page-container-1 .subheading {
     font-size: 20px;
     color: #ccc;
     line-height: 1.5;
@@ -122,7 +129,7 @@ body {
     left: 50px;
   }
 
-.image-container {
+  .page-container-1 .image-container {
   display: flex;
   justify-content: center;
   align-items: center;

@@ -53,7 +53,7 @@ const Divider = styled.div<{ position: number }>`
   width: 2px;
   height: 100%;
   background-color: #fffcc;
-  cursor: ew-resize;
+  cursor: default;
   left: ${(props) => props.position}px;
 `;
 
