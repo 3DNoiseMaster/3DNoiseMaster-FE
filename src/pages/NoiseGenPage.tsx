@@ -82,12 +82,12 @@ const NoiseGenPage: React.FC = () => {
       alert('모든 필드를 채워주세요.');
       return;
     }
-  
+
     const formData = new FormData();
     formData.append('task_name', taskName);
     formData.append('noiseType', noiseType);
     formData.append('noiseLevel', noiseLevel.toString());
-    formData.append('file', file); 
+    formData.append('file', file);
 
     try {
       console.log('Sending form data:', {
@@ -96,14 +96,14 @@ const NoiseGenPage: React.FC = () => {
         noiseLevel: noiseLevel,
         file: file,
       });
-  
+
       const response = await axios.post(`${process.env.REACT_APP_API_WORKSPACE_URL}/request/noiseGen`, formData, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'multipart/form-data'
         }
       });
-  
+
       console.log('Server response:', response);
       alert('작업이 성공적으로 생성되었습니다.');
       navigate('/api/display/workspace');
@@ -112,7 +112,7 @@ const NoiseGenPage: React.FC = () => {
       alert('작업 생성 중 오류가 발생했습니다.');
     }
   };
-  
+
   const toggleWireframe = () => {
     setIsWireframe(!isWireframe);
   };
@@ -137,10 +137,10 @@ const NoiseGenPage: React.FC = () => {
         )}
       </div>
       <div style={styles.rightPane}>
-        <h1>잡음 생성</h1>
+        <h1 style={styles.heading}>Noise Generation</h1>
         <form onSubmit={handleSubmit} style={styles.form}>
           <label style={styles.label}>
-            작업 이름:
+            작업 이름
             <input
               type="text"
               value={taskName}
@@ -149,31 +149,60 @@ const NoiseGenPage: React.FC = () => {
               style={styles.input}
             />
           </label>
-          <label style={styles.label}>
-            잡음 유형:
-            <select
-              value={noiseType}
-              onChange={(e) => setNoiseType(e.target.value)}
-              required
-              style={styles.input}
-            >
-              <option value="Gaussian">Gaussian</option>
-              <option value="Impulsive">Impulsive</option>
-            </select>
+          <label style={{ ...styles.label, ...styles.noiseTypeLabel }}>
+            잡음 유형
+            <div style={styles.noiseTypeContainer}>
+              <button
+                type="button"
+                onClick={() => setNoiseType('Gaussian')}
+                style={{
+                  ...styles.noiseTypeButton,
+                  backgroundColor: noiseType === 'Gaussian' ? '#28a745' : 'white',
+                  color: noiseType === 'Gaussian' ? 'white' : '#333',
+                }}
+              >
+                Gaussian
+              </button>
+              <button
+                type="button"
+                onClick={() => setNoiseType('Impulsive')}
+                style={{
+                  ...styles.noiseTypeButton,
+                  backgroundColor: noiseType === 'Impulsive' ? '#28a745' : 'white',
+                  color: noiseType === 'Impulsive' ? 'white' : '#333',
+                }}
+              >
+                Impulsive
+              </button>
+            </div>
           </label>
           <label style={styles.label}>
-            잡음 레벨:
+            잡음 레벨
             <input
-              type="number"
+              type="range"
+              min="0"
+              max="10"
+              step="1"
               value={noiseLevel}
-              step="0.01"
-              onChange={(e) => setNoiseLevel(parseFloat(e.target.value))}
+              onChange={(e) => setNoiseLevel(parseInt(e.target.value))}
               required
-              style={styles.input}
+              style={styles.slider}
             />
+            <span style={styles.noiseLevelNumber}>{noiseLevel}</span>
           </label>
           <label style={styles.label}>
-            파일 업로드:
+            파일 업로드 &nbsp;&nbsp;
+            <button
+            type="button"
+            onClick={toggleWireframe}
+            style={{
+              ...styles.wireframeButton,
+              backgroundColor: isWireframe ? '#007bff' : 'white',
+              color: isWireframe ? 'white' : 'black',
+            }}
+          >
+            {isWireframe ? 'Wireframe 비활성화' : 'Wireframe 활성화'}
+          </button>
             <input
               type="file"
               onChange={handleFileChange}
@@ -181,10 +210,7 @@ const NoiseGenPage: React.FC = () => {
               style={styles.input}
             />
           </label>
-          <button type="button" onClick={toggleWireframe} style={styles.wireframeButton}>
-            {isWireframe ? 'Wireframe 비활성화' : 'Wireframe 활성화'}
-          </button>
-          <button type="submit" style={styles.submitButton}>작업 생성</button>
+          <button type="submit" style={styles.submitButton}>Submit</button>
         </form>
       </div>
     </div>
@@ -195,6 +221,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   container: {
     display: 'flex',
     height: '100vh',
+    position: 'relative',
   },
   uploadSection: {
     flex: 2,
@@ -207,13 +234,20 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   rightPane: {
     flex: 1,
-    padding: '20px',
+    padding: '30px',
     backgroundColor: '#333',
     color: 'white',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
+  },
+  heading: {
+    padding: '10px 20px',
+    position: 'absolute',
+    top: '20px',
+    textAlign: 'center',
   },
   imagePreview: {
     maxWidth: '100%',
@@ -227,33 +261,69 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   label: {
     width: '100%',
-    marginBottom: '10px',
+    marginBottom: '50px',
+    fontSize: '22px'
   },
   input: {
     width: '100%',
     padding: '8px',
     margin: '8px',
-    marginBottom: '10px',
+    marginTop: '20px',
     fontSize: '16px',
-    maxWidth:'500px',
+    maxWidth: '500px',
+  },
+  noiseTypeLabel: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  noiseTypeContainer: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    marginLeft: '10px',
+  },
+  noiseTypeButton: {
+    padding: '10px 20px',
+    border: '1px solid #333',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    marginLeft: '10px',
+    fontSize: '14px',
+    fontFamily:'NanumSquare_R',
+  },
+  slider: {
+    width: '100%',
+    padding: '8px',
+    margin: '8px',
+    marginTop: '20px',
+    fontSize: '16px',
+    maxWidth: '500px',
+  },
+  noiseLevelNumber: {
+    fontSize: '14px',
   },
   wireframeButton: {
     padding: '10px 20px',
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
+    border: '1px solid #333',
     borderRadius: '5px',
     cursor: 'pointer',
-    marginTop: '10px',
+    fontSize: '14px',
+    fontFamily:'NanumSquare_R'
   },
   submitButton: {
     padding: '10px 20px',
-    backgroundColor: '#007bff',
-    color: 'white',
+    backgroundColor: 'white',
+    color: '#333',
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
-    marginTop: '10px',
+    position: 'absolute',
+    bottom: '50px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    marginBottom: '20px',
+    fontSize: '20px',
+    fontFamily:'NanumSquare_B',
   },
   canvas: {
     width: '100%',
