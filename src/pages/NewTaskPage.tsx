@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import GlobalStyles from '../styles/GlobalStyles';
 import noiseGenIcon from '../assets/icon/noiseGen.png';
 import noiseRemIcon from '../assets/icon/noiseRem.png';
 import errorCompIcon from '../assets/icon/errorComp.png';
@@ -9,6 +10,7 @@ const NewTaskPage: React.FC = () => {
 
   return (
     <div style={styles.container}>
+      <GlobalStyles />
       <div style={styles.selectionContainer}>
         <h1>어떤 작업을 원하세요?</h1>
         <div style={styles.cards}>
@@ -33,10 +35,18 @@ const NewTaskPage: React.FC = () => {
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
     textAlign: 'center',
-    padding: '20px',
+    backgroundColor: '#888',
+    minHeight: '100vh', 
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   selectionContainer: {
     textAlign: 'center',
+    backgroundColor: '#ffffff',  // Background color for the selection container
+    padding: '20px',
+    borderRadius: '10px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
   },
   cards: {
     display: 'flex',
@@ -54,11 +64,15 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderRadius: '10px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
     cursor: 'pointer',
+    backgroundColor: '#fff',  // Background color for the cards
   },
   icon: {
     width: '50px',
     height: '50px',
     marginBottom: '10px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 };
 

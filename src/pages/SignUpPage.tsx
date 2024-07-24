@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import GlobalStyles from '../styles/GlobalStyles';
 import '../styles/SignUpPage.css'; 
 
 interface SignUpResponse {
@@ -57,6 +58,7 @@ const SignUpPage: React.FC = () => {
 
   return (
     <div className="container">
+      <GlobalStyles />
       <h1>회원가입</h1>
       <form onSubmit={handleSubmit} className="form">
         <label>

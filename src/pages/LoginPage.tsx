@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import GlobalStyles from '../styles/GlobalStyles';
 import '../styles/LoginPage.css'; 
 
 interface LoginResponse {
@@ -42,6 +43,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="container">
+      <GlobalStyles />
       <h1>로그인</h1>
       <form onSubmit={handleSubmit} className="form">
         <label>
