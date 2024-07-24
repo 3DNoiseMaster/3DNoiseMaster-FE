@@ -1,43 +1,88 @@
-.container {
+.signup-page {
     text-align: center;
-    margin-top: 50px;
+    background-color: #222;
+    color: #fff;
+    min-height: 130vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0px;
   }
   
+  .signup-container {
+    background-color: #ffffff;
+    width: 350px;
+    height: auto;
+    padding: 80px 60px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .title {
+    color: #000000;
+    margin-top: -30px;
+    margin-bottom: 50px;
+    text-align: center;
+    font-size: 40px;
+  }
+
   .form {
     display: inline-block;
     text-align: left;
   }
   
-  .input {
-    display: block;
-    margin-bottom: 10px;
-    padding: 8px;
-    font-size: 16px;
-    width: calc(100% - 40px);
+  .input-info {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 25px;
+    background-color: rgb(212, 212, 212);
+    border: none;
+    font-size: 20px;
   }
   
   .passwordContainer {
-    display: flex;
-    align-items: center;
+    position: relative;
+    width: 100%;
   }
   
   .showButton {
-    margin-left: 10px;
-    padding: 8px 10px;
-    background-color: #007bff;
-    color: white;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-80%);
+    background: none;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
   }
   
-  .button {
+  .button-eye {
+    border: none;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+  }
+
+  .button-signup {
+    font-size: 14px;
+    width: 100%;
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #000000;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin-top: 30px;
+    margin-bottom: 50px;
+  }
+
+  .Button-link {
+    display: inline-block;
+    margin: 0 10px;
+    padding: 10px 10px;
+    color: #000000;
+    text-decoration: none;
+    border-radius: 5px;
   }
   
   .response {
@@ -49,13 +94,18 @@
     font-size: 14px;
   }
   
-  .homeButton {
-    display: inline-block;
-    margin: 0 10px;
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
+  .links {
+    margin-top: 20px;
+  }
+
+  .spacer_type_1 {
+    flex-grow: 1;
+    width: 100%;
   }
   
+  .divider {
+    margin: 0 10px;
+    color: #000;
+    font-size: 24px;
+    line-height: 1;
+  }

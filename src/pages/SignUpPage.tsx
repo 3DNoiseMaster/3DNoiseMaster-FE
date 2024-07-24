@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import GlobalStyles from '../styles/GlobalStyles';
 import '../styles/SignUpPage.css'; 
+import useDynamicCss from '../hooks/UseDynamicCss';
+import EyeOpenImage from '../assets/icon/eye_open.png';
+import EyeCloseImage from '../assets/icon/eye_close.png';
 
 interface SignUpResponse {
   success: boolean;
@@ -56,82 +59,98 @@ const SignUpPage: React.FC = () => {
       });
   };
 
+  useDynamicCss('${process.env.PUBLIC_URL}/styles/SignUpPages.css');
+
+  useEffect(() => {
+    document.body.classList.add('signup-page');
+    return () => {
+      document.body.classList.remove('signup-page');
+    };
+  }, []);
+
   return (
-    <div className="container">
+    <div className="signup-page">
       <GlobalStyles />
-      <h1>회원가입</h1>
-      <form onSubmit={handleSubmit} className="form">
-        <label>
-          ID:
-          <input type="text" name="id" value={formData.id} onChange={handleChange} className="input" required />
-        </label>
-        <label>
-          Phone:
-          <input type="text" name="phone" value={formData.phone} onChange={handleChange} className="input" required />
-        </label>
-        <label>
-          Username:
-          <input type="text" name="user_name" value={formData.user_name} onChange={handleChange} className="input" required />
-        </label>
-        <label>
-          Password:
-          <div className="passwordContainer">
-            <input 
-              type={showPassword ? 'text' : 'password'} 
-              name="password" 
-              value={formData.password} 
-              onChange={handleChange} 
-              className="input" 
-              required 
-            />
-            <button 
-              type="button" 
-              onClick={() => setShowPassword(!showPassword)} 
-              className="showButton"
-            >
-              {showPassword ? 'Hide' : 'Show'}
-            </button>
-          </div>
-        </label>
-        <label>
-          Confirm Password:
-          <div className="passwordContainer">
-            <input 
-              type={showConfirmPassword ? 'text' : 'password'} 
-              name="confirmPassword" 
-              value={formData.confirmPassword} 
-              onChange={handleChange} 
-              className="input"
-              required 
-            />
-            <button 
-              type="button" 
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
-              className="showButton"
-            >
-              {showConfirmPassword ? 'Hide' : 'Show'}
-            </button>
-          </div>
-        </label>
-        {passwordError && <p className="error">{passwordError}</p>}
-        <button type="submit" className="button">회원가입</button>
-      </form>
-      {response && (
-        <div className="response">
-          <p>{response.message}</p>
-          {response.data && (
-            <div>
-              <p>User ID: {response.data.user.user_id}</p>
-              <p>Role: {response.data.user.role}</p>
-              <p>Date: {response.data.user.date}</p>
-              <p>ID: {response.data.user.id}</p>
-              <p>Phone: {response.data.user.phone}</p>
-              <p>Username: {response.data.user.user_name}</p>
+      <div className='signup-container'>
+        <h1 className='title'>SIGN-UP</h1>
+        <form onSubmit={handleSubmit} className="form">
+          <label>
+            ID:
+            <input type="text" name="id" value={formData.id} onChange={handleChange} className="input-info" required />
+          </label>
+          <label>
+            Phone:
+            <input type="text" name="phone" value={formData.phone} onChange={handleChange} className="input-info" required />
+          </label>
+          <label>
+            Username:
+            <input type="text" name="user_name" value={formData.user_name} onChange={handleChange} className="input-info" required />
+          </label>
+          <label>
+            Password:
+            <div className="passwordContainer">
+              <input 
+                type={showPassword ? 'text' : 'password'} 
+                name="password" 
+                value={formData.password} 
+                onChange={handleChange} 
+                className="input-info"
+                required 
+              />
+              <button 
+                type="button" 
+                onClick={() => setShowPassword(!showPassword)} 
+                className="showButton"
+              >
+                <img src={showPassword ? EyeOpenImage : EyeCloseImage} alt="Toggle Password" className="button-eye" />
+              </button>
             </div>
-          )}
+          </label>
+          <label>
+            Confirm Password:
+            <div className="passwordContainer">
+              <input 
+                type={showConfirmPassword ? 'text' : 'password'} 
+                name="confirmPassword" 
+                value={formData.confirmPassword} 
+                onChange={handleChange} 
+                className="input-info"
+                required 
+              />
+              <button 
+                type="button" 
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
+                className="showButton"
+              >
+                <img src={showConfirmPassword ? EyeOpenImage : EyeCloseImage} alt="Toggle Confirm Password" className="button-eye" />
+              </button>
+            </div>
+          </label>
+          {passwordError && <p className="error">{passwordError}</p>}
+          <button type="submit" className="button-signup">회원가입</button>
+        </form>
+        {response && (
+          <div className="response">
+            <p>{response.message}</p>
+            {response.data && (
+              <div>
+                <p>User ID: {response.data.user.user_id}</p>
+                <p>Role: {response.data.user.role}</p>
+                <p>Date: {response.data.user.date}</p>
+                <p>ID: {response.data.user.id}</p>
+                <p>Phone: {response.data.user.phone}</p>
+                <p>Username: {response.data.user.user_name}</p>
+              </div>
+            )}
+          </div>
+        )}
+        <div className="spacer_type_1"></div>
+        <div className="links">
+          <Link to="/api/display/login" className="Button-link">로그인</Link>
+          <span className="divider">|</span>
+          <Link to="/api/display/main" className="Button-link">홈</Link>
         </div>
-      )}
-      <Link to="/api/display/main" className="homeButton">홈</Link>
+      </div>
     </div>
   );
 };
