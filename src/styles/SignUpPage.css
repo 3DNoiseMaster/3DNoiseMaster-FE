@@ -45,8 +45,7 @@
           position: relative;
           width: 100%;
         }
-        
-            .passwordContainer  .showButton {
+            .passwordContainer .showButton {
               position: absolute;
               right: 5px;
               top: 50%;
@@ -55,8 +54,7 @@
               border: none;
               cursor: pointer;
             }
-            
-            .passwordContainer  .button-eye {
+            .passwordContainer .button-eye {
               border: none;
               cursor: pointer;
               width: 24px;

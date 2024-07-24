@@ -43,6 +43,19 @@
       font-size: 20px;
     }
 
+    .container .passwordContainer {
+      position: relative;
+      width: 100%;
+    }
+          .input-info .showButton {
+          position: absolute;
+          right: 5px;
+          top: 50%;
+          transform: translateY(-80%);
+          background: none;
+          border: none;
+          cursor: pointer;
+        }
         .input-info .button-eye {
           border: none;
           cursor: pointer;
@@ -62,8 +75,6 @@
       margin-top: 30px;
       margin-bottom: 50px;
     }
-
-    
 
     .container .spacer_type_1 {
       flex-grow: 1;

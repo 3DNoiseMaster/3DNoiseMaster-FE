@@ -70,12 +70,15 @@ const LoginPage: React.FC = () => {
           <label>
             Password
             <div className="passwordContainer">
-              <input type="password" name="password" 
-              value={formData.password} 
-              onChange={handleChange} 
-              className="input-info" required />
+              <input 
+                type={showPassword ? 'text' : 'password'} 
+                name="password" 
+                value={formData.password} 
+                onChange={handleChange} 
+                className="input-info" 
+                required />
               <button 
-                  type="button" 
+                  type="button"
                   onClick={() => setShowPassword(!showPassword)} 
                   className="showButton">
               <img src={showPassword ? EyeOpenImage : EyeCloseImage} 
