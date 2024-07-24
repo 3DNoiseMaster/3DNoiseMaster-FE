@@ -94,13 +94,13 @@ const NoiseGenPage: React.FC = () => {
         task_name: taskName,
         noiseType: noiseType,
         noiseLevel: noiseLevel,
-        file: file.name,
+        file: file,
       });
   
       const response = await axios.post(`${process.env.REACT_APP_API_WORKSPACE_URL}/request/noiseGen`, formData, {
         headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
   
