@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { OrbitControls, useProgress, Html } from '@react-three/drei';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
-import { Group, MeshBasicMaterial } from 'three';
+import { Group, MeshNormalMaterial } from 'three';
 
 const Loader = () => {
   const { progress } = useProgress();
@@ -13,12 +13,11 @@ const Loader = () => {
 
 const ObjModel = ({ url, wireframe }: { url: string, wireframe: boolean }) => {
   const obj = useLoader(OBJLoader, url) as Group;
-  obj.scale.set(0.1, 0.1, 0.1);
+  obj.scale.set(0.2, 0.2, 0.2);
 
   obj.traverse((child) => {
     if ((child as any).isMesh) {
-      (child as any).material = new MeshBasicMaterial({
-        color: 0x000000,
+      (child as any).material = new MeshNormalMaterial({
         wireframe: wireframe,
       });
     }
@@ -33,8 +32,8 @@ const NoiseGenPage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | ArrayBuffer | null>(null);
   const [fileURL, setFileURL] = useState<string | null>(null);
-  const [noiseType, setNoiseType] = useState<string>('');
-  const [noiseLevel, setNoiseLevel] = useState<string>('');
+  const [noiseType, setNoiseType] = useState<string>('Gaussian');
+  const [noiseLevel, setNoiseLevel] = useState<number>(0);
   const [isWireframe, setIsWireframe] = useState<boolean>(false);
 
   useEffect(() => {
@@ -49,9 +48,15 @@ const NoiseGenPage: React.FC = () => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
       const fileExtension = selectedFile.name.split('.').pop()?.toLowerCase();
+      const maxSize = 16 * 1024 * 1024; // 16MB
 
       if (fileExtension !== 'obj') {
         alert('.obj 확장자 파일을 업로드 해주세요.');
+        return;
+      }
+
+      if (selectedFile.size > maxSize) {
+        alert('파일 크기가 16MB를 초과할 수 없습니다.');
         return;
       }
 
@@ -72,7 +77,7 @@ const NoiseGenPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!taskName || !file || !noiseType || !noiseLevel) {
+    if (!taskName || !file || !noiseType || noiseLevel === undefined) {
       alert('모든 필드를 채워주세요.');
       return;
     }
@@ -80,7 +85,7 @@ const NoiseGenPage: React.FC = () => {
     const formData = new FormData();
     formData.append('task_name', taskName);
     formData.append('noiseType', noiseType);
-    formData.append('noiseLevel', noiseLevel);
+    formData.append('noiseLevel', noiseLevel.toString());
     formData.append('file', file); 
 
     try {
@@ -144,20 +149,23 @@ const NoiseGenPage: React.FC = () => {
           </label>
           <label style={styles.label}>
             잡음 유형:
-            <input
-              type="text"
+            <select
               value={noiseType}
               onChange={(e) => setNoiseType(e.target.value)}
               required
               style={styles.input}
-            />
+            >
+              <option value="Gaussian">Gaussian</option>
+              <option value="Impulsive">Impulsive</option>
+            </select>
           </label>
           <label style={styles.label}>
             잡음 레벨:
             <input
-              type="text"
+              type="number"
               value={noiseLevel}
-              onChange={(e) => setNoiseLevel(e.target.value)}
+              step="0.01"
+              onChange={(e) => setNoiseLevel(parseFloat(e.target.value))}
               required
               style={styles.input}
             />
@@ -222,8 +230,10 @@ const styles: { [key: string]: React.CSSProperties } = {
   input: {
     width: '100%',
     padding: '8px',
+    margin: '8px',
     marginBottom: '10px',
     fontSize: '16px',
+    maxWidth:'500px',
   },
   wireframeButton: {
     padding: '10px 20px',

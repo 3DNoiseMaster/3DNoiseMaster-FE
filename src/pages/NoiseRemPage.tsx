@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { OrbitControls, useProgress, Html } from '@react-three/drei';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
-import { Group, MeshBasicMaterial } from 'three';
+import { Group, MeshNormalMaterial } from 'three';
 
 const Loader = () => {
   const { progress } = useProgress();
@@ -13,12 +13,11 @@ const Loader = () => {
 
 const ObjModel = ({ url, wireframe }: { url: string, wireframe: boolean }) => {
   const obj = useLoader(OBJLoader, url) as Group;
-  obj.scale.set(0.1, 0.1, 0.1);
+  obj.scale.set(0.2, 0.2, 0.2);
 
   obj.traverse((child) => {
     if ((child as any).isMesh) {
-      (child as any).material = new MeshBasicMaterial({
-        color: 0x000000,
+      (child as any).material = new MeshNormalMaterial({
         wireframe: wireframe,
       });
     }
@@ -26,6 +25,7 @@ const ObjModel = ({ url, wireframe }: { url: string, wireframe: boolean }) => {
 
   return <primitive object={obj} />;
 };
+
 const NoiseRemPage: React.FC = () => {
   const navigate = useNavigate();
   const [taskName, setTaskName] = useState<string>('');
@@ -41,14 +41,20 @@ const NoiseRemPage: React.FC = () => {
       }
     };
   }, [fileURL]);
-  
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
       const fileExtension = selectedFile.name.split('.').pop()?.toLowerCase();
+      const maxSize = 16 * 1024 * 1024; // 16MB
 
       if (fileExtension !== 'obj') {
         alert('.obj 확장자 파일을 업로드 해주세요.');
+        return;
+      }
+
+      if (selectedFile.size > maxSize) {
+        alert('파일 크기가 16MB를 초과할 수 없습니다.');
         return;
       }
 
@@ -83,14 +89,14 @@ const NoiseRemPage: React.FC = () => {
         task_name: taskName,
         file: file.name
       });
-  
+
       const response = await axios.post(`${process.env.REACT_APP_API_WORKSPACE_URL}/request/noiseRem`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
-  
+
       console.log('Server response:', response);
       alert('작업이 성공적으로 생성되었습니다.');
       navigate('/api/display/workspace');
@@ -202,8 +208,10 @@ const styles: { [key: string]: React.CSSProperties } = {
   input: {
     width: '100%',
     padding: '8px',
+    margin: '8px',
     marginBottom: '10px',
     fontSize: '16px',
+    maxWidth:'500px',
   },
   wireframeButton: {
     padding: '10px 20px',
