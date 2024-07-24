@@ -48,9 +48,15 @@ const NoiseGenPage: React.FC = () => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
       const fileExtension = selectedFile.name.split('.').pop()?.toLowerCase();
+      const maxSize = 16 * 1024 * 1024; // 16MB
 
       if (fileExtension !== 'obj') {
         alert('.obj 확장자 파일을 업로드 해주세요.');
+        return;
+      }
+
+      if (selectedFile.size > maxSize) {
+        alert('파일 크기가 16MB를 초과할 수 없습니다.');
         return;
       }
 

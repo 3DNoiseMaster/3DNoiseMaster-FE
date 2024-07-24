@@ -41,14 +41,20 @@ const NoiseRemPage: React.FC = () => {
       }
     };
   }, [fileURL]);
-  
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
       const fileExtension = selectedFile.name.split('.').pop()?.toLowerCase();
+      const maxSize = 16 * 1024 * 1024; // 16MB
 
       if (fileExtension !== 'obj') {
         alert('.obj 확장자 파일을 업로드 해주세요.');
+        return;
+      }
+
+      if (selectedFile.size > maxSize) {
+        alert('파일 크기가 16MB를 초과할 수 없습니다.');
         return;
       }
 
@@ -83,14 +89,14 @@ const NoiseRemPage: React.FC = () => {
         task_name: taskName,
         file: file.name
       });
-  
+
       const response = await axios.post(`${process.env.REACT_APP_API_WORKSPACE_URL}/request/noiseRem`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
-  
+
       console.log('Server response:', response);
       alert('작업이 성공적으로 생성되었습니다.');
       navigate('/api/display/workspace');
