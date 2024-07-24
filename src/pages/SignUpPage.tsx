@@ -70,7 +70,7 @@ const SignUpPage: React.FC = () => {
 
   return (
     <div className="signup-page">
-      <div className='signup-container'>
+      <div className='container'>
         <h1 className='title'>SIGN-UP</h1>
         <form onSubmit={handleSubmit} className="form">
           <label>
@@ -145,9 +145,9 @@ const SignUpPage: React.FC = () => {
         )}
         <div className="spacer_type_1"></div>
         <div className="links">
-          <Link to="/api/display/login" className="Button-link">로그인</Link>
+          <Link to="/api/display/login" className="button-link">로그인</Link>
           <span className="divider">|</span>
-          <Link to="/api/display/main" className="Button-link">홈</Link>
+          <Link to="/api/display/main" className="button-link">홈</Link>
         </div>
       </div>
     </div>

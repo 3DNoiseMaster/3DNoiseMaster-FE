@@ -12,15 +12,8 @@
   font-style: normal;
 }
 
-body {
-  text-align: center;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
 
-.main-container {
+.main-page {
   text-align: center;
   background-color: #222;
   color: #fff;
@@ -29,114 +22,111 @@ body {
   flex-direction: column;
 }
 
-  .header {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: center;
-    flex-basis: auto;
-    padding: 15px;
-    width: 100%;
-    height: 100px;
-    background-color: #ffffff;
-    box-sizing: border-box;
-  }
+    .main-page .header {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+      flex-basis: auto;
+      padding: 15px;
+      width: 100%;
+      height: 100px;
+      background-color: #ffffff;
+      box-sizing: border-box;
+    }
+        .header .title {
+          font-family: 'Amasis-MT-Std-Font';
+          font-weight: bolder;
+          font-size: 48px;
+          margin: 0;
+          color: #000000;
+        }
+        .header .image-bunny {
+          width: 50px;
+          height: 50px;
+          margin: 0 10px;
+          line-height: 1;
+        }
+        .header .button-login {
+          font-family: 'AGENCYB', sans-serif;
+          font-weight: bolder;
+          color: #000000;
+          text-decoration: none;
+          cursor: pointer;
+          font-size: 16px;
+          text-decoration: none;
+        }
+        .header .login-container {
+          display: flex;  
+          flex-direction: row-reverse;
+          gap: 10px;
+          margin: -20px -70px 0px 0px;
+        }
+            .login-container .user-name {
+              color: #000000;
+              font-size: 1rem;
+              margin: 20px;
+            }
+            .login-container .button-logout {
+              font-family: 'AGENCYB', sans-serif;
+              font-weight: bolder;
+              color: #000000;
+              text-decoration: none;
+              cursor: pointer;
+              font-size: 16px;
+              text-decoration: none;  
+              background-color: #ffffff;
+              border: none;
+            }
 
-    .header .title {
-      font-family: 'Amasis-MT-Std-Font';
-      font-weight: bolder;
-      font-size: 48px;
-      margin: 0;
-      color: #000000;
+    .main-page .page-container-1 {
+      width: auto;
+      height: 600px;
+      background-color: #000000;
+      flex: 1;
+      flex-basis: auto;
+      display: flex;
+      text-align: left;
     }
 
-    .header .image-bunny {
-      width: 50px;
-      height: 50px;
-      margin: 0 10px;
-      line-height: 1;
-    }
+        .page-container-1 .image-slider-container {
+          width: 50%;
+          height: 600px; /* 원하는 높이로 조정하세요 */
+          position: absolute;
+          right: 0px;
+        }
 
-    .header .button-login {
-      font-family: 'AGENCYB', sans-serif;
-      font-weight: bolder;
-      color: #000000;
-      text-decoration: none;
-      cursor: pointer;
-      font-size: 16px;
-      text-decoration: none;
-    }
+        .page-container-1 .heading {
+          font-size: 50px;
+          font-weight: bold;
+          color: #fff;
+          line-height: 1.5;
+          position: absolute;
+          top: 120px;
+          left: 50px;
+        }
 
-    .header .login-container {
-      display: flex;  
-      flex-direction: row-reverse;
-      gap: 10px;
-      margin: -20px -70px 0px 0px;
-    }
+        .page-container-1 .subheading {
+          font-size: 20px;
+          color: #ccc;
+          line-height: 1.5;
+          margin-top: 20px;
+          position: absolute;
+          top: 300px;
+          left: 50px;
+        }
 
-      .login-container .user-name {
-        color: #000000;
-        font-size: 1rem;
-        margin: 20px;
-      }
+        .page-container-1 .image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-basis: auto;
+        width: 100%;
+        background-color: #333;
+        }
 
-      .login-container .button-logout {
-        font-family: 'AGENCYB', sans-serif;
-        font-weight: bolder;
-        color: #000000;
-        text-decoration: none;
-        cursor: pointer;
-        font-size: 16px;
-        text-decoration: none;  
-        background-color: #ffffff;
-        border: none;
-      }
 
-.page-container-1 {
-  width: auto;
-  height: 600px;
-  background-color: #000000;
-  flex: 1;
-  flex-basis: auto;
-  display: flex;
-  text-align: left;
-}
-
-  .page-container-1 .image-slider-container {
-    width: 50%;
-    height: 600px; /* 원하는 높이로 조정하세요 */
-    position: absolute;
-    right: 0px;
-  }
-
-  .page-container-1 .heading {
-    font-size: 50px;
-    font-weight: bold;
-    color: #fff;
-    line-height: 1.5;
-    position: absolute;
-    top: 120px;
-    left: 50px;
-  }
-
-  .page-container-1 .subheading {
-    font-size: 20px;
-    color: #ccc;
-    line-height: 1.5;
-    margin-top: 20px;
-    position: absolute;
-    top: 300px;
-    left: 50px;
-  }
-
-  .page-container-1 .image-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-basis: auto;
-  width: 100%;
-  background-color: #333;
-}
+/*아래는 추가 및 수정 중*/
 
 .work-space {
   display: inline-block;

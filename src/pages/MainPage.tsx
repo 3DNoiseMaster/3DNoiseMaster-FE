@@ -22,7 +22,7 @@ const MainPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="main-container">
+    <div className="main-page">
       <GlobalStyles />
       <div className="header">
         <h2 className="title">
