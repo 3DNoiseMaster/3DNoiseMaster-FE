@@ -25,6 +25,10 @@ interface TaskCount {
   doneCount: number;
 }
 
+interface DeleteTaskResponse {
+  success: boolean;
+}
+
 const WorkspacePage: React.FC = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<{ user_name: string } | null>(null);
@@ -116,6 +120,26 @@ const WorkspacePage: React.FC = () => {
     navigate('/api/display/workspace/newTask');
   };
 
+  const handleDeleteTask = (taskId: string) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        axios.delete<DeleteTaskResponse>(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks/delete`, {
+            headers: { 'Authorization': `Bearer ${token}` },
+            params: { task_id: taskId }
+        })
+        .then(response => {
+            if (response.data.success) {
+                setTasks(tasks.filter(task => task.task_id !== taskId));
+            } else {
+                console.error('Error deleting task: ', response.data);
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting task:', error);
+        });
+    }
+};
+
   return (
     <div style={styles.container}>
       <div style={styles.header}>
@@ -145,8 +169,11 @@ const WorkspacePage: React.FC = () => {
         {tasks.length > 0 ? (
           <ul>
             {tasks.map(task => (
-              <li key={task.task_id}>
-                <p>작업 이름 : {task.task_name}</p>
+              <li key={task.task_id} style={styles.taskItem}>
+                <p>
+                  작업 이름 : {task.task_name} &nbsp;&nbsp;
+                  <button onClick={() => handleDeleteTask(task.task_id)} style={styles.deleteButton}>삭제</button>
+                </p>
                 <p>상태 : {task.status}</p>
                 <p>생성일자 : {new Date(task.date).toLocaleString()}</p>
               </li>
@@ -221,6 +248,21 @@ const styles: { [key: string]: React.CSSProperties } = {
     marginTop: '20px',
     textAlign: 'left',
     display: 'inline-block',
+  },
+  taskItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    marginBottom: '10px',
+  },
+  deleteButton: {
+    marginTop: '10px',
+    padding: '5px 10px',
+    backgroundColor: '#dc3545',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
   },
   modalOverlay: {
     position: 'fixed',

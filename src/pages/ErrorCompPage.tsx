@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { OrbitControls, useProgress, Html } from '@react-three/drei';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
-import { Group, MeshBasicMaterial } from 'three';
+import { Group, MeshNormalMaterial } from 'three';
 
 const Loader = () => {
   const { progress } = useProgress();
@@ -13,12 +13,11 @@ const Loader = () => {
 
 const ObjModel = ({ url, wireframe }: { url: string, wireframe: boolean }) => {
   const obj = useLoader(OBJLoader, url) as Group;
-  obj.scale.set(0.1, 0.1, 0.1);
+  obj.scale.set(0.2, 0.2, 0.2);
 
   obj.traverse((child) => {
     if ((child as any).isMesh) {
-      (child as any).material = new MeshBasicMaterial({
-        color: 0x000000,
+      (child as any).material = new MeshNormalMaterial({
         wireframe: wireframe,
       });
     }
@@ -258,8 +257,10 @@ const styles: { [key: string]: React.CSSProperties } = {
   input: {
     width: '100%',
     padding: '8px',
+    margin: '8px',
     marginBottom: '10px',
     fontSize: '16px',
+    maxWidth:'500px',
   },
   wireframeButton: {
     padding: '10px 20px',
