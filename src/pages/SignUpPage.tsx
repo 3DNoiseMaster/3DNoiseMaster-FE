@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import GlobalStyles from '../styles/GlobalStyles';
 import '../styles/SignUpPage.css'; 
 import useDynamicCss from '../hooks/UseDynamicCss';
 import EyeOpenImage from '../assets/icon/eye_open.png';
@@ -70,6 +70,7 @@ const SignUpPage: React.FC = () => {
 
   return (
     <div className="signup-page">
+      <GlobalStyles />
       <div className='signup-container'>
         <h1 className='title'>SIGN-UP</h1>
         <form onSubmit={handleSubmit} className="form">

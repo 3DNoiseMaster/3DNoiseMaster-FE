@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import GlobalStyles from '../styles/GlobalStyles';
 
 interface LoginStatusResponse {
   success: boolean;
@@ -140,8 +141,29 @@ const WorkspacePage: React.FC = () => {
     }
 };
 
+const handleDownloadTask = (taskId: string) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+      axios.get<DeleteTaskResponse>(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks/download`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+        params: { task_id: taskId }
+      })
+      .then(response => {
+          if (response.data.success) {
+              setTasks(tasks.filter(task => task.task_id !== taskId));
+          } else {
+              console.error('Error downloading task: ', response.data);
+          }
+      })
+      .catch(error => {
+          console.error('Error downloading task:', error);
+      });
+  }
+};
+
   return (
     <div style={styles.container}>
+      <GlobalStyles />
       <div style={styles.header}>
         <Link to="/api/display/main" style={styles.homeButton}>홈</Link>
         <div style={styles.buttonGroup}>
@@ -173,6 +195,9 @@ const WorkspacePage: React.FC = () => {
                 <p>
                   작업 이름 : {task.task_name} &nbsp;&nbsp;
                   <button onClick={() => handleDeleteTask(task.task_id)} style={styles.deleteButton}>삭제</button>
+                  {task.status === 100 && (
+                    <button onClick={() => handleDownloadTask(task.task_id)} style={styles.downloadButton}>다운로드</button>
+                  )}
                 </p>
                 <p>상태 : {task.status}</p>
                 <p>생성일자 : {new Date(task.date).toLocaleString()}</p>
@@ -257,8 +282,18 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   deleteButton: {
     marginTop: '10px',
+    marginRight: '10px',
     padding: '5px 10px',
     backgroundColor: '#dc3545',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  },
+  downloadButton: {
+    marginTop: '10px',
+    padding: '5px 10px',
+    backgroundColor: '#28a745',
     color: 'white',
     border: 'none',
     borderRadius: '5px',

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import GlobalStyles from '../styles/GlobalStyles';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { OrbitControls, useProgress, Html } from '@react-three/drei';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
@@ -150,6 +151,7 @@ const ErrorCompPage: React.FC = () => {
 
   return (
     <div style={styles.container}>
+      <GlobalStyles />
       <div style={styles.leftPane}>
         {fileURL1 ? (
           <Canvas style={styles.canvas}>
