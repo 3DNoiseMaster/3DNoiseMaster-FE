@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import GlobalStyles from '../styles/GlobalStyles';
 
 interface LoginStatusResponse {
   success: boolean;
@@ -25,6 +26,10 @@ interface TaskCount {
   doneCount: number;
 }
 
+interface DeleteTaskResponse {
+  success: boolean;
+}
+
 const WorkspacePage: React.FC = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<{ user_name: string } | null>(null);
@@ -39,6 +44,7 @@ const WorkspacePage: React.FC = () => {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       .then(response => {
+        console.log('Login status response:', response);
         if (response.data.success) {
           const user_name = response.data.data?.user?.user_name;
           if (user_name) {
@@ -53,38 +59,52 @@ const WorkspacePage: React.FC = () => {
         console.error('Error verifying token:', error);
         setIsModalOpen(true);
       });
-
-      axios.get<{ success: boolean; data: { tasks: Task[] } }>(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      .then(response => {
-        if (response.data.success) {
-          setTasks(response.data.data.tasks);
-        } else {
-          console.error('Error fetching tasks: ', response.data);
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching tasks:', error);
-      });
-
-      axios.get<{ success: boolean; data: { count: TaskCount } }>(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks/count`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      .then(response => {
-        if (response.data.success) {
-          setTaskCount(response.data.data.count);
-        } else {
-          console.error('Error fetching task count: ', response.data);
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching task count:', error);
-      });
     } else {
       setIsModalOpen(true);
     }
   }, [navigate]);
+
+  useEffect(() => {
+    const fetchData = () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        axios.get<{ success: boolean; data: { tasks: Task[] } }>(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
+        .then(response => {
+          console.log('Tasks response:', response);
+          if (response.data.success) {
+            setTasks(response.data.data.tasks);
+          } else {
+            console.error('Error fetching tasks: ', response.data);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching tasks:', error);
+        });
+
+        axios.get<{ success: boolean; data: { count: TaskCount } }>(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks/count`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
+        .then(response => {
+          console.log('Task count response:', response);
+          if (response.data.success) {
+            setTaskCount(response.data.data.count);
+          } else {
+            console.error('Error fetching task count: ', response.data);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching task count:', error);
+        });
+      }
+    };
+
+    fetchData();
+    const intervalId = setInterval(fetchData, 10000);
+    return () => clearInterval(intervalId);
+
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('user_name');
@@ -101,11 +121,54 @@ const WorkspacePage: React.FC = () => {
     navigate('/api/display/workspace/newTask');
   };
 
+  const handleDeleteTask = (taskId: string) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        axios.delete<DeleteTaskResponse>(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks/delete`, {
+            headers: { 'Authorization': `Bearer ${token}` },
+            params: { task_id: taskId }
+        })
+        .then(response => {
+            if (response.data.success) {
+                setTasks(tasks.filter(task => task.task_id !== taskId));
+            } else {
+                console.error('Error deleting task: ', response.data);
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting task:', error);
+        });
+    }
+};
+
+const handleDownloadTask = (taskId: string) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+      axios.get<DeleteTaskResponse>(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks/download`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+        params: { task_id: taskId }
+      })
+      .then(response => {
+          if (response.data.success) {
+              setTasks(tasks.filter(task => task.task_id !== taskId));
+          } else {
+              console.error('Error downloading task: ', response.data);
+          }
+      })
+      .catch(error => {
+          console.error('Error downloading task:', error);
+      });
+  }
+};
+
   return (
     <div style={styles.container}>
+      <GlobalStyles />
       <div style={styles.header}>
         <Link to="/api/display/main" style={styles.homeButton}>홈</Link>
-        <button onClick={handleLogout} style={styles.logoutButton}>로그아웃</button>
+        <div style={styles.buttonGroup}>
+          <button onClick={handleLogout} style={styles.logoutButton}>로그아웃</button>
+        </div>
       </div>
       {user ? (
         <div style={styles.userInfo}>
@@ -128,8 +191,14 @@ const WorkspacePage: React.FC = () => {
         {tasks.length > 0 ? (
           <ul>
             {tasks.map(task => (
-              <li key={task.task_id}>
-                <p>작업 이름 : {task.task_name}</p>
+              <li key={task.task_id} style={styles.taskItem}>
+                <p>
+                  작업 이름 : {task.task_name} &nbsp;&nbsp;
+                  <button onClick={() => handleDeleteTask(task.task_id)} style={styles.deleteButton}>삭제</button>
+                  {task.status === 100 && (
+                    <button onClick={() => handleDownloadTask(task.task_id)} style={styles.downloadButton}>다운로드</button>
+                  )}
+                </p>
                 <p>상태 : {task.status}</p>
                 <p>생성일자 : {new Date(task.date).toLocaleString()}</p>
               </li>
@@ -160,7 +229,12 @@ const styles: { [key: string]: React.CSSProperties } = {
   header: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: '20px',
+  },
+  buttonGroup: {
+    display: 'flex',
+    gap: '10px',
   },
   homeButton: {
     padding: '10px 20px',
@@ -199,6 +273,31 @@ const styles: { [key: string]: React.CSSProperties } = {
     marginTop: '20px',
     textAlign: 'left',
     display: 'inline-block',
+  },
+  taskItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    marginBottom: '10px',
+  },
+  deleteButton: {
+    marginTop: '10px',
+    marginRight: '10px',
+    padding: '5px 10px',
+    backgroundColor: '#dc3545',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  },
+  downloadButton: {
+    marginTop: '10px',
+    padding: '5px 10px',
+    backgroundColor: '#28a745',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
   },
   modalOverlay: {
     position: 'fixed',

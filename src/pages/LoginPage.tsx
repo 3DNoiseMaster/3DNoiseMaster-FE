@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
-import '../styles/LoginPage.css';
+import GlobalStyles from '../styles/GlobalStyles';
 import useDynamicCss from '../hooks/UseDynamicCss';
+
 
 interface LoginResponse {
   message: string;
@@ -54,6 +54,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className='login-page'>
+      <GlobalStyles />
       <div className='login-container'>
         <h1 className='title'>LOGIN</h1>
         <form onSubmit={handleSubmit} className="form">

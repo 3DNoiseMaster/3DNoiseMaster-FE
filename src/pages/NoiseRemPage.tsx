@@ -1,18 +1,29 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import GlobalStyles from '../styles/GlobalStyles';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { OrbitControls, useProgress, Html } from '@react-three/drei';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
-import { Group } from 'three';
+import { Group, MeshNormalMaterial } from 'three';
 
 const Loader = () => {
   const { progress } = useProgress();
   return <Html center>{progress} % loaded</Html>;
 };
 
-const ObjModel = ({ url }: { url: string }) => {
+const ObjModel = ({ url, wireframe }: { url: string, wireframe: boolean }) => {
   const obj = useLoader(OBJLoader, url) as Group;
+  obj.scale.set(0.2, 0.2, 0.2);
+
+  obj.traverse((child) => {
+    if ((child as any).isMesh) {
+      (child as any).material = new MeshNormalMaterial({
+        wireframe: wireframe,
+      });
+    }
+  });
+
   return <primitive object={obj} />;
 };
 
@@ -22,6 +33,7 @@ const NoiseRemPage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | ArrayBuffer | null>(null);
   const [fileURL, setFileURL] = useState<string | null>(null);
+  const [isWireframe, setIsWireframe] = useState<boolean>(false);
 
   useEffect(() => {
     return () => {
@@ -30,16 +42,28 @@ const NoiseRemPage: React.FC = () => {
       }
     };
   }, [fileURL]);
-  
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
+      const fileExtension = selectedFile.name.split('.').pop()?.toLowerCase();
+      const maxSize = 16 * 1024 * 1024; // 16MB
+
+      if (fileExtension !== 'obj') {
+        alert('.obj 확장자 파일을 업로드 해주세요.');
+        return;
+      }
+
+      if (selectedFile.size > maxSize) {
+        alert('파일 크기가 16MB를 초과할 수 없습니다.');
+        return;
+      }
+
       setFile(selectedFile);
-  
       const url = URL.createObjectURL(selectedFile);
       setFileURL(url);
       setFilePreview(null);
-  
+
       const reader = new FileReader();
       reader.onload = (event) => {
         if (event.target) {
@@ -62,12 +86,19 @@ const NoiseRemPage: React.FC = () => {
     formData.append('file', file);
 
     try {
-      await axios.post(`${process.env.REACT_APP_API_WORKSPACE_URL}/noise-rem`, formData, {
+      console.log('Sending form data:', {
+        task_name: taskName,
+        file: file.name
+      });
+
+      const response = await axios.post(`${process.env.REACT_APP_API_WORKSPACE_URL}/request/noiseRem`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
+
+      console.log('Server response:', response);
       alert('작업이 성공적으로 생성되었습니다.');
       navigate('/api/display/workspace');
     } catch (error) {
@@ -76,15 +107,20 @@ const NoiseRemPage: React.FC = () => {
     }
   };
 
+  const toggleWireframe = () => {
+    setIsWireframe(!isWireframe);
+  };
+
   return (
     <div style={styles.container}>
+      <GlobalStyles />
       <div style={styles.uploadSection}>
         {fileURL ? (
           <Canvas style={styles.canvas}>
             <ambientLight />
             <pointLight position={[100, 100, 100]} />
             <Suspense fallback={<Loader />}>
-              <ObjModel url={fileURL} />
+              <ObjModel url={fileURL} wireframe={isWireframe} />
             </Suspense>
             <OrbitControls />
           </Canvas>
@@ -116,7 +152,10 @@ const NoiseRemPage: React.FC = () => {
               style={styles.input}
             />
           </label>
-          <button type="submit" style={styles.button}>작업 생성</button>
+          <button type="button" onClick={toggleWireframe} style={styles.wireframeButton}>
+            {isWireframe ? 'Wireframe 비활성화' : 'Wireframe 활성화'}
+          </button>
+          <button type="submit" style={styles.submitButton}>작업 생성</button>
         </form>
       </div>
     </div>
@@ -171,16 +210,28 @@ const styles: { [key: string]: React.CSSProperties } = {
   input: {
     width: '100%',
     padding: '8px',
+    margin: '8px',
     marginBottom: '10px',
     fontSize: '16px',
+    maxWidth:'500px',
   },
-  button: {
+  wireframeButton: {
     padding: '10px 20px',
     backgroundColor: '#007bff',
     color: 'white',
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
+    marginTop: '10px',
+  },
+  submitButton: {
+    padding: '10px 20px',
+    backgroundColor: '#007bff',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    marginTop: '10px',
   },
   canvas: {
     width: '100%',
