@@ -9,82 +9,96 @@
     margin-top: 0px;
   }
   
-  .signup-container {
-    background-color: #ffffff;
-    width: 350px;
-    height: auto;
-    padding: 80px 60px 60px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+    .signup-page .container {
+      background-color: #ffffff;
+      width: 350px;
+      height: auto;
+      padding: 80px 60px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-  .title {
-    color: #000000;
-    margin-top: -30px;
-    margin-bottom: 50px;
-    text-align: center;
-    font-size: 40px;
-  }
+        .container .title {
+          color: #000000;
+          margin-top: -30px;
+          margin-bottom: 50px;
+          text-align: center;
+          font-size: 40px;
+        }
 
-  .form {
-    display: inline-block;
-    text-align: left;
-  }
-  
-  .input-info {
-    width: 95%;
-    padding: 10px;
-    margin-bottom: 25px;
-    background-color: rgb(212, 212, 212);
-    border: none;
-    font-size: 20px;
-  }
-  
-  .passwordContainer {
-    position: relative;
-    width: 100%;
-  }
-  
-  .showButton {
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    transform: translateY(-80%);
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .button-eye {
-    border: none;
-    cursor: pointer;
-    width: 24px;
-    height: 24px;
-  }
+        .container .form {
+          display: inline-block;
+          text-align: left;
+        }
+        
+        .container .input-info {
+          width: 95%;
+          padding: 10px;
+          margin-bottom: 25px;
+          background-color: rgb(212, 212, 212);
+          border: none;
+          font-size: 20px;
+        }
+        
+        .container .passwordContainer {
+          position: relative;
+          width: 100%;
+        }
+            .passwordContainer .showButton {
+              position: absolute;
+              right: 5px;
+              top: 50%;
+              transform: translateY(-80%);
+              background: none;
+              border: none;
+              cursor: pointer;
+            }
+            .passwordContainer .button-eye {
+              border: none;
+              cursor: pointer;
+              width: 24px;
+              height: 24px;
+            }
 
-  .button-signup {
-    font-size: 14px;
-    width: 100%;
-    padding: 10px 20px;
-    background-color: #000000;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 30px;
-    margin-bottom: 50px;
-  }
+        .container .button-signup {
+          font-size: 14px;
+          width: 100%;
+          padding: 10px 20px;
+          background-color: #000000;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          margin-top: 30px;
+          margin-bottom: 50px;
+        }
 
-  .Button-link {
-    display: inline-block;
-    margin: 0 10px;
-    padding: 10px 10px;
-    color: #000000;
-    text-decoration: none;
-    border-radius: 5px;
-  }
-  
+        .container .spacer_type_1 {
+          flex-grow: 1;
+          width: 100%;
+        }
+
+        .container .links {
+          margin-top: 20px;
+        }
+            .links .Button-link {
+              display: inline-block;
+              margin: 0 10px;
+              padding: 10px 10px;
+              color: #000000;
+              text-decoration: none;
+              border-radius: 5px;
+            }
+            .links .divider {
+              margin: 0 10px;
+              color: #000;
+              font-size: 24px;
+              line-height: 1;
+            }
+      
+
+/*개발을 위한 출력, 차후 수정*/
   .response {
     margin-top: 20px;
   }
@@ -92,20 +106,4 @@
   .error {
     color: red;
     font-size: 14px;
-  }
-  
-  .links {
-    margin-top: 20px;
-  }
-
-  .spacer_type_1 {
-    flex-grow: 1;
-    width: 100%;
-  }
-  
-  .divider {
-    margin: 0 10px;
-    color: #000;
-    font-size: 24px;
-    line-height: 1;
   }
