@@ -142,6 +142,26 @@ const WorkspacePage: React.FC = () => {
     }
 };
 
+const handleDownloadTask = (taskId: string) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+      axios.get<DeleteTaskResponse>(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks/download`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+        params: { task_id: taskId }
+      })
+      .then(response => {
+          if (response.data.success) {
+              setTasks(tasks.filter(task => task.task_id !== taskId));
+          } else {
+              console.error('Error downloading task: ', response.data);
+          }
+      })
+      .catch(error => {
+          console.error('Error downloading task:', error);
+      });
+  }
+};
+
   return (
     <div className="workspace-page">
       <div className="header">
