@@ -74,7 +74,8 @@ const WorkspacePage: React.FC = () => {
         .then(response => {
           console.log('Tasks response:', response);
           if (response.data.success) {
-            setTasks(response.data.data.tasks);
+            const sortedTasks = response.data.data.tasks.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+            setTasks(sortedTasks);
           } else {
             console.error('Error fetching tasks: ', response.data);
           }
@@ -109,7 +110,7 @@ const WorkspacePage: React.FC = () => {
   const handleLogout = () => {
     localStorage.removeItem('user_name');
     localStorage.removeItem('token');
-    navigate('/');
+    navigate('/api/display/main');
   };
 
   const closeModal = () => {
@@ -150,12 +151,10 @@ const handleDownloadTask = (taskId: string, taskName: string) => {
       responseType: 'blob', 
     })
     .then(response => {
-      // 파일 다운로드 처리
       const blob = new Blob([response.data as BlobPart], { type: 'application/x-obj' });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
 
-      // 파일 이름 설정
       const contentDisposition = response.headers['content-disposition'];
       let fileName = `${taskName}_result.obj`;
 
@@ -167,10 +166,10 @@ const handleDownloadTask = (taskId: string, taskName: string) => {
       }
 
       link.href = url;
-      link.setAttribute('download', fileName); // 파일 이름 설정
+      link.setAttribute('download', fileName);
       document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link); // 링크를 다운로드 후 제거
+      document.body.removeChild(link);
     })
     .catch(error => {
       console.error('Error downloading task:', error);
@@ -218,8 +217,8 @@ const handleDownloadTask = (taskId: string, taskName: string) => {
                     <button onClick={() => handleDownloadTask(task.task_id, task.task_name)} style={styles.downloadButton}>다운로드</button>
                   )}
                 </p>
-                <p>상태 : {task.status}</p>
-                <p>생성일자 : {new Date(task.date).toLocaleString()}</p>
+                <p>작업 상태 : <progress value={task.status} max="100" style={styles.progressBar}></progress> {task.status} %</p>
+                <p>생성 일자 : {new Date(task.date).toLocaleString()}</p>
               </li>
             ))}
           </ul>
@@ -298,6 +297,12 @@ const styles: { [key: string]: React.CSSProperties } = {
     flexDirection: 'column',
     alignItems: 'flex-start',
     marginBottom: '10px',
+  },
+  progressBar: {
+    width: '200px',
+    marginLeft: '10px',
+    marginRight: '10px',
+    verticalAlign: 'middle',
   },
   deleteButton: {
     marginTop: '10px',
