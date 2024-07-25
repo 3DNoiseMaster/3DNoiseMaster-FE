@@ -131,7 +131,7 @@ const NoiseRemPage: React.FC = () => {
         )}
       </div>
       <div style={styles.rightPane}>
-        <h1>잡음 제거</h1>
+      <h1 style={styles.heading}>Noise Removal</h1>
         <form onSubmit={handleSubmit} style={styles.form}>
           <label style={styles.label}>
             작업 이름:
@@ -155,7 +155,7 @@ const NoiseRemPage: React.FC = () => {
           <button type="button" onClick={toggleWireframe} style={styles.wireframeButton}>
             {isWireframe ? 'Wireframe 비활성화' : 'Wireframe 활성화'}
           </button>
-          <button type="submit" style={styles.submitButton}>작업 생성</button>
+          <button type="submit" style={styles.submitButton}>Submit</button>
         </form>
       </div>
     </div>
@@ -166,6 +166,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   container: {
     display: 'flex',
     height: '100vh',
+    position: 'relative',
   },
   uploadSection: {
     flex: 2,
@@ -185,13 +186,20 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   rightPane: {
     flex: 1,
-    padding: '20px',
+    padding: '30px',
     backgroundColor: '#333',
     color: 'white',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
+  },
+  heading: {
+    padding: '10px 20px',
+    position: 'absolute',
+    top: '20px',
+    textAlign: 'center',
   },
   imagePreview: {
     maxWidth: '100%',
@@ -205,7 +213,9 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   label: {
     width: '100%',
-    marginBottom: '10px',
+    marginBottom: '50px',
+    fontSize: '22px',
+    textAlign: 'left',
   },
   input: {
     width: '100%',
@@ -217,21 +227,26 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   wireframeButton: {
     padding: '10px 20px',
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
+    border: '1px solid #333',
     borderRadius: '5px',
     cursor: 'pointer',
-    marginTop: '10px',
+    fontSize: '14px',
+    fontFamily:'NanumSquare_R'
   },
   submitButton: {
     padding: '10px 20px',
-    backgroundColor: '#007bff',
-    color: 'white',
+    backgroundColor: 'white',
+    color: '#333',
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
-    marginTop: '10px',
+    position: 'absolute',
+    bottom: '50px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    marginBottom: '20px',
+    fontSize: '20px',
+    fontFamily:'NanumSquare_B',
   },
   canvas: {
     width: '100%',

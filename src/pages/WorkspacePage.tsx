@@ -142,23 +142,42 @@ const WorkspacePage: React.FC = () => {
     }
 };
 
-const handleDownloadTask = (taskId: string) => {
+const handleDownloadTask = (taskId: string, taskName: string) => {
   const token = localStorage.getItem('token');
   if (token) {
-      axios.get<DeleteTaskResponse>(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks/download`, {
-        headers: { 'Authorization': `Bearer ${token}` },
-        params: { task_id: taskId }
-      })
-      .then(response => {
-          if (response.data.success) {
-              setTasks(tasks.filter(task => task.task_id !== taskId));
-          } else {
-              console.error('Error downloading task: ', response.data);
-          }
-      })
-      .catch(error => {
-          console.error('Error downloading task:', error);
-      });
+    axios.get(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks/download`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+      params: { task_id: taskId },
+      responseType: 'blob', 
+    })
+    .then(response => {
+      // 파일 다운로드 처리
+      const blob = new Blob([response.data as BlobPart], { type: 'application/x-obj' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+
+      // 파일 이름 설정
+      const contentDisposition = response.headers['content-disposition'];
+      let fileName = `${taskName}_result.obj`;
+
+      if (contentDisposition) {
+        const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
+        if (fileNameMatch && fileNameMatch.length === 2) {
+          fileName = fileNameMatch[1];
+        }
+      }
+
+      link.href = url;
+      link.setAttribute('download', fileName); // 파일 이름 설정
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link); // 링크를 다운로드 후 제거
+    })
+    .catch(error => {
+      console.error('Error downloading task:', error);
+    });
+  } else {
+    console.error('No token found in localStorage');
   }
 };
 
@@ -197,7 +216,10 @@ const handleDownloadTask = (taskId: string) => {
               <li key={task.task_id} className="taskItem">
                 <p>
                   작업 이름 : {task.task_name} &nbsp;&nbsp;
-                  <button onClick={() => handleDeleteTask(task.task_id)} className="deleteButton">삭제</button>
+                  <button onClick={() => handleDeleteTask(task.task_id)} style={styles.deleteButton}>삭제</button>
+                  {task.status === 100 && (
+                    <button onClick={() => handleDownloadTask(task.task_id, task.task_name)} style={styles.downloadButton}>다운로드</button>
+                  )}
                 </p>
                 <p>상태 : {task.status}</p>
                 <p>생성일자 : {new Date(task.date).toLocaleString()}</p>
