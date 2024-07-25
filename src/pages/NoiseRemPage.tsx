@@ -131,7 +131,7 @@ const NoiseRemPage: React.FC = () => {
         )}
       </div>
       <div style={styles.rightPane}>
-        <h1>잡음 제거</h1>
+      <h1 style={styles.heading}>Noise Removal</h1>
         <form onSubmit={handleSubmit} style={styles.form}>
           <label style={styles.label}>
             작업 이름:
@@ -155,7 +155,7 @@ const NoiseRemPage: React.FC = () => {
           <button type="button" onClick={toggleWireframe} style={styles.wireframeButton}>
             {isWireframe ? 'Wireframe 비활성화' : 'Wireframe 활성화'}
           </button>
-          <button type="submit" style={styles.submitButton}>작업 생성</button>
+          <button type="submit" style={styles.submitButton}>Submit</button>
         </form>
       </div>
     </div>
@@ -194,6 +194,12 @@ const styles: { [key: string]: React.CSSProperties } = {
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
+  },
+  heading: {
+    padding: '10px 20px',
+    position: 'absolute',
+    top: '20px',
+    textAlign: 'center',
   },
   imagePreview: {
     maxWidth: '100%',

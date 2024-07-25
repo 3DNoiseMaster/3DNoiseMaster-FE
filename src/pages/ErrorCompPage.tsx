@@ -185,7 +185,7 @@ const ErrorCompPage: React.FC = () => {
         )}
       </div>
       <div style={styles.rightPane}>
-        <h1>Error rate Comparison</h1>
+        <h1 style={styles.heading}>Error rate Comparison</h1>
         <form onSubmit={handleSubmit} style={styles.form}>
           <label style={styles.label}>
             작업 이름
@@ -249,6 +249,12 @@ const styles: { [key: string]: React.CSSProperties } = {
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
+  },
+  heading: {
+    padding: '10px 20px',
+    position: 'absolute',
+    top: '20px',
+    textAlign: 'center',
   },
   imagePreview: {
     maxWidth: '100%',
