@@ -157,7 +157,7 @@ const NoiseGenPage: React.FC = () => {
                 onClick={() => setNoiseType('Gaussian')}
                 style={{
                   ...styles.noiseTypeButton,
-                  backgroundColor: noiseType === 'Gaussian' ? '#28a745' : 'white',
+                  backgroundColor: noiseType === 'Gaussian' ? '#007bff' : 'white',
                   color: noiseType === 'Gaussian' ? 'white' : '#333',
                 }}
               >
@@ -168,7 +168,7 @@ const NoiseGenPage: React.FC = () => {
                 onClick={() => setNoiseType('Impulsive')}
                 style={{
                   ...styles.noiseTypeButton,
-                  backgroundColor: noiseType === 'Impulsive' ? '#28a745' : 'white',
+                  backgroundColor: noiseType === 'Impulsive' ? '#007bff' : 'white',
                   color: noiseType === 'Impulsive' ? 'white' : '#333',
                 }}
               >
@@ -262,7 +262,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   label: {
     width: '100%',
     marginBottom: '50px',
-    fontSize: '22px'
+    fontSize: '22px',
+    textAlign: 'left',
   },
   input: {
     width: '100%',
@@ -274,13 +275,14 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   noiseTypeLabel: {
     display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: 'column', // Changed to column
+    alignItems: 'flex-start', // Align items to the start (left side)
   },
   noiseTypeContainer: {
     display: 'flex',
     justifyContent: 'space-around',
     marginLeft: '10px',
+    marginTop: '20px',
   },
   noiseTypeButton: {
     padding: '10px 20px',

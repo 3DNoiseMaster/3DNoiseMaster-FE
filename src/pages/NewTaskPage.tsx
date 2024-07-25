@@ -49,7 +49,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     position: 'absolute',
     top: '20px',
     left: '20px',
-    width: '55px', 
+    width: '50px', 
     height: '50px', 
     cursor: 'pointer',
   },
