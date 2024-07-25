@@ -1,0 +1,135 @@
+.workspace-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+  
+    .workspace-page .header {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+      flex-basis: auto;
+      padding: 15px;
+      width: 100%;
+      height: 50px;
+      background-color: #ffffff;
+      box-sizing: border-box;
+    }
+        .header .homeButton {
+          padding: 10px 20px;
+          background-color: #007bff;
+          color: white;
+          text-decoration: none;
+          border-radius: 5px;
+        }
+        .header .buttonGroup {
+          display: flex;
+          gap: 10px;
+        }
+        
+        .header .logoutButton {
+          padding: 10px 20px;
+          background-color: #dc3545;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+  
+    .workspace-page .userInfo {
+      background-color: #454545;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+      padding: 30px;
+    }
+  
+        .userInfo .newProjectButton {
+          padding: 10px 20px;
+          background-color: #000000;
+          color: rgb(255, 255, 255);
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          margin-left: 10px;
+        }
+        
+        .userInfo .taskSummary {
+          margin-top: 20px;
+          width: 80%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          margin: 50px;
+        }
+
+            .taskSummary .countingBox {
+              font-weight: bolder;
+              font-size: 24px;
+              text-align: center;
+              background-color: #ffffff;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 140px;
+              height: 120px;
+            }
+    
+    .workspace-page .taskList {
+      margin-top: 20px;
+      text-align: left;
+      display: inline-block;
+    }
+    
+        .taskList .taskItem {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          margin-bottom: 10px;
+        }
+        
+        .taskList .deleteButton {
+          margin-top: 10px;
+          padding: 5px 10px;
+          background-color: #dc3545;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+        
+        .taskList .modalOverlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: rgba(0, 0, 0, 0.5);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 1000;
+        }
+        
+        .taskList .modalContent {
+          background-color: white;
+          padding: 20px;
+          border-radius: 10px;
+          text-align: center;
+        }
+        
+        .taskList .closeButton {
+          padding: 10px 20px;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          margin-top: 20px;
+        }
+  
