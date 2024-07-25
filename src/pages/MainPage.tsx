@@ -4,7 +4,7 @@ import Footer from '../components/Footer';
 import GlobalStyles from '../styles/GlobalStyles';
 import ImageSlider from '../components/ImageSlider';
 
-import bunnyImage from '../assets/icon/bunny_black.png';
+import bunnyImage from '../assets/icon/BlockBunny.png';
 import noiseImage from '../assets/image/noise.png';
 import denoisingImage from '../assets/image/denoising.png';
 import originalImage from '../assets/image/original.png';
