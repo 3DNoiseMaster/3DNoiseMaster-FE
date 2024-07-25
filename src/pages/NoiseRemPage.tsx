@@ -131,10 +131,10 @@ const NoiseRemPage: React.FC = () => {
         )}
       </div>
       <div style={styles.rightPane}>
-      <h1 style={styles.heading}>Noise Removal</h1>
+      <h1 style={styles.heading}>Noise Remove</h1>
         <form onSubmit={handleSubmit} style={styles.form}>
           <label style={styles.label}>
-            작업 이름:
+            작업 이름
             <input
               type="text"
               value={taskName}
@@ -144,7 +144,18 @@ const NoiseRemPage: React.FC = () => {
             />
           </label>
           <label style={styles.label}>
-            파일 업로드:
+            파일 업로드 &nbsp;&nbsp;
+            <button
+              type="button"
+              onClick={toggleWireframe}
+              style={{
+                ...styles.wireframeButton,
+                backgroundColor: isWireframe ? '#007bff' : 'white',
+                color: isWireframe ? 'white' : 'black',
+              }}
+            >
+            {isWireframe ? 'Wireframe 비활성화' : 'Wireframe 활성화'}
+            </button>
             <input
               type="file"
               onChange={handleFileChange}
@@ -152,9 +163,6 @@ const NoiseRemPage: React.FC = () => {
               style={styles.input}
             />
           </label>
-          <button type="button" onClick={toggleWireframe} style={styles.wireframeButton}>
-            {isWireframe ? 'Wireframe 비활성화' : 'Wireframe 활성화'}
-          </button>
           <button type="submit" style={styles.submitButton}>Submit</button>
         </form>
       </div>
@@ -221,9 +229,9 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: '100%',
     padding: '8px',
     margin: '8px',
-    marginBottom: '10px',
+    marginTop: '20px',
     fontSize: '16px',
-    maxWidth:'500px',
+    maxWidth: '500px',
   },
   wireframeButton: {
     padding: '10px 20px',

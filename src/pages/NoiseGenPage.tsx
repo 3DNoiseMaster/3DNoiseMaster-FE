@@ -193,16 +193,16 @@ const NoiseGenPage: React.FC = () => {
           <label style={styles.label}>
             파일 업로드 &nbsp;&nbsp;
             <button
-            type="button"
-            onClick={toggleWireframe}
-            style={{
-              ...styles.wireframeButton,
-              backgroundColor: isWireframe ? '#007bff' : 'white',
-              color: isWireframe ? 'white' : 'black',
-            }}
-          >
+              type="button"
+              onClick={toggleWireframe}
+              style={{
+                ...styles.wireframeButton,
+                backgroundColor: isWireframe ? '#007bff' : 'white',
+                color: isWireframe ? 'white' : 'black',
+              }}
+            >
             {isWireframe ? 'Wireframe 비활성화' : 'Wireframe 활성화'}
-          </button>
+            </button>
             <input
               type="file"
               onChange={handleFileChange}
@@ -275,8 +275,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   noiseTypeLabel: {
     display: 'flex',
-    flexDirection: 'column', // Changed to column
-    alignItems: 'flex-start', // Align items to the start (left side)
+    flexDirection: 'column',
+    alignItems: 'flex-start',
   },
   noiseTypeContainer: {
     display: 'flex',

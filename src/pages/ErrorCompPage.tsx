@@ -36,7 +36,8 @@ const ErrorCompPage: React.FC = () => {
   const [fileURL2, setFileURL2] = useState<string | null>(null);
   const [filePreview1, setFilePreview1] = useState<string | ArrayBuffer | null>(null);
   const [filePreview2, setFilePreview2] = useState<string | ArrayBuffer | null>(null);
-  const [isWireframe, setIsWireframe] = useState<boolean>(false);
+  const [isWireframe1, setIsWireframe1] = useState<boolean>(false);
+  const [isWireframe2, setIsWireframe2] = useState<boolean>(false);
 
   useEffect(() => {
     return () => {
@@ -95,7 +96,7 @@ const ErrorCompPage: React.FC = () => {
         return;
       }
 
-      setFile2(selectedFile);  // 여기를 수정했습니다.
+      setFile2(selectedFile);
       const url = URL.createObjectURL(selectedFile);
       setFileURL2(url);
       setFilePreview2(null);
@@ -145,8 +146,12 @@ const ErrorCompPage: React.FC = () => {
     }
   };
 
-  const toggleWireframe = () => {
-    setIsWireframe(!isWireframe);
+  const toggleWireframe1 = () => {
+    setIsWireframe1(!isWireframe1);
+  };
+
+  const toggleWireframe2 = () => {
+    setIsWireframe2(!isWireframe2);
   };
 
   return (
@@ -158,7 +163,7 @@ const ErrorCompPage: React.FC = () => {
             <ambientLight />
             <pointLight position={[100, 100, 100]} />
             <Suspense fallback={<Loader />}>
-              <ObjModel url={fileURL1} wireframe={isWireframe} />
+              <ObjModel url={fileURL1} wireframe={isWireframe1} />
             </Suspense>
             <OrbitControls />
           </Canvas>
@@ -174,7 +179,7 @@ const ErrorCompPage: React.FC = () => {
             <ambientLight />
             <pointLight position={[100, 100, 100]} />
             <Suspense fallback={<Loader />}>
-              <ObjModel url={fileURL2} wireframe={isWireframe} />
+              <ObjModel url={fileURL2} wireframe={isWireframe2} />
             </Suspense>
             <OrbitControls />
           </Canvas>
@@ -198,7 +203,18 @@ const ErrorCompPage: React.FC = () => {
             />
           </label>
           <label style={styles.label}>
-            첫 번째 파일 업로드
+            첫 번째 파일 업로드 &nbsp;&nbsp;
+            <button
+              type="button"
+              onClick={toggleWireframe1}
+              style={{
+                ...styles.wireframeButton,
+                backgroundColor: isWireframe1 ? '#007bff' : 'white',
+                color: isWireframe1 ? 'white' : 'black',
+              }}
+            >
+            {isWireframe1 ? 'Wireframe 비활성화' : 'Wireframe 활성화'}
+            </button>
             <input
               type="file"
               onChange={handleFile1Change}
@@ -207,7 +223,18 @@ const ErrorCompPage: React.FC = () => {
             />
           </label>
           <label style={styles.label}>
-            두 번째 파일 업로드
+            두 번째 파일 업로드 &nbsp;&nbsp;
+            <button
+              type="button"
+              onClick={toggleWireframe2}
+              style={{
+                ...styles.wireframeButton,
+                backgroundColor: isWireframe2 ? '#007bff' : 'white',
+                color: isWireframe2 ? 'white' : 'black',
+              }}
+            >
+            {isWireframe2 ? 'Wireframe 비활성화' : 'Wireframe 활성화'}
+            </button>
             <input
               type="file"
               onChange={handleFile2Change}
@@ -215,9 +242,6 @@ const ErrorCompPage: React.FC = () => {
               style={styles.input}
             />
           </label>
-          <button type="button" onClick={toggleWireframe} style={styles.wireframeButton}>
-            {isWireframe ? 'Wireframe 비활성화' : 'Wireframe 활성화'}
-          </button>
           <button type="submit" style={styles.submitButton}>Submit</button>
         </form>
       </div>
