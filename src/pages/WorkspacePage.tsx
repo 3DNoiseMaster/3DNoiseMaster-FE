@@ -229,11 +229,17 @@ const menu = (
           <ul>
             {tasks.map(task => (
               <div key={task.task_id} className="taskCard">
+                <p className="taskDivisionButton">
+                  {task.task_division === 'noise_gen' ? '잡음 생성' : 
+                  task.task_division === 'noise_rem' ? '잡음 제거' : 
+                  task.task_division === 'error_comp' ? '오차율 비교' : 
+                  task.task_division}
+                </p>
                 <h4>{task.task_name}</h4>
                 <p>작업 상태 <progress value={task.status} max="100" className="progressBar"></progress> {task.status}%</p>
                 <p>생성 일자 :  {new Date(task.date).toLocaleString()}</p>
-                {task.status === 100 && (
-                  <p>오차율: {task.error_rate}%</p>
+                {task.status === 100 && task.task_division == 'error_comp' &&(
+                  <p>오차 거리 : {task.error_rate}</p>
                 )}
                 <div className="taskButtons">
                   <button onClick={() => handleDeleteTask(task.task_id)} className="deleteButton">삭제</button>
@@ -248,7 +254,7 @@ const menu = (
             ))}
           </ul>
         ) : (
-          <p>작업물이 없습니다.</p>
+          <p className="noTasksMessage">작업물이 없습니다.</p>
         )}
       </div>
       {isModalOpen && (

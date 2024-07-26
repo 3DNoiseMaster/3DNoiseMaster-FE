@@ -68,68 +68,165 @@
           margin: 50px;
         }
 
-            .taskSummary .countingBox {
-              font-weight: bolder;
-              font-size: 24px;
-              text-align: center;
-              background-color: #ffffff;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              width: 140px;
-              height: 120px;
-            }
-    
-    .workspace-page .taskList {
-      margin-top: 20px;
-      text-align: left;
-      display: inline-block;
-    }
-    
-        .taskList .taskItem {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          margin-bottom: 10px;
-        }
-        
-        .taskList .deleteButton {
-          margin-top: 10px;
-          padding: 5px 10px;
-          background-color: #dc3545;
-          color: white;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-        }
-        
-        .taskList .modalOverlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-color: rgba(0, 0, 0, 0.5);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          z-index: 1000;
-        }
-        
-        .taskList .modalContent {
-          background-color: white;
-          padding: 20px;
-          border-radius: 10px;
-          text-align: center;
-        }
-        
-        .taskList .closeButton {
-          padding: 10px 20px;
-          background-color: #007bff;
-          color: white;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-          margin-top: 20px;
-        }
-  
+.card {
+  background-color: white;
+  color: #333;
+  padding: 40px;
+  border-radius: 10px;
+  text-align: center;
+  width: 100px;
+}
+
+.cardTitle {
+  font-family: 'NanumSquare_EB';
+  font-size: 26px;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.cardNumber {
+  font-family: 'NanumSquare_B';
+  font-size: 24px;
+}
+
+.taskContainer {
+  text-align: left;
+  padding: 20px 500px;
+  background-color: #dddddd;
+}
+
+.taskList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.taskCard {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.taskDivisionButton {
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 5px 0;
+  border: 1px solid #333;
+  border-radius: 5px;
+  background-color: #333;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.taskDivisionButton:hover {
+  background-color: #0056b3;
+}
+
+.progressBar {
+  width: 60%;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.taskButtons {
+  display: flex;
+  justify-content: right;
+  margin: 10px;
+}
+
+.deleteButton {
+  padding: 7px 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 15px;
+  font-size: 14px;
+  font-family: 'NanumSquare_L';
+}
+
+.downloadButton {
+  padding: 7px 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 15px;
+  font-size: 14px;
+  font-family: 'NanumSquare_L';
+}
+
+.resultButton {
+  padding: 7px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: 'NanumSquare_L';
+}
+
+.noTasksMessage {
+  text-align: center;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 40px 80px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.closeButton {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-family: 'NanumSquare_L';
+  font-size: 16px;
+}
+
+.loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loadingContent {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+  font-family: 'NanumSquare_B';
+  font-size: '18px',
+}

@@ -5,7 +5,7 @@ import GlobalStyles from '../styles/GlobalStyles';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { OrbitControls, useProgress, Html } from '@react-three/drei';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
-import { Group, MeshNormalMaterial } from 'three';
+import { Group, Box3, Vector3, MeshNormalMaterial } from 'three';
 import backIcon from '../assets/icon/back.png';
 
 const Loader = () => {
@@ -15,15 +15,25 @@ const Loader = () => {
 
 const ObjModel = ({ url, wireframe }: { url: string, wireframe: boolean }) => {
   const obj = useLoader(OBJLoader, url) as Group;
-  obj.scale.set(0.2, 0.2, 0.2);
 
-  obj.traverse((child) => {
-    if ((child as any).isMesh) {
-      (child as any).material = new MeshNormalMaterial({
-        wireframe: wireframe,
-      });
-    }
-  });
+  useEffect(() => {
+    const box = new Box3().setFromObject(obj);
+    const size = box.getSize(new Vector3());
+
+    const maxDimension = Math.max(size.x, size.y, size.z);
+    const desiredSize = 2.8;
+    const scaleFactor = desiredSize / maxDimension;
+
+    obj.scale.set(scaleFactor, scaleFactor, scaleFactor);
+
+    obj.traverse((child) => {
+      if ((child as any).isMesh) {
+        (child as any).material = new MeshNormalMaterial({
+          wireframe: wireframe,
+        });
+      }
+    });
+  }, [obj, wireframe]);
 
   return <primitive object={obj} />;
 };
