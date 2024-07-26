@@ -24,6 +24,9 @@ interface Task {
   task_name: string;
   status: number;
   date: string;
+
+  error_rate: number; 
+  task_division: string;
 }
 
 interface TaskCount {
@@ -225,19 +228,23 @@ const menu = (
         {tasks.length > 0 ? (
           <ul>
             {tasks.map(task => (
-              <li key={task.task_id} className="taskItem">
-                <p>
-                  작업 이름 : {task.task_name} &nbsp;&nbsp;
+              <div key={task.task_id} className="taskCard">
+                <h4>{task.task_name}</h4>
+                <p>작업 상태 <progress value={task.status} max="100" className="progressBar"></progress> {task.status}%</p>
+                <p>생성 일자 :  {new Date(task.date).toLocaleString()}</p>
+                {task.status === 100 && (
+                  <p>오차율: {task.error_rate}%</p>
+                )}
+                <div className="taskButtons">
                   <button onClick={() => handleDeleteTask(task.task_id)} className="deleteButton">삭제</button>
-                </p>
-                <p>상태 : {task.status}
-                  {task.status === 100 ?
-                    " / 오차율 : " + {} : null
-                  }
-                </p>
-                <p>오차율 : {} </p>
-                <p>생성일자 : {new Date(task.date).toLocaleString()}</p>
-              </li>
+                  {task.status === 100 && task.task_division !== 'error_comp' && (
+                    <>
+                      <button onClick={() => handleDownloadTask(task.task_id, task.task_name)} className="downloadButton">다운로드</button>
+                      <button onClick={() => handleTaskResult(task.task_id, task.task_name)} className="resultButton">작업 결과</button>
+                    </>
+                  )}
+                </div>
+              </div>
             ))}
           </ul>
         ) : (
