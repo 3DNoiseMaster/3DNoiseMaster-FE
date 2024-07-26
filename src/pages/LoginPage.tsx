@@ -4,6 +4,7 @@ import axios from 'axios';
 import useDynamicCss from '../hooks/UseDynamicCss';
 import EyeOpenImage from '../assets/icon/eye_open.png';
 import EyeCloseImage from '../assets/icon/eye_close.png';
+import '../styles/LoginPage.css'
 
 interface LoginResponse {
   message: string;
