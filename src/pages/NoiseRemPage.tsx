@@ -6,6 +6,7 @@ import { Canvas, useLoader } from '@react-three/fiber';
 import { OrbitControls, useProgress, Html } from '@react-three/drei';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { Group, MeshNormalMaterial } from 'three';
+import backIcon from '../assets/icon/back.png';
 
 const Loader = () => {
   const { progress } = useProgress();
@@ -34,6 +35,8 @@ const NoiseRemPage: React.FC = () => {
   const [filePreview, setFilePreview] = useState<string | ArrayBuffer | null>(null);
   const [fileURL, setFileURL] = useState<string | null>(null);
   const [isWireframe, setIsWireframe] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isCompleted, setIsCompleted] = useState<boolean>(false);
 
   useEffect(() => {
     return () => {
@@ -86,6 +89,7 @@ const NoiseRemPage: React.FC = () => {
     formData.append('file', file);
 
     try {
+      setIsLoading(true);
       console.log('Sending form data:', {
         task_name: taskName,
         file: file.name
@@ -99,11 +103,16 @@ const NoiseRemPage: React.FC = () => {
       });
 
       console.log('Server response:', response);
-      alert('작업이 성공적으로 생성되었습니다.');
-      navigate('/api/display/workspace');
+      setIsCompleted(true);
+      setTimeout(() => {
+        setIsCompleted(false);
+        navigate('/api/display/workspace');
+      }, 2000);
     } catch (error) {
       console.error('Error creating task:', error);
       alert('작업 생성 중 오류가 발생했습니다.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -131,10 +140,11 @@ const NoiseRemPage: React.FC = () => {
         )}
       </div>
       <div style={styles.rightPane}>
-      <h1 style={styles.heading}>Noise Removal</h1>
+      <img src={backIcon} alt="작업 공간" style={styles.backButton} onClick={() => navigate('/api/display/workspace/newTask')} />
+      <h1 style={styles.heading}>Noise Remove</h1>
         <form onSubmit={handleSubmit} style={styles.form}>
           <label style={styles.label}>
-            작업 이름:
+            작업 이름
             <input
               type="text"
               value={taskName}
@@ -144,7 +154,18 @@ const NoiseRemPage: React.FC = () => {
             />
           </label>
           <label style={styles.label}>
-            파일 업로드:
+            파일 업로드 &nbsp;&nbsp;
+            <button
+              type="button"
+              onClick={toggleWireframe}
+              style={{
+                ...styles.wireframeButton,
+                backgroundColor: isWireframe ? '#007bff' : 'white',
+                color: isWireframe ? 'white' : 'black',
+              }}
+            >
+            {isWireframe ? 'Wireframe 비활성화' : 'Wireframe 활성화'}
+            </button>
             <input
               type="file"
               onChange={handleFileChange}
@@ -152,12 +173,19 @@ const NoiseRemPage: React.FC = () => {
               style={styles.input}
             />
           </label>
-          <button type="button" onClick={toggleWireframe} style={styles.wireframeButton}>
-            {isWireframe ? 'Wireframe 비활성화' : 'Wireframe 활성화'}
-          </button>
           <button type="submit" style={styles.submitButton}>Submit</button>
         </form>
       </div>
+      {isLoading && (
+        <div style={styles.loadingOverlay}>
+          <div style={styles.loadingPopup}>로딩중...</div>
+        </div>
+      )}
+      {isCompleted && (
+        <div style={styles.loadingOverlay}>
+          <div style={styles.loadingPopup}>작업이 성공적으로 생성되었습니다.</div>
+        </div>
+      )}
     </div>
   );
 };
@@ -195,8 +223,16 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: 'center',
     position: 'relative',
   },
+  backButton: {
+    position: 'absolute',
+    top: '20px',
+    left: '30px',
+    width: '50px', 
+    height: '50px',
+    cursor: 'pointer',
+  },
   heading: {
-    padding: '10px 20px',
+    padding: '30px 20px',
     position: 'absolute',
     top: '20px',
     textAlign: 'center',
@@ -221,9 +257,9 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: '100%',
     padding: '8px',
     margin: '8px',
-    marginBottom: '10px',
+    marginTop: '20px',
     fontSize: '16px',
-    maxWidth:'500px',
+    maxWidth: '500px',
   },
   wireframeButton: {
     padding: '10px 20px',
@@ -251,6 +287,25 @@ const styles: { [key: string]: React.CSSProperties } = {
   canvas: {
     width: '100%',
     height: '100%',
+  },
+  loadingOverlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1000,
+  },
+  loadingPopup: {
+    backgroundColor: 'white',
+    padding: '20px',
+    borderRadius: '5px',
+    fontSize: '18px',
+    fontFamily: 'NanumSquare_B',
   },
 };
 
