@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import GlobalStyles from '../styles/GlobalStyles';
+import homeIcon from '../assets/icon/BlackHome.png';
+import '../styles/WorkspacePage.css';
 
 interface LoginStatusResponse {
   success: boolean;
@@ -36,6 +38,7 @@ const WorkspacePage: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [taskCount, setTaskCount] = useState<TaskCount | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -92,7 +95,7 @@ const WorkspacePage: React.FC = () => {
           if (response.data.success) {
             setTaskCount(response.data.data.count);
           } else {
-            console.error('Error fetching task count: ', response.data);
+            console.error('Error fetching task count:', response.data);
           }
         })
         .catch(error => {
@@ -145,16 +148,18 @@ const WorkspacePage: React.FC = () => {
 const handleDownloadTask = (taskId: string, taskName: string) => {
   const token = localStorage.getItem('token');
   if (token) {
+    setIsLoading(true);
     axios.get(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks/download`, {
       headers: { 'Authorization': `Bearer ${token}` },
       params: { task_id: taskId },
       responseType: 'blob', 
     })
     .then(response => {
+      setIsLoading(false);
       const blob = new Blob([response.data as BlobPart], { type: 'application/x-obj' });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
-
+      
       const contentDisposition = response.headers['content-disposition'];
       let fileName = `${taskName}_result.obj`;
 
@@ -172,6 +177,7 @@ const handleDownloadTask = (taskId: string, taskName: string) => {
       document.body.removeChild(link);
     })
     .catch(error => {
+      setIsLoading(false);
       console.error('Error downloading task:', error);
     });
   } else {
@@ -179,177 +185,111 @@ const handleDownloadTask = (taskId: string, taskName: string) => {
   }
 };
 
+const handleTaskResult = (taskId: string, taskName: string) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+      setIsLoading(true); 
+      axios.get(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks/download`, {
+          headers: { 'Authorization': `Bearer ${token}` },
+          params: { task_id: taskId },
+          responseType: 'blob',
+      })
+      .then(response => {
+          setIsLoading(false);
+          const blob = new Blob([response.data as BlobPart], { type: 'application/x-obj' });
+          const url = window.URL.createObjectURL(blob);
+          navigate('/api/display/workspace/taskResult', { state: { fileURL: url, taskName } });
+      })
+      .catch(error => {
+          setIsLoading(false);
+          console.error('Error downloading task:', error);
+      });
+  } else {
+      console.error('No token found in localStorage');
+  }
+};
+
   return (
-    <div style={styles.container}>
+    <div className="container">
       <GlobalStyles />
-      <div style={styles.header}>
-        <Link to="/api/display/main" style={styles.homeButton}>홈</Link>
-        <div style={styles.buttonGroup}>
-          <button onClick={handleLogout} style={styles.logoutButton}>로그아웃</button>
+      <div className="header">
+      <div className="headerLeft">
+        <img src={homeIcon} alt="홈" className="homeButton" onClick={() => navigate('/api/display/main')} />
+        {user ? (
+          <div className="userInfo">
+            <h2>{user.user_name} Workspace</h2>&nbsp;&nbsp;
+            <button onClick={handleNewProject} className="newProjectButton">+ &nbsp;New Project</button>
+          </div>
+        ) : (
+          <p>로딩 중...</p>
+        )}
+        </div>
+        <div className="buttonGroup">
+          <button onClick={handleLogout} className="logoutButton">Logout</button>
         </div>
       </div>
-      {user ? (
-        <div style={styles.userInfo}>
-          <h2>{user.user_name} Workspace</h2>
-          <button onClick={handleNewProject} style={styles.newProjectButton}>New Project</button>
-        </div>
-      ) : (
-        <p>로딩 중...</p>
-      )}
       {taskCount && (
-        <div style={styles.taskSummary}>
-          <p>totalCount : {taskCount.totalCount}</p>
-          <p>beforeCount : {taskCount.beforeCount}</p>
-          <p>runningCount : {taskCount.runningCount}</p>
-          <p>doneCount : {taskCount.doneCount}</p>
+        <div className="cardContainer">
+          <div className="card">
+            <div className="cardTitle">Total</div>
+            <div className="cardNumber">{taskCount.totalCount}</div>
+          </div>
+          <div className="card">
+            <div className="cardTitle">Before</div>
+            <div className="cardNumber">{taskCount.beforeCount}</div>
+          </div>
+          <div className="card">
+            <div className="cardTitle">Running</div>
+            <div className="cardNumber">{taskCount.runningCount}</div>
+          </div>
+          <div className="card">
+            <div className="cardTitle">Done</div>
+            <div className="cardNumber">{taskCount.doneCount}</div>
+          </div>
         </div>
       )}
-      <div style={styles.taskList}>
-        <h3>작업 목록</h3>
+      <div className="taskContainer">
         {tasks.length > 0 ? (
-          <ul>
+          <div className="taskList">
             {tasks.map(task => (
-              <li key={task.task_id} style={styles.taskItem}>
-                <p>
-                  작업 이름 : {task.task_name} &nbsp;&nbsp;
-                  <button onClick={() => handleDeleteTask(task.task_id)} style={styles.deleteButton}>삭제</button>
+              <div key={task.task_id} className="taskCard">
+                <h4>{task.task_name}</h4>
+                <p>작업 상태 <progress value={task.status} max="100" className="progressBar"></progress> {task.status}%</p>
+                <p>생성 일자 :  {new Date(task.date).toLocaleString()}</p>
+                <div className="taskButtons">
+                  <button onClick={() => handleDeleteTask(task.task_id)} className="deleteButton">삭제</button>
                   {task.status === 100 && (
-                    <button onClick={() => handleDownloadTask(task.task_id, task.task_name)} style={styles.downloadButton}>다운로드</button>
+                    <>
+                      <button onClick={() => handleDownloadTask(task.task_id, task.task_name)} className="downloadButton">다운로드</button>
+                      <button onClick={() => handleTaskResult(task.task_id, task.task_name)} className="resultButton">작업 결과</button>
+                    </>
                   )}
-                </p>
-                <p>작업 상태 : <progress value={task.status} max="100" style={styles.progressBar}></progress> {task.status} %</p>
-                <p>생성 일자 : {new Date(task.date).toLocaleString()}</p>
-              </li>
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
         ) : (
           <p>작업물이 없습니다.</p>
         )}
       </div>
       {isModalOpen && (
-        <div style={styles.modalOverlay}>
-          <div style={styles.modalContent}>
+        <div className="modalOverlay">
+          <div className="modalContent">
             <h2>로그인이 필요합니다</h2>
             <p>작업공간에 접근하려면 로그인을 해주세요.</p>
-            <button onClick={closeModal} style={styles.closeButton}>로그인 페이지로 이동</button>
+            <button onClick={closeModal} className="closeButton">로그인 페이지로 이동</button>
+          </div>
+        </div>
+      )}
+      {isLoading && (
+        <div className="loadingOverlay">
+          <div className="loadingContent">
+            로딩 중...
           </div>
         </div>
       )}
     </div>
   );
-};
-
-const styles: { [key: string]: React.CSSProperties } = {
-  container: {
-    textAlign: 'center',
-    padding: '20px',
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '20px',
-  },
-  buttonGroup: {
-    display: 'flex',
-    gap: '10px',
-  },
-  homeButton: {
-    padding: '10px 20px',
-    backgroundColor: '#007bff',
-    color: 'white',
-    textDecoration: 'none',
-    borderRadius: '5px',
-  },
-  logoutButton: {
-    padding: '10px 20px',
-    backgroundColor: '#dc3545',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-  },
-  userInfo: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: '20px',
-  },
-  newProjectButton: {
-    padding: '10px 20px',
-    backgroundColor: '#6c757d',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    marginLeft: '10px',
-  },
-  taskSummary: {
-    marginTop: '20px',
-  },
-  taskList: {
-    marginTop: '20px',
-    textAlign: 'left',
-    display: 'inline-block',
-  },
-  taskItem: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    marginBottom: '10px',
-  },
-  progressBar: {
-    width: '200px',
-    marginLeft: '10px',
-    marginRight: '10px',
-    verticalAlign: 'middle',
-  },
-  deleteButton: {
-    marginTop: '10px',
-    marginRight: '10px',
-    padding: '5px 10px',
-    backgroundColor: '#dc3545',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-  },
-  downloadButton: {
-    marginTop: '10px',
-    padding: '5px 10px',
-    backgroundColor: '#28a745',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-  },
-  modalOverlay: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: '1000',
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: '20px',
-    borderRadius: '10px',
-    textAlign: 'center',
-  },
-  closeButton: {
-    padding: '10px 20px',
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    marginTop: '20px',
-  },
 };
 
 export default WorkspacePage;

@@ -65,10 +65,10 @@ const styles: { [key: string]: React.CSSProperties } = {
   selectionContainer: {
     textAlign: 'center',
     backgroundColor: '#ffffff',
-    padding: '70px',
+    padding: '50px',
     borderRadius: '10px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-    width: '40%',
+    width: '45%',
   },
   heading: {
     fontSize: '28px', 
@@ -78,7 +78,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   cards: {
     display: 'flex',
     justifyContent: 'center',
-    gap: '20px',
+    gap: '30px',
   },
   card: {
     width: '200px',
