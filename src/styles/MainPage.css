@@ -4,7 +4,6 @@
   font-weight: normal;
   font-style: normal;
 }
-
 @font-face {
   font-family: 'CustomFont';
   src: url('../assets/font/AGENCYB.TTF') format('truetype');
@@ -12,8 +11,29 @@
   font-style: normal;
 }
 
+h1 {
+  font-size: 50px;
+  font-weight: bold;
+  line-height: 1.5;
+}
+h5 {
+  font-size: 20px;
+  line-height: 1.0;
+}
+.button-account {
+  font-family: 'AGENCYB', sans-serif;
+  font-weight: bolder;
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 16px;
+  text-decoration: none;
+  background-color: #ffffff;
+  border: none;
+}
 
 .main-page {
+  font-family: 'NanumSquareOTF';
   text-align: center;
   background-color: #222;
   color: #fff;
@@ -47,36 +67,15 @@
           margin: 0 10px;
           line-height: 1;
         }
-        .header .button-login {
-          font-family: 'AGENCYB', sans-serif;
-          font-weight: bolder;
-          color: #000000;
-          text-decoration: none;
-          cursor: pointer;
-          font-size: 16px;
-          text-decoration: none;
-        }
         .header .login-container {
           display: flex;  
           flex-direction: row-reverse;
           gap: 10px;
-          margin: -20px -70px 0px 0px;
         }
             .login-container .user-name {
               color: #000000;
               font-size: 1rem;
               margin: 20px;
-            }
-            .login-container .button-logout {
-              font-family: 'AGENCYB', sans-serif;
-              font-weight: bolder;
-              color: #000000;
-              text-decoration: none;
-              cursor: pointer;
-              font-size: 16px;
-              text-decoration: none;  
-              background-color: #ffffff;
-              border: none;
             }
 
     .main-page .page-container-1 {
@@ -87,25 +86,20 @@
       flex-basis: auto;
       display: flex;
       text-align: left;
+      position: relative;
     }
-
         .page-container-1 .image-slider-container {
           width: 50%;
-          height: 600px; /* 원하는 높이로 조정하세요 */
+          height: 600px;
           position: absolute;
           right: 0px;
         }
-
         .page-container-1 .heading {
-          font-size: 50px;
-          font-weight: bold;
           color: #fff;
-          line-height: 1.5;
           position: absolute;
           top: 120px;
           left: 50px;
         }
-
         .page-container-1 .subheading {
           font-size: 20px;
           color: #ccc;
@@ -115,7 +109,6 @@
           top: 300px;
           left: 50px;
         }
-
         .page-container-1 .image-container {
         display: flex;
         justify-content: center;
@@ -124,23 +117,86 @@
         width: 100%;
         background-color: #333;
         }
+        .page-container-1 .button-workSpace {
+          margin-top: 20px;
+          padding: 10px 20px; 
+          background-color: #2885a7;
+          color: white;
+          text-decoration: none;
+          border-radius: 5px;
+          position: absolute;
+          bottom: 70px;
+          left: 70px;
+        }
+
+    .main-page .page-container-2 {
+      width: auto;
+      height: 600px;
+      background-color: #ffffff;
+      flex: 1;
+      flex-basis: auto;
+      display: flex;
+      text-align: left;
+      position: relative;
+    }
+        .page-container-2 .heading {
+          color: #000000;
+          line-height: 1.5;
+          margin-top: 20px;
+          position: absolute;
+          top: 50px;
+          left: 100px;
+        }
+        .page-container-2 .subheading {
+          font-size: 20px;
+          color: #000000;
+          line-height: 1.5;
+          margin-top: 20px;
+          position: absolute;
+          bottom: 50px;
+          left: 100px;
+        }
+        .page-container-2 .image {
+          height: auto;
+          width: 50%;
+          position: absolute;
+          bottom: 50px;
+          right: 100px;
+        }
+
+    .main-page .page-container-3 {
+      width: auto;
+      height: 700px;
+      background-color: #e6e6e6;
+      flex: 1;
+      flex-basis: auto;
+      display: flex;
+      text-align: right;
+      position: relative;
+    }
+        .page-container-3 .heading {
+          color: #000000;
+          line-height: 1.5;
+          margin-top: 20px;
+          position: absolute;
+          top: 50px;
+          right: 100px;
+        }
+        .page-container-3 .subheading {
+          font-size: 20px;
+          color: #000000;
+          line-height: 1.5;
+          margin-top: 20px;
+          position: absolute;
+          bottom: 50px;
+          right: 100px;
+        }
+
 
 
 /*아래는 추가 및 수정 중*/
 
-.work-space {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 10px 20px;   
-  background-color: #2885a7;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-  position: absolute;
-  bottom: 70px;
-  left: 70px;
-}
+
 
 .image-section {
   text-align: center;

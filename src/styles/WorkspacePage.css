@@ -1,210 +1,135 @@
-.container {
-  text-align: center;
-  background-color: #dddddd;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+.workspace-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+  
+    .workspace-page .header {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+      flex-basis: auto;
+      padding: 15px;
+      width: 100%;
+      height: 50px;
+      background-color: #ffffff;
+      box-sizing: border-box;
+    }
+        .header .title {
+          font-weight: bolder;
+          font-size: 32px;
+          color: #000000;
+        }
+            .title .profile {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            transform: translate(0%, 20%);
+            }
+        .header .button-menu {
+          border: none;
+          transform: translate(0%, 20%);
+        }
+            .button-menu .image-menu {
+              width: 48px;
+              height: 48px;
+            }
+            
+    .workspace-page .userInfo {
+      background-color: #454545;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+      padding: 30px;
+    }
+  
+        .userInfo .newProjectButton {
+          padding: 10px 20px;
+          background-color: #000000;
+          color: rgb(255, 255, 255);
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          margin-left: 10px;
+        }
+        
+        .userInfo .taskSummary {
+          margin-top: 20px;
+          width: 80%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          margin: 50px;
+        }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #ffffff;
-}
-
-.headerLeft {
-  display: flex;
-  align-items: center;
-}
-
-.buttonGroup {
-  display: flex;
-  gap: 10px;
-}
-
-.homeButton {
-  top: 20px;
-  left: 20px;
-  width: 50px;
-  height: 50px;
-  margin: 20px;
-}
-
-.logoutButton {
-  padding: 10px 20px;
-  margin: 30px;
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-family: 'NanumSquare_L';
-  font-size: 16px;
-}
-
-.userInfo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.newProjectButton {
-  padding: 10px 20px;
-  background-color: #6c757d;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-left: 10px;
-  font-family: 'NanumSquare_L';
-  font-size: 16px;
-}
-
-.cardContainer {
-  display: flex;
-  justify-content: space-around;
-  padding: 70px 350px;
-  background-color: #333;
-}
-
-.card {
-  background-color: white;
-  color: #333;
-  padding: 40px;
-  border-radius: 10px;
-  text-align: center;
-  width: 100px;
-}
-
-.cardTitle {
-  font-family: 'NanumSquare_B';
-  font-size: 20px;
-  margin-bottom: 25px;
-}
-
-.cardNumber {
-  font-family: 'NanumSquare_L';
-  font-size: 24px;
-}
-
-.taskContainer {
-  text-align: left;
-  padding: 20px 500px;
-  background-color: #dddddd;
-}
-
-.taskList {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.taskCard {
-  background-color: white;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.progressBar {
-  width: 60%;
-  margin-top: 10px;
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-.taskButtons {
-  display: flex;
-  justify-content: right;
-  margin: 10px;
-}
-
-.deleteButton {
-  padding: 7px 10px;
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 15px;
-  font-size: 14px;
-  font-family: 'NanumSquare_L';
-}
-
-.downloadButton {
-  padding: 7px 10px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 15px;
-  font-size: 14px;
-  font-family: 'NanumSquare_L';
-}
-
-.resultButton {
-  padding: 7px 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  font-family: 'NanumSquare_L';
-}
-
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modalContent {
-  background-color: white;
-  padding: 40px 80px;
-  border-radius: 10px;
-  text-align: center;
-}
-
-.closeButton {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 20px;
-  font-family: 'NanumSquare_L';
-  font-size: 16px;
-}
-
-.loadingOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.loadingContent {
-  background: white;
-  padding: 20px;
-  border-radius: 5px;
-  text-align: center;
-  font-family: 'NanumSquare_B';
-  font-size: '18px',
-}
+            .taskSummary .countingBox {
+              font-weight: bolder;
+              font-size: 24px;
+              text-align: center;
+              background-color: #ffffff;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 140px;
+              height: 120px;
+            }
+    
+    .workspace-page .taskList {
+      margin-top: 20px;
+      text-align: left;
+      display: inline-block;
+    }
+    
+        .taskList .taskItem {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          margin-bottom: 10px;
+        }
+        
+        .taskList .deleteButton {
+          margin-top: 10px;
+          padding: 5px 10px;
+          background-color: #dc3545;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+        
+        .taskList .modalOverlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: rgba(0, 0, 0, 0.5);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 1000;
+        }
+        
+        .taskList .modalContent {
+          background-color: white;
+          padding: 20px;
+          border-radius: 10px;
+          text-align: center;
+        }
+        
+        .taskList .closeButton {
+          padding: 10px 20px;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          margin-top: 20px;
+        }
+  
