@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Menu, Dropdown, Button } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import '../styles/WorkspacePage.css';
+
+import defaultProfile from '../assets/image/default_profile.png'
+import menuicon from '../assets/icon/menu.png'
 
 interface LoginStatusResponse {
   success: boolean;
@@ -162,17 +167,35 @@ const handleDownloadTask = (taskId: string) => {
   }
 };
 
+const menu = (
+  <Menu>
+    <Menu.Item key="1">
+      <Link to="/api/display/main">HOME</Link>
+    </Menu.Item>
+    <Menu.Item key="2">
+      <button onClick={handleLogout}>LOGOUT</button>
+    </Menu.Item>
+  </Menu>
+);
+
   return (
     <div className="workspace-page">
       <div className="header">
         <h2 className='userProfile'>
-          <img></img>
-          {userName}'s WorkSpace
+          <h1 className='title'>
+            <img
+              src={null/*여기에 사용자의 프로필 이미지 삽입*/ || defaultProfile}
+              alt="Profile"
+              className="profile"
+            />
+            &nbsp;{userName}'s WorkSpace
+          </h1>
         </h2>
-        <Link to="/api/display/main" className="homeButton">홈</Link>
-        <div className="buttonGroup">
-          <button onClick={handleLogout} className="logoutButton">로그아웃</button>
-        </div>
+        <Dropdown overlay={menu} trigger={['click']}>
+          <Button className='button-menu'>
+            <img src={menuicon} alt="icon" className='image-menu'/>
+          </Button>
+        </Dropdown>
       </div>
       <div className='userInfo'>
         {taskCount && (
@@ -199,7 +222,12 @@ const handleDownloadTask = (taskId: string) => {
                   작업 이름 : {task.task_name} &nbsp;&nbsp;
                   <button onClick={() => handleDeleteTask(task.task_id)} className="deleteButton">삭제</button>
                 </p>
-                <p>상태 : {task.status}</p>
+                <p>상태 : {task.status}
+                  {task.status === 100 ?
+                    " / 오차율 : " + {} : null
+                  }
+                </p>
+                <p>오차율 : {} </p>
                 <p>생성일자 : {new Date(task.date).toLocaleString()}</p>
               </li>
             ))}
