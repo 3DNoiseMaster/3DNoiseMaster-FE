@@ -19,6 +19,9 @@ interface Task {
   task_name: string;
   status: number;
   date: string;
+
+  error_rate: number; 
+  task_division: string;
 }
 
 interface TaskCount {
@@ -256,9 +259,12 @@ const handleTaskResult = (taskId: string, taskName: string) => {
                 <h4>{task.task_name}</h4>
                 <p>작업 상태 <progress value={task.status} max="100" className="progressBar"></progress> {task.status}%</p>
                 <p>생성 일자 :  {new Date(task.date).toLocaleString()}</p>
+                {task.status === 100 && (
+                  <p>오차율: {task.error_rate}%</p>
+                )}
                 <div className="taskButtons">
                   <button onClick={() => handleDeleteTask(task.task_id)} className="deleteButton">삭제</button>
-                  {task.status === 100 && (
+                  {task.status === 100 && task.task_division !== 'error_comp' && (
                     <>
                       <button onClick={() => handleDownloadTask(task.task_id, task.task_name)} className="downloadButton">다운로드</button>
                       <button onClick={() => handleTaskResult(task.task_id, task.task_name)} className="resultButton">작업 결과</button>

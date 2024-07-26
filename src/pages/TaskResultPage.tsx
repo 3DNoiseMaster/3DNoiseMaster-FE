@@ -75,6 +75,13 @@ const TaskResultPage: React.FC = () => {
     setIsWireframe(!isWireframe);
   };
 
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = fileURL;
+    link.download = `${taskName}_result.obj`;
+    link.click();
+  };
+
   const currentTask = tasks.find((task) => task.task_name === taskName);
 
   return (
@@ -118,6 +125,14 @@ const TaskResultPage: React.FC = () => {
           }}
         >
           {isWireframe ? 'Wireframe 비활성화' : 'Wireframe 활성화'}
+        </button>
+        <button
+          onClick={handleDownload}
+          style={{
+            ...styles.downloadButton,
+          }}
+        >
+          다운로드
         </button>
       </div>
     </div>
@@ -177,6 +192,17 @@ const styles: { [key: string]: React.CSSProperties } = {
     cursor: 'pointer',
     fontSize: '14px',
     fontFamily: 'NanumSquare_R',
+  },
+  downloadButton: {
+    padding: '10px 20px',
+    border: '1px solid #333',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    fontSize: '14px',
+    fontFamily: 'NanumSquare_R',
+    backgroundColor: '#28a745',
+    color: 'white',
+    marginTop: '10px',
   },
   canvas: {
     width: '100%',
