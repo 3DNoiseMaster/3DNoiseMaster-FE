@@ -25,7 +25,7 @@ const Loader = () => {
 const ObjModel = ({ url, wireframe }: { url: string; wireframe: boolean }) => {
   const obj = useLoader(OBJLoader, url) as Group;
 
-  obj.scale.set(0.2, 0.2, 0.2);
+  obj.scale.set(13, 13, 13);
 
   obj.traverse((child) => {
     if ((child as any).isMesh) {
