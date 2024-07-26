@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Menu, Dropdown, Button } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import axios from 'axios';
+import GlobalStyles from '../styles/GlobalStyles';
+import homeIcon from '../assets/icon/BlackHome.png';
 import '../styles/WorkspacePage.css';
 
 import defaultProfile from '../assets/image/default_profile.png'
@@ -42,6 +44,7 @@ const WorkspacePage: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [taskCount, setTaskCount] = useState<TaskCount | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -80,7 +83,8 @@ const WorkspacePage: React.FC = () => {
         .then(response => {
           console.log('Tasks response:', response);
           if (response.data.success) {
-            setTasks(response.data.data.tasks);
+            const sortedTasks = response.data.data.tasks.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+            setTasks(sortedTasks);
           } else {
             console.error('Error fetching tasks: ', response.data);
           }
@@ -97,7 +101,7 @@ const WorkspacePage: React.FC = () => {
           if (response.data.success) {
             setTaskCount(response.data.data.count);
           } else {
-            console.error('Error fetching task count: ', response.data);
+            console.error('Error fetching task count:', response.data);
           }
         })
         .catch(error => {
@@ -115,7 +119,7 @@ const WorkspacePage: React.FC = () => {
   const handleLogout = () => {
     localStorage.removeItem('user_name');
     localStorage.removeItem('token');
-    navigate('/');
+    navigate('/api/display/main');
   };
 
   const closeModal = () => {
@@ -179,7 +183,8 @@ const menu = (
 );
 
   return (
-    <div className="workspace-page">
+    <div className="container">
+      <GlobalStyles />
       <div className="header">
         <h2 className='userProfile'>
           <h1 className='title'>
@@ -207,7 +212,10 @@ const menu = (
           </div>
         )}
         {user ? (
-            <button onClick={handleNewProject} className="newProjectButton">New Project</button>
+          <div className="userInfo">
+            <h2>{user.user_name} Workspace</h2>&nbsp;&nbsp;
+            <button onClick={handleNewProject} className="newProjectButton">+ &nbsp;New Project</button>
+          </div>
         ) : (
           <p>로딩 중...</p>
         )}
@@ -242,6 +250,13 @@ const menu = (
             <h2>로그인이 필요합니다</h2>
             <p>작업공간에 접근하려면 로그인을 해주세요.</p>
             <button onClick={closeModal} className="closeButton">로그인 페이지로 이동</button>
+          </div>
+        </div>
+      )}
+      {isLoading && (
+        <div className="loadingOverlay">
+          <div className="loadingContent">
+            로딩 중...
           </div>
         </div>
       )}

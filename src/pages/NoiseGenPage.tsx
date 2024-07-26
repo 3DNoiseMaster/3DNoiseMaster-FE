@@ -6,6 +6,7 @@ import { Canvas, useLoader } from '@react-three/fiber';
 import { OrbitControls, useProgress, Html } from '@react-three/drei';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { Group, MeshNormalMaterial } from 'three';
+import backIcon from '../assets/icon/back.png';
 
 const Loader = () => {
   const { progress } = useProgress();
@@ -36,6 +37,8 @@ const NoiseGenPage: React.FC = () => {
   const [noiseType, setNoiseType] = useState<string>('Gaussian');
   const [noiseLevel, setNoiseLevel] = useState<number>(0);
   const [isWireframe, setIsWireframe] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isCompleted, setIsCompleted] = useState<boolean>(false);
 
   useEffect(() => {
     return () => {
@@ -90,6 +93,7 @@ const NoiseGenPage: React.FC = () => {
     formData.append('file', file);
 
     try {
+      setIsLoading(true);
       console.log('Sending form data:', {
         task_name: taskName,
         noiseType: noiseType,
@@ -99,17 +103,22 @@ const NoiseGenPage: React.FC = () => {
 
       const response = await axios.post(`${process.env.REACT_APP_API_WORKSPACE_URL}/request/noiseGen`, formData, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
 
       console.log('Server response:', response);
-      alert('작업이 성공적으로 생성되었습니다.');
-      navigate('/api/display/workspace');
+      setIsCompleted(true);
+      setTimeout(() => {
+        setIsCompleted(false);
+        navigate('/api/display/workspace');
+      }, 2000);
     } catch (error) {
       console.error('Error creating task:', error);
       alert('작업 생성 중 오류가 발생했습니다.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -137,6 +146,7 @@ const NoiseGenPage: React.FC = () => {
         )}
       </div>
       <div style={styles.rightPane}>
+      <img src={backIcon} alt="작업 공간" style={styles.backButton} onClick={() => navigate('/api/display/workspace/newTask')} />
         <h1 style={styles.heading}>Noise Generation</h1>
         <form onSubmit={handleSubmit} style={styles.form}>
           <label style={styles.label}>
@@ -157,7 +167,7 @@ const NoiseGenPage: React.FC = () => {
                 onClick={() => setNoiseType('Gaussian')}
                 style={{
                   ...styles.noiseTypeButton,
-                  backgroundColor: noiseType === 'Gaussian' ? '#28a745' : 'white',
+                  backgroundColor: noiseType === 'Gaussian' ? '#007bff' : 'white',
                   color: noiseType === 'Gaussian' ? 'white' : '#333',
                 }}
               >
@@ -168,7 +178,7 @@ const NoiseGenPage: React.FC = () => {
                 onClick={() => setNoiseType('Impulsive')}
                 style={{
                   ...styles.noiseTypeButton,
-                  backgroundColor: noiseType === 'Impulsive' ? '#28a745' : 'white',
+                  backgroundColor: noiseType === 'Impulsive' ? '#007bff' : 'white',
                   color: noiseType === 'Impulsive' ? 'white' : '#333',
                 }}
               >
@@ -193,16 +203,16 @@ const NoiseGenPage: React.FC = () => {
           <label style={styles.label}>
             파일 업로드 &nbsp;&nbsp;
             <button
-            type="button"
-            onClick={toggleWireframe}
-            style={{
-              ...styles.wireframeButton,
-              backgroundColor: isWireframe ? '#007bff' : 'white',
-              color: isWireframe ? 'white' : 'black',
-            }}
-          >
+              type="button"
+              onClick={toggleWireframe}
+              style={{
+                ...styles.wireframeButton,
+                backgroundColor: isWireframe ? '#007bff' : 'white',
+                color: isWireframe ? 'white' : 'black',
+              }}
+            >
             {isWireframe ? 'Wireframe 비활성화' : 'Wireframe 활성화'}
-          </button>
+            </button>
             <input
               type="file"
               onChange={handleFileChange}
@@ -213,6 +223,16 @@ const NoiseGenPage: React.FC = () => {
           <button type="submit" style={styles.submitButton}>Submit</button>
         </form>
       </div>
+      {isLoading && (
+        <div style={styles.loadingOverlay}>
+          <div style={styles.loadingPopup}>로딩중...</div>
+        </div>
+      )}
+      {isCompleted && (
+        <div style={styles.loadingOverlay}>
+          <div style={styles.loadingPopup}>작업이 성공적으로 생성되었습니다.</div>
+        </div>
+      )}
     </div>
   );
 };
@@ -243,8 +263,16 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: 'center',
     position: 'relative',
   },
+  backButton: {
+    position: 'absolute',
+    top: '20px',
+    left: '30px',
+    width: '50px', 
+    height: '50px',
+    cursor: 'pointer',
+  },
   heading: {
-    padding: '10px 20px',
+    padding: '30px 20px',
     position: 'absolute',
     top: '20px',
     textAlign: 'center',
@@ -262,7 +290,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   label: {
     width: '100%',
     marginBottom: '50px',
-    fontSize: '22px'
+    fontSize: '22px',
+    textAlign: 'left',
   },
   input: {
     width: '100%',
@@ -274,13 +303,14 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   noiseTypeLabel: {
     display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
   },
   noiseTypeContainer: {
     display: 'flex',
     justifyContent: 'space-around',
     marginLeft: '10px',
+    marginTop: '20px',
   },
   noiseTypeButton: {
     padding: '10px 20px',
@@ -289,7 +319,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     cursor: 'pointer',
     marginLeft: '10px',
     fontSize: '14px',
-    fontFamily:'NanumSquare_R',
+    fontFamily: 'NanumSquare_R',
   },
   slider: {
     width: '100%',
@@ -308,7 +338,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderRadius: '5px',
     cursor: 'pointer',
     fontSize: '14px',
-    fontFamily:'NanumSquare_R'
+    fontFamily: 'NanumSquare_R'
   },
   submitButton: {
     padding: '10px 20px',
@@ -323,11 +353,30 @@ const styles: { [key: string]: React.CSSProperties } = {
     transform: 'translateX(-50%)',
     marginBottom: '20px',
     fontSize: '20px',
-    fontFamily:'NanumSquare_B',
+    fontFamily: 'NanumSquare_B',
   },
   canvas: {
     width: '100%',
     height: '100%',
+  },
+  loadingOverlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1000,
+  },
+  loadingPopup: {
+    backgroundColor: 'white',
+    padding: '20px',
+    borderRadius: '5px',
+    fontSize: '18px',
+    fontFamily: 'NanumSquare_B',
   },
 };
 

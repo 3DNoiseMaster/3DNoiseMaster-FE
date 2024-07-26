@@ -8,6 +8,7 @@ import NewTaskPage from './pages/NewTaskPage';
 import NoiseGenPage from './pages/NoiseGenPage';
 import NoiseRemPage from './pages/NoiseRemPage';
 import ErrorCompPage from './pages/ErrorCompPage';
+import TaskResultPage from './pages/TaskResultPage';
 
 const App: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ const App: React.FC = () => {
       <Route path="/api/display/workspace/noiseGen" element={<NoiseGenPage />} />
       <Route path="/api/display/workspace/noiseRem" element={<NoiseRemPage />} />
       <Route path="/api/display/workspace/errorComp" element={<ErrorCompPage />} />
+      <Route path="/api/display/workspace/taskResult" element={<TaskResultPage />} />
     </Routes>
   );
 };

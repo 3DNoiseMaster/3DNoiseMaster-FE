@@ -13,7 +13,8 @@ const NewTaskPage: React.FC = () => {
   return (
     <div style={styles.container}>
       <GlobalStyles />
-      <img src={homeIcon} alt="홈" style={styles.homeButton} onClick={() => navigate('/')} />
+      <img src={homeIcon} alt="홈" style={styles.homeButton} onClick={() => navigate('/api/display/main')} />
+      <img src={backIcon} alt="작업 공간" style={styles.backButton} onClick={() => navigate('/api/display/workspace')} />
       <div style={styles.selectionContainer}>
         <h1 style={styles.heading}>어떤 작업을 원하세요?</h1>
         <div style={styles.cards}>
@@ -49,17 +50,25 @@ const styles: { [key: string]: React.CSSProperties } = {
     position: 'absolute',
     top: '20px',
     left: '20px',
-    width: '55px', 
+    width: '50px', 
+    height: '50px', 
+    cursor: 'pointer',
+  },
+  backButton: {
+    position: 'absolute',
+    top: '20px',
+    left: '80px',
+    width: '50px', 
     height: '50px', 
     cursor: 'pointer',
   },
   selectionContainer: {
     textAlign: 'center',
     backgroundColor: '#ffffff',
-    padding: '70px',
+    padding: '50px',
     borderRadius: '10px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-    width: '40%',
+    width: '45%',
   },
   heading: {
     fontSize: '28px', 
@@ -69,7 +78,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   cards: {
     display: 'flex',
     justifyContent: 'center',
-    gap: '20px',
+    gap: '30px',
   },
   card: {
     width: '200px',

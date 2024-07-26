@@ -6,6 +6,7 @@ import { Canvas, useLoader } from '@react-three/fiber';
 import { OrbitControls, useProgress, Html } from '@react-three/drei';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { Group, MeshNormalMaterial } from 'three';
+import backIcon from '../assets/icon/back.png';
 
 const Loader = () => {
   const { progress } = useProgress();
@@ -36,7 +37,10 @@ const ErrorCompPage: React.FC = () => {
   const [fileURL2, setFileURL2] = useState<string | null>(null);
   const [filePreview1, setFilePreview1] = useState<string | ArrayBuffer | null>(null);
   const [filePreview2, setFilePreview2] = useState<string | ArrayBuffer | null>(null);
-  const [isWireframe, setIsWireframe] = useState<boolean>(false);
+  const [isWireframe1, setIsWireframe1] = useState<boolean>(false);
+  const [isWireframe2, setIsWireframe2] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isCompleted, setIsCompleted] = useState<boolean>(false);
 
   useEffect(() => {
     return () => {
@@ -95,7 +99,7 @@ const ErrorCompPage: React.FC = () => {
         return;
       }
 
-      setFile2(selectedFile);  // 여기를 수정했습니다.
+      setFile2(selectedFile);
       const url = URL.createObjectURL(selectedFile);
       setFileURL2(url);
       setFilePreview2(null);
@@ -123,6 +127,7 @@ const ErrorCompPage: React.FC = () => {
     formData.append('file2', file2);
 
     try {
+      setIsLoading(true);
       console.log('Sending form data:', {
         task_name: taskName,
         file1: file1.name,
@@ -137,16 +142,25 @@ const ErrorCompPage: React.FC = () => {
       });
 
       console.log('Server response:', response);
-      alert('작업이 성공적으로 생성되었습니다.');
-      navigate('/api/display/workspace');
+      setIsCompleted(true);
+      setTimeout(() => {
+        setIsCompleted(false);
+        navigate('/api/display/workspace');
+      }, 2000);
     } catch (error) {
       console.error('Error creating task:', error);
       alert('작업 생성 중 오류가 발생했습니다.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const toggleWireframe = () => {
-    setIsWireframe(!isWireframe);
+  const toggleWireframe1 = () => {
+    setIsWireframe1(!isWireframe1);
+  };
+
+  const toggleWireframe2 = () => {
+    setIsWireframe2(!isWireframe2);
   };
 
   return (
@@ -158,7 +172,7 @@ const ErrorCompPage: React.FC = () => {
             <ambientLight />
             <pointLight position={[100, 100, 100]} />
             <Suspense fallback={<Loader />}>
-              <ObjModel url={fileURL1} wireframe={isWireframe} />
+              <ObjModel url={fileURL1} wireframe={isWireframe1} />
             </Suspense>
             <OrbitControls />
           </Canvas>
@@ -174,7 +188,7 @@ const ErrorCompPage: React.FC = () => {
             <ambientLight />
             <pointLight position={[100, 100, 100]} />
             <Suspense fallback={<Loader />}>
-              <ObjModel url={fileURL2} wireframe={isWireframe} />
+              <ObjModel url={fileURL2} wireframe={isWireframe2} />
             </Suspense>
             <OrbitControls />
           </Canvas>
@@ -185,10 +199,11 @@ const ErrorCompPage: React.FC = () => {
         )}
       </div>
       <div style={styles.rightPane}>
-        <h1>오차율 비교</h1>
+      <img src={backIcon} alt="작업 공간" style={styles.backButton} onClick={() => navigate('/api/display/workspace/newTask')} />
+        <h1 style={styles.heading}>Error rate Comparison</h1>
         <form onSubmit={handleSubmit} style={styles.form}>
           <label style={styles.label}>
-            작업 이름:
+            작업 이름
             <input
               type="text"
               value={taskName}
@@ -198,7 +213,18 @@ const ErrorCompPage: React.FC = () => {
             />
           </label>
           <label style={styles.label}>
-            첫 번째 파일 업로드:
+            첫 번째 파일 업로드 &nbsp;&nbsp;
+            <button
+              type="button"
+              onClick={toggleWireframe1}
+              style={{
+                ...styles.wireframeButton,
+                backgroundColor: isWireframe1 ? '#007bff' : 'white',
+                color: isWireframe1 ? 'white' : 'black',
+              }}
+            >
+            {isWireframe1 ? 'Wireframe 비활성화' : 'Wireframe 활성화'}
+            </button>
             <input
               type="file"
               onChange={handleFile1Change}
@@ -207,7 +233,18 @@ const ErrorCompPage: React.FC = () => {
             />
           </label>
           <label style={styles.label}>
-            두 번째 파일 업로드:
+            두 번째 파일 업로드 &nbsp;&nbsp;
+            <button
+              type="button"
+              onClick={toggleWireframe2}
+              style={{
+                ...styles.wireframeButton,
+                backgroundColor: isWireframe2 ? '#007bff' : 'white',
+                color: isWireframe2 ? 'white' : 'black',
+              }}
+            >
+            {isWireframe2 ? 'Wireframe 비활성화' : 'Wireframe 활성화'}
+            </button>
             <input
               type="file"
               onChange={handleFile2Change}
@@ -215,12 +252,19 @@ const ErrorCompPage: React.FC = () => {
               style={styles.input}
             />
           </label>
-          <button type="button" onClick={toggleWireframe} style={styles.wireframeButton}>
-            {isWireframe ? 'Wireframe 비활성화' : 'Wireframe 활성화'}
-          </button>
-          <button type="submit" style={styles.submitButton}>작업 생성</button>
+          <button type="submit" style={styles.submitButton}>Submit</button>
         </form>
       </div>
+      {isLoading && (
+        <div style={styles.loadingOverlay}>
+          <div style={styles.loadingPopup}>로딩중...</div>
+        </div>
+      )}
+      {isCompleted && (
+        <div style={styles.loadingOverlay}>
+          <div style={styles.loadingPopup}>작업이 성공적으로 생성되었습니다.</div>
+        </div>
+      )}
     </div>
   );
 };
@@ -229,6 +273,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   container: {
     display: 'flex',
     height: '100vh',
+    position: 'relative',
   },
   leftPane: {
     flex: 1,
@@ -240,13 +285,28 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   rightPane: {
     flex: 1,
-    padding: '20px',
+    padding: '30px',
     backgroundColor: '#333',
     color: 'white',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
+  },
+  backButton: {
+    position: 'absolute',
+    top: '20px',
+    left: '30px',
+    width: '50px', 
+    height: '50px',
+    cursor: 'pointer',
+  },
+  heading: {
+    padding: '30px 20px',
+    position: 'absolute',
+    top: '20px',
+    textAlign: 'center',
   },
   imagePreview: {
     maxWidth: '100%',
@@ -260,33 +320,59 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   label: {
     width: '100%',
-    marginBottom: '10px',
+    marginBottom: '50px',
+    fontSize: '22px',
+    textAlign: 'left',
   },
   input: {
     width: '100%',
     padding: '8px',
     margin: '8px',
-    marginBottom: '10px',
+    marginTop: '20px',
     fontSize: '16px',
-    maxWidth:'500px',
+    maxWidth: '500px',
   },
   wireframeButton: {
     padding: '10px 20px',
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
+    border: '1px solid #333',
     borderRadius: '5px',
     cursor: 'pointer',
-    marginTop: '10px',
+    fontSize: '14px',
+    fontFamily:'NanumSquare_R'
   },
   submitButton: {
     padding: '10px 20px',
-    backgroundColor: '#007bff',
-    color: 'white',
+    backgroundColor: 'white',
+    color: '#333',
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
-    marginTop: '10px',
+    position: 'absolute',
+    bottom: '50px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    marginBottom: '20px',
+    fontSize: '20px',
+    fontFamily:'NanumSquare_B',
+  },
+  loadingOverlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1000,
+  },
+  loadingPopup: {
+    backgroundColor: 'white',
+    padding: '20px',
+    borderRadius: '5px',
+    fontSize: '18px',
+    fontFamily: 'NanumSquare_B',
   },
 };
 
