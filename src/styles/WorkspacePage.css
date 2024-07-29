@@ -1,76 +1,96 @@
-.workspace-page {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-  }
-  
-    .workspace-page .header {
-      display: flex;
-      flex-flow: row nowrap;
-      justify-content: space-between;
-      align-items: center;
-      flex-basis: auto;
-      padding: 15px;
-      width: 100%;
-      height: 50px;
-      background-color: #ffffff;
-      box-sizing: border-box;
-    }
-        .header .title {
-          font-weight: bolder;
-          font-size: 32px;
-          color: #000000;
-        }
-            .title .profile {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            object-fit: cover;
-            transform: translate(0%, 20%);
-            }
-        .header .button-menu {
-          border: none;
-          transform: translate(0%, 20%);
-        }
-            .button-menu .image-menu {
-              width: 48px;
-              height: 48px;
-            }
-            
-    .workspace-page .userInfo {
-      background-color: #454545;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin-top: 20px;
-      padding: 30px;
-    }
-  
-        .userInfo .newProjectButton {
-          padding: 10px 20px;
-          background-color: #000000;
-          color: rgb(255, 255, 255);
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-          margin-left: 10px;
-        }
-        
-        .userInfo .taskSummary {
-          margin-top: 20px;
-          width: 80%;
-          display: flex;
-          flex-direction: row;
-          justify-content: space-around;
-          margin: 50px;
-        }
+.workspace-container {
+  text-align: center;
+  align-items: center;
+  background-color: #dddddd;
+  display: flex;
+  flex-direction: column;
+  margin: 0px;
+  padding: 0px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 10px;
+}
+
+.homeButton {
+  top: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  margin: 20px;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+
+.logoutButton {
+  padding: 10px 20px;
+  margin: 30px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'NanumSquare_L';
+  font-size: 16px;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.newProjectButton {
+  padding: 10px 20px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+  font-family: 'NanumSquare_L';
+  font-size: 16px;
+}
+
+.cardContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000000;
+  width: 100%;
+}
+
+.cardContainer-in {
+  display: flex;
+  justify-content: space-around;
+  padding: 70px;
+  background-color: #000000;
+  width: 60%;
+}
 
 .card {
   background-color: white;
-  color: #333;
+  color: #000000;
   padding: 40px;
   border-radius: 10px;
   text-align: center;
@@ -78,23 +98,23 @@
 }
 
 .cardTitle {
-  font-family: 'NanumSquare_EB';
-  font-size: 26px;
+  font-family: 'NanumSquare_B';
+  font-size: 20px;
   margin-bottom: 25px;
-  text-align: center;
 }
 
 .cardNumber {
-  font-family: 'NanumSquare_B';
+  font-family: 'NanumSquare_L';
   font-size: 24px;
 }
 
 .taskContainer {
   text-align: left;
-  padding: 20px 500px;
+  align-items: center;
+  padding: 20px 20px;
   background-color: #dddddd;
+  width: 40%;
 }
-
 .taskList {
   display: flex;
   flex-direction: column;
@@ -119,10 +139,6 @@
   text-align: center;
   cursor: pointer;
   transition: background-color 0.3s ease;
-}
-
-.taskDivisionButton:hover {
-  background-color: #0056b3;
 }
 
 .progressBar {
@@ -173,11 +189,7 @@
   font-family: 'NanumSquare_L';
 }
 
-.noTasksMessage {
-  text-align: center;
-}
-
-.modalOverlay {
+.workspace-modalOverlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -190,7 +202,7 @@
   z-index: 1000;
 }
 
-.modalContent {
+.workspace-modalContent {
   background-color: white;
   padding: 40px 80px;
   border-radius: 10px;

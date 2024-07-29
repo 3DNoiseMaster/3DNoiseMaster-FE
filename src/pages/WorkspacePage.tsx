@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, Dropdown, Button } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import GlobalStyles from '../styles/GlobalStyles';
 import homeIcon from '../assets/icon/BlackHome.png';
 import '../styles/WorkspacePage.css';
-
-import defaultProfile from '../assets/image/default_profile.png'
-import menuicon from '../assets/icon/menu.png'
 
 interface LoginStatusResponse {
   success: boolean;
@@ -24,7 +19,7 @@ interface Task {
   task_name: string;
   status: number;
   date: string;
-
+  
   error_rate: number; 
   task_division: string;
 }
@@ -42,7 +37,6 @@ interface DeleteTaskResponse {
 
 const WorkspacePage: React.FC = () => {
   const navigate = useNavigate();
-  const [userName, setUserName] = useState<string | null>(null);
   const [user, setUser] = useState<{ user_name: string } | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [taskCount, setTaskCount] = useState<TaskCount | null>(null);
@@ -86,7 +80,7 @@ const WorkspacePage: React.FC = () => {
         .then(response => {
           console.log('Tasks response:', response);
           if (response.data.success) {
-            const sortedTasks = response.data.data.tasks.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+            const sortedTasks = response.data.data.tasks.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
             setTasks(sortedTasks);
           } else {
             console.error('Error fetching tasks: ', response.data);
@@ -154,66 +148,76 @@ const WorkspacePage: React.FC = () => {
     }
 };
 
-const handleDownloadTask = (taskId: string) => {
+const handleDownloadTask = (taskId: string, taskName: string) => {
   const token = localStorage.getItem('token');
   if (token) {
-      axios.get<DeleteTaskResponse>(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks/download`, {
-        headers: { 'Authorization': `Bearer ${token}` },
-        params: { task_id: taskId }
-      })
-      .then(response => {
-          if (response.data.success) {
-              setTasks(tasks.filter(task => task.task_id !== taskId));
-          } else {
-              console.error('Error downloading task: ', response.data);
-          }
-      })
-      .catch(error => {
-          console.error('Error downloading task:', error);
-      });
+    setIsLoading(true);
+    axios.get(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks/download`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+      params: { task_id: taskId },
+      responseType: 'blob', 
+    })
+    .then(response => {
+      setIsLoading(false);
+      const blob = new Blob([response.data as BlobPart], { type: 'application/x-obj' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      
+      const contentDisposition = response.headers['content-disposition'];
+      let fileName = `${taskName}_result.obj`;
+
+      if (contentDisposition) {
+        const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
+        if (fileNameMatch && fileNameMatch.length === 2) {
+          fileName = fileNameMatch[1];
+        }
+      }
+
+      link.href = url;
+      link.setAttribute('download', fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    })
+    .catch(error => {
+      setIsLoading(false);
+      console.error('Error downloading task:', error);
+    });
+  } else {
+    console.error('No token found in localStorage');
   }
 };
 
-const menu = (
-  <Menu>
-    <Menu.Item key="1">
-      <Link to="/api/display/main">HOME</Link>
-    </Menu.Item>
-    <Menu.Item key="2">
-      <button onClick={handleLogout}>LOGOUT</button>
-    </Menu.Item>
-  </Menu>
-);
+const handleTaskResult = (taskId: string, taskName: string) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+      setIsLoading(true); 
+      axios.get(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks/download`, {
+          headers: { 'Authorization': `Bearer ${token}` },
+          params: { task_id: taskId },
+          responseType: 'blob',
+      })
+      .then(response => {
+          setIsLoading(false);
+          const blob = new Blob([response.data as BlobPart], { type: 'application/x-obj' });
+          const url = window.URL.createObjectURL(blob);
+          navigate('/api/display/workspace/taskResult', { state: { fileURL: url, taskName } });
+      })
+      .catch(error => {
+          setIsLoading(false);
+          console.error('Error downloading task:', error);
+      });
+  } else {
+      console.error('No token found in localStorage');
+  }
+};
 
   return (
-    <div className="container">
+    <div className="workspace-container">
       <GlobalStyles />
       <div className="header">
-        <h2 className='userProfile'>
-          <h1 className='title'>
-            <img
-              src={null/*여기에 사용자의 프로필 이미지 삽입*/ || defaultProfile}
-              alt="Profile"
-              className="profile"
-            />
-            &nbsp;{userName}'s WorkSpace
-          </h1>
-        </h2>
-        <Dropdown overlay={menu} trigger={['click']}>
-          <Button className='button-menu'>
-            <img src={menuicon} alt="icon" className='image-menu'/>
-          </Button>
-        </Dropdown>
-      </div>
-      <div className='userInfo'>
-        {taskCount && (
-          <div className="taskSummary">
-            <div className='countingBox'>전체<br/><br/> {taskCount.totalCount}</div>
-            <div className='countingBox'>대기중<br/><br/> {taskCount.beforeCount}</div>
-            <div className='countingBox'>진행중<br/><br/> {taskCount.runningCount}</div>
-            <div className='countingBox'>완료됨<br/><br/> {taskCount.doneCount}</div>
-          </div>
-        )}
+      <div className="headerLeft">
+        <img src={homeIcon} alt="홈" className="homeButton" onClick={() => navigate('/api/display/main')} />
         {user ? (
           <div className="userInfo">
             <h2>{user.user_name} Workspace</h2>&nbsp;&nbsp;
@@ -222,11 +226,36 @@ const menu = (
         ) : (
           <p>로딩 중...</p>
         )}
+        </div>
+        <div className="buttonGroup">
+          <button onClick={handleLogout} className="logoutButton">Logout</button>
+        </div>
       </div>
-      <div className="taskList">
-        <h3>작업 목록</h3>
+      {taskCount && (
+        <div className="cardContainer">
+          <div className="cardContainer-in">
+          <div className="card">
+            <div className="cardTitle">Total</div>
+            <div className="cardNumber">{taskCount.totalCount}</div>
+          </div>
+          <div className="card">
+            <div className="cardTitle">Before</div>
+            <div className="cardNumber">{taskCount.beforeCount}</div>
+          </div>
+          <div className="card">
+            <div className="cardTitle">Running</div>
+            <div className="cardNumber">{taskCount.runningCount}</div>
+          </div>
+          <div className="card">
+            <div className="cardTitle">Done</div>
+            <div className="cardNumber">{taskCount.doneCount}</div>
+          </div>
+          </div>
+        </div>
+      )}
+      <div className="taskContainer">
         {tasks.length > 0 ? (
-          <ul>
+          <div className="taskList">
             {tasks.map(task => (
               <div key={task.task_id} className="taskCard">
                 <p className="taskDivisionButton">
@@ -243,7 +272,7 @@ const menu = (
                 )}
                 <div className="taskButtons">
                   <button onClick={() => handleDeleteTask(task.task_id)} className="deleteButton">삭제</button>
-                  {task.status === 100 && task.task_division !== 'error_comp' && (
+                  {task.status === 100 && (
                     <>
                       <button onClick={() => handleDownloadTask(task.task_id, task.task_name)} className="downloadButton">다운로드</button>
                       <button onClick={() => handleTaskResult(task.task_id, task.task_name)} className="resultButton">작업 결과</button>
@@ -252,14 +281,14 @@ const menu = (
                 </div>
               </div>
             ))}
-          </ul>
+          </div>
         ) : (
-          <p className="noTasksMessage">작업물이 없습니다.</p>
+          <p>작업물이 없습니다.</p>
         )}
       </div>
       {isModalOpen && (
-        <div className="modalOverlay">
-          <div className="modalContent">
+        <div className="workspace-modalOverlay">
+          <div className="workspace-modalContent">
             <h2>로그인이 필요합니다</h2>
             <p>작업공간에 접근하려면 로그인을 해주세요.</p>
             <button onClick={closeModal} className="closeButton">로그인 페이지로 이동</button>

@@ -37,14 +37,23 @@ const styles: { [key: string]: React.CSSProperties } = {
   column: {
     flex: '1',
     padding: '10px',
+    marginRight: '130px',
+    marginLeft: '130px',
+    maxWidth: '300px',
   },
   title: {
+    textAlign: 'left',
+    letterSpacing: '1.5px',
     fontSize: '16px',
+    fontFamily: 'NanumSquare_R',
     marginBottom: '10px',
     fontWeight: 'bold',
   },
   text: {
+    textAlign: 'left',
+    letterSpacing: '1px',
     fontSize: '14px',
+    fontFamily: 'NanumSquare_L',
     margin: '5px 0',
   },
   link: {
