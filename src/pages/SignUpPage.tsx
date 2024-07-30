@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import GlobalStyles from '../styles/GlobalStyles';
+import eyeOpenIcon from '../assets/icon/eye_open.png';
+import eyeCloseIcon from '../assets/icon/eye_close.png';
 import '../styles/SignUpPage.css'; 
-import useDynamicCss from '../hooks/UseDynamicCss';
-import EyeOpenImage from '../assets/icon/eye_open.png';
-import EyeCloseImage from '../assets/icon/eye_close.png';
 
 interface SignUpResponse {
   success: boolean;
@@ -25,6 +24,7 @@ interface SignUpResponse {
 }
 
 const SignUpPage: React.FC = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     id: '',
     phone: '',
@@ -52,48 +52,43 @@ const SignUpPage: React.FC = () => {
 
     const signUpUrl = `${process.env.REACT_APP_API_USER_URL}/signup`;
     axios.post<SignUpResponse>(signUpUrl, formData)
-      .then(res => setResponse(res.data))
+      .then(res => {
+        setResponse(res.data);
+        navigate('/api/display/login');
+      })
       .catch(error => {
         console.error('Error during sign up:', error);
         setResponse({ success: false, code: 500, message: 'Sign up failed' });
       });
   };
 
-  useDynamicCss('${process.env.PUBLIC_URL}/styles/SignUpPages.css');
-
-  useEffect(() => {
-    document.body.classList.add('signup-page');
-    return () => {
-      document.body.classList.remove('signup-page');
-    };
-  }, []);
-
   return (
-    <div className="signup-page">
-      <div className='container'>
-        <h1 className='title'>SIGN-UP</h1>
-        <form onSubmit={handleSubmit} className="form">
+    <div className="signup-container">
+      <GlobalStyles />
+      <div className="signup-box">
+        <h1 className="signup-header">SIGN-UP</h1>
+        <form onSubmit={handleSubmit} className="signup-form">
           <label>
-            ID:
-            <input type="text" name="id" value={formData.id} onChange={handleChange} className="input-info" required />
+            ID
+            <input type="text" name="id" value={formData.id} onChange={handleChange} className="input" required />
           </label>
           <label>
-            Phone:
-            <input type="text" name="phone" value={formData.phone} onChange={handleChange} className="input-info" required />
+            Phone
+            <input type="text" name="phone" value={formData.phone} onChange={handleChange} className="input" required />
           </label>
           <label>
-            Username:
-            <input type="text" name="user_name" value={formData.user_name} onChange={handleChange} className="input-info" required />
+            Username
+            <input type="text" name="user_name" value={formData.user_name} onChange={handleChange} className="input" required />
           </label>
           <label>
-            Password:
+            Password
             <div className="passwordContainer">
               <input 
                 type={showPassword ? 'text' : 'password'} 
                 name="password" 
                 value={formData.password} 
                 onChange={handleChange} 
-                className="input-info"
+                className="password-input" 
                 required 
               />
               <button 
@@ -101,19 +96,23 @@ const SignUpPage: React.FC = () => {
                 onClick={() => setShowPassword(!showPassword)} 
                 className="showButton"
               >
-                <img src={showPassword ? EyeOpenImage : EyeCloseImage} alt="Toggle Password" className="button-eye" />
+                <img 
+                  src={showPassword ? eyeOpenIcon : eyeCloseIcon} 
+                  alt={showPassword ? 'Hide' : 'Show'} 
+                  className="eyeIcon"
+                />
               </button>
             </div>
           </label>
           <label>
-            Confirm Password:
+            Confirm Password
             <div className="passwordContainer">
               <input 
-                type={showConfirmPassword ? 'text' : 'password'} 
+                type={showPassword ? 'text' : 'password'} 
                 name="confirmPassword" 
                 value={formData.confirmPassword} 
                 onChange={handleChange} 
-                className="input-info"
+                className="password-input"
                 required 
               />
               <button 
@@ -121,34 +120,19 @@ const SignUpPage: React.FC = () => {
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
                 className="showButton"
               >
-                <img src={showConfirmPassword ? EyeOpenImage : EyeCloseImage} alt="Toggle Confirm Password" className="button-eye" />
+                <img 
+                  src={showConfirmPassword ? eyeOpenIcon : eyeCloseIcon} 
+                  alt={showConfirmPassword ? 'Hide' : 'Show'} 
+                  className="eyeIcon"
+                />
               </button>
             </div>
           </label>
           {passwordError && <p className="error">{passwordError}</p>}
-          <button type="submit" className="button-signup">회원가입</button>
-        </form>
-        {response && (
-          <div className="response">
-            <p>{response.message}</p>
-            {response.data && (
-              <div>
-                <p>User ID: {response.data.user.user_id}</p>
-                <p>Role: {response.data.user.role}</p>
-                <p>Date: {response.data.user.date}</p>
-                <p>ID: {response.data.user.id}</p>
-                <p>Phone: {response.data.user.phone}</p>
-                <p>Username: {response.data.user.user_name}</p>
-              </div>
-            )}
+          <div className="signup-button-container">
+            <button type="submit" className="signup-button">Sign-Up</button>
           </div>
-        )}
-        <div className="spacer_type_1"></div>
-        <div className="links">
-          <Link to="/api/display/login" className="button-link">로그인</Link>
-          <span className="divider">|</span>
-          <Link to="/api/display/main" className="button-link">홈</Link>
-        </div>
+        </form>
       </div>
     </div>
   );

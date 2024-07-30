@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -25,6 +26,7 @@ const ObjModel = ({ url, wireframe }: { url: string, wireframe: boolean }) => {
     const scaleFactor = desiredSize / maxDimension;
 
     obj.scale.set(scaleFactor, scaleFactor, scaleFactor);
+    obj.position.set(0, 0, 0);
 
     obj.traverse((child) => {
       if ((child as any).isMesh) {
@@ -33,10 +35,19 @@ const ObjModel = ({ url, wireframe }: { url: string, wireframe: boolean }) => {
         });
       }
     });
-  }, [obj, wireframe]);
+  }, [obj]);
+
+  useEffect(() => {
+    obj.traverse((child) => {
+      if ((child as any).isMesh) {
+        (child as any).material.wireframe = wireframe;
+      }
+    });
+  }, [wireframe, obj]);
 
   return <primitive object={obj} />;
 };
+
 
 const NoiseGenPage: React.FC = () => {
   const navigate = useNavigate();

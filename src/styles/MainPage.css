@@ -1,215 +1,263 @@
-@font-face {
-  font-family: 'Amasis-MT-Std-Font';
-  src: url('../assets/font/Amasis-MT-Std-Font.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'CustomFont';
-  src: url('../assets/font/AGENCYB.TTF') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-h1 {
-  font-size: 50px;
-  font-weight: bold;
-  line-height: 1.5;
-}
-h5 {
-  font-size: 20px;
-  line-height: 1.0;
-}
-.button-account {
-  font-family: 'AGENCYB', sans-serif;
-  font-weight: bolder;
-  color: #000000;
-  text-decoration: none;
-  cursor: pointer;
-  font-size: 16px;
-  text-decoration: none;
-  background-color: #ffffff;
-  border: none;
-}
-
-.main-page {
-  font-family: 'NanumSquareOTF';
+.main-container {
   text-align: center;
   background-color: #222;
-  color: #fff;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  margin: 0px;
+  padding: 0px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
-    .main-page .header {
-      display: flex;
-      flex-flow: row nowrap;
-      justify-content: space-between;
-      align-items: center;
-      flex-basis: auto;
-      padding: 15px;
-      width: 100%;
-      height: 100px;
-      background-color: #ffffff;
-      box-sizing: border-box;
-    }
-        .header .title {
-          font-family: 'Amasis-MT-Std-Font';
-          font-weight: bolder;
-          font-size: 48px;
-          margin: 0;
-          color: #000000;
-        }
-        .header .image-bunny {
-          width: 50px;
-          height: 50px;
-          margin: 0 10px;
-          line-height: 1;
-        }
-        .header .login-container {
-          display: flex;  
-          flex-direction: row-reverse;
-          gap: 10px;
-        }
-            .login-container .user-name {
-              color: #000000;
-              font-size: 1rem;
-              margin: 20px;
-            }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+}
 
-    .main-page .page-container-1 {
-      width: auto;
-      height: 600px;
-      background-color: #000000;
-      flex: 1;
-      flex-basis: auto;
-      display: flex;
-      text-align: left;
-      position: relative;
-    }
-        .page-container-1 .image-slider-container {
-          width: 50%;
-          height: 600px;
-          position: absolute;
-          right: 0px;
-        }
-        .page-container-1 .heading {
-          color: #fff;
-          position: absolute;
-          top: 120px;
-          left: 50px;
-        }
-        .page-container-1 .subheading {
-          font-size: 20px;
-          color: #ccc;
-          line-height: 1.5;
-          margin-top: 20px;
-          position: absolute;
-          top: 300px;
-          left: 50px;
-        }
-        .page-container-1 .image-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-basis: auto;
-        width: 100%;
-        background-color: #333;
-        }
-        .page-container-1 .button-workSpace {
-          margin-top: 20px;
-          padding: 10px 20px; 
-          background-color: #2885a7;
-          color: white;
-          text-decoration: none;
-          border-radius: 5px;
-          position: absolute;
-          bottom: 70px;
-          left: 70px;
-        }
+.headerLeft {
+  display: flex;
+  align-items: center;
+}
 
-    .main-page .page-container-2 {
-      width: auto;
-      height: 600px;
-      background-color: #ffffff;
-      flex: 1;
-      flex-basis: auto;
-      display: flex;
-      text-align: left;
-      position: relative;
-    }
-        .page-container-2 .heading {
-          color: #000000;
-          line-height: 1.5;
-          margin-top: 20px;
-          position: absolute;
-          top: 50px;
-          left: 100px;
-        }
-        .page-container-2 .subheading {
-          font-size: 20px;
-          color: #000000;
-          line-height: 1.5;
-          margin-top: 20px;
-          position: absolute;
-          bottom: 50px;
-          left: 100px;
-        }
-        .page-container-2 .image {
-          height: auto;
-          width: 50%;
-          position: absolute;
-          bottom: 50px;
-          right: 100px;
-        }
+.BlackBunny {
+  top: 10px;
+  left: 10px;
+  width: 60px;
+  height: 60px;
+  margin: 10px;
+}
 
-    .main-page .page-container-3 {
-      width: auto;
-      height: 700px;
-      background-color: #e6e6e6;
-      flex: 1;
-      flex-basis: auto;
-      display: flex;
-      text-align: right;
-      position: relative;
-    }
-        .page-container-3 .heading {
-          color: #000000;
-          line-height: 1.5;
-          margin-top: 20px;
-          position: absolute;
-          top: 50px;
-          right: 100px;
-        }
-        .page-container-3 .subheading {
-          font-size: 20px;
-          color: #000000;
-          line-height: 1.5;
-          margin-top: 20px;
-          position: absolute;
-          bottom: 50px;
-          right: 100px;
-        }
+.main-login-container {
+  display: flex;
+  align-items: center;
+}
 
+.login {
+  text-decoration: none; 
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'NanumSquare_L';
+  font-size: 16px;
+}
 
+.signup {
+  text-decoration: none; 
+  padding: 10px 20px;
+  margin-left: 10px;
+  margin-right: 30px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'NanumSquare_L';
+  font-size: 16px;
+}
 
-/*아래는 추가 및 수정 중*/
+.logout {
+  padding: 10px 20px;
+  margin: 30px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'NanumSquare_L';
+  font-size: 16px;
+}
 
+.user-name {
+  color: #000000;
+  font-size: 1rem;
+}
 
+.page-container-1 {
+  background-color: #000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
 
-.image-section {
-  text-align: center;
-  padding: 0 20px;
+.page-text {
+  text-align: left;
+  padding: 100px;
+  padding-right: 20px;
+  width: 50%;
+}
+
+.image-slider-container {
+  text-align: right;
+  padding: 20px;
+  width: 50%;
+}
+
+.heading {
+  font-family: 'NanumSquare_B';
+  font-size: 40px;
+  letter-spacing: 1.5px; 
+  line-height: 1.5;
+  color: #fff;
+}
+
+.subheading {
+  font-family: 'NanumSquare_L';
+  font-size: 20px;
+  color: #ccc;
+  letter-spacing: 1.5px; 
+  line-height: 1.5;
+  margin-top: 20px;
+}
+
+.work-space {
+  display: inline-block;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 15px 30px;
+  background-color: #B949D1;
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'NanumSquare_L';
+  font-size: 20px;
+}
+
+.page-container-2 {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.page-text-2 {
+  text-align: left;
+  padding: 100px;
+  padding-bottom: 200px;
+  width: 50%;
+}
+
+.heading-2 {
+  font-family: 'NanumSquare_EB';
+  font-size: 35px;
+  letter-spacing: 1.5px; 
+  line-height: 1.5;
+  color: #000000;
+}
+
+.subheading-2 {
+  font-family: 'NanumSquare_L';
+  font-size: 16px;
+  color: #666;
+  letter-spacing: 1.5px; 
+  line-height: 1.5;
+  margin-top: 20px;
+}
+
+.page-image {
+  margin: 60px;
+  margin-right: 100px;
+  width: 50%;
+  display: flex;
+  justify-content: center;
 }
 
 .image {
-  width: 200px;
   height: auto;
+  max-width: 700px;
+  max-height: 500px
 }
 
-.image-label {
-  margin-top: 10px;
-  font-size: 1rem;
-  color: #fff;
+.page-container-3 {
+  background-color: #dddddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.page-text-3 {
+  text-align: right;
+  padding: 100px;
+  padding-bottom: 200px;
+  width: 50%;
+}
+
+.heading-3 {
+  font-family: 'NanumSquare_EB';
+  font-size: 35px;
+  letter-spacing: 1.5px; 
+  line-height: 1.5;
+  color: #000000;
+}
+
+.subheading-2 {
+  font-family: 'NanumSquare_L';
+  font-size: 16px;
+  color: #666;
+  letter-spacing: 1.5px; 
+  line-height: 1.5;
+  margin-top: 20px;
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.page-image {
+  opacity: 0;
+  transition: opacity 2s ease-out, transform 2s ease-out;
+}
+
+.page-image.visible {
+  opacity: 1;
+}
+
+.slide-in-right {
+  transform: translateX(-100%);
+}
+
+.slide-in-right.visible {
+  transform: translateX(0);
+  animation: slideInLeft 2s forwards;
+}
+
+.slide-in-left {
+  transform: translateX(100%);
+}
+
+.slide-in-left.visible {
+  transform: translateX(0);
+  animation: slideInRight 2s forwards;
 }

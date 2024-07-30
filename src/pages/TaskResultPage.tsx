@@ -13,8 +13,9 @@ interface Task {
   task_name: string;
   status: number;
   date: string;
-  noiseType: string;
-  noiseLevel: number;
+  
+  noise_type: string;
+  noise_level: number;
 }
 
 const Loader = () => {
@@ -94,6 +95,7 @@ const TaskResultPage: React.FC = () => {
   };
 
   const currentTask = tasks.find((task) => task.task_name === taskName);
+  console.log(currentTask); 
 
   return (
     <div style={styles.container}>
@@ -123,8 +125,8 @@ const TaskResultPage: React.FC = () => {
           <div style={styles.taskInfo}>
             <h4>{currentTask.task_name}</h4>
             <p>생성 일자 : {new Date(currentTask.date).toLocaleString()}</p>
-            <p>잡음 유형 : {currentTask.noiseType}</p>
-            <p>잡음 레벨 : {currentTask.noiseLevel}</p>
+            <p>잡음 유형 : {currentTask.noise_type}</p>
+            <p>잡음 레벨 : {currentTask.noise_level}</p>
           </div>
         )}
         <button
