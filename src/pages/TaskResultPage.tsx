@@ -8,14 +8,17 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { Group, Box3, Vector3, MeshNormalMaterial } from 'three';
 import backIcon from '../assets/icon/back.png';
 
+interface Noise {
+  noise_type: string;
+  noise_level: number;
+}
+
 interface Task {
   task_id: string;
   task_name: string;
   status: number;
   date: string;
-  
-  noise_type: string;
-  noise_level: number;
+  noise: Noise | null;
 }
 
 const Loader = () => {
@@ -35,6 +38,7 @@ const ObjModel = ({ url, wireframe }: { url: string, wireframe: boolean }) => {
     const scaleFactor = desiredSize / maxDimension;
 
     obj.scale.set(scaleFactor, scaleFactor, scaleFactor);
+    obj.position.set(0, 0, 0);
 
     obj.traverse((child) => {
       if ((child as any).isMesh) {
@@ -43,39 +47,52 @@ const ObjModel = ({ url, wireframe }: { url: string, wireframe: boolean }) => {
         });
       }
     });
-  }, [obj, wireframe]);
+  }, [obj]);
+
+  useEffect(() => {
+    obj.traverse((child) => {
+      if ((child as any).isMesh) {
+        (child as any).material.wireframe = wireframe;
+      }
+    });
+  }, [wireframe, obj]);
 
   return <primitive object={obj} />;
 };
 
 const TaskResultPage: React.FC = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [task, setTask] = useState<Task | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const { fileURL, taskName } = location.state || { fileURL: '', taskName: '' };
+  const { fileURL, taskName, taskId } = location.state || { fileURL: '', taskName: '', taskId: '' };
   const [isWireframe, setIsWireframe] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchData = () => {
+    const fetchTask = async () => {
       const token = localStorage.getItem('token');
-      if (token) {
-        axios.get<{ success: boolean; data: { tasks: Task[] } }>(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-          .then((response) => {
-            if (response.data.success) {
-              setTasks(response.data.data.tasks);
+      if (token && taskId) {
+        try {
+          const response = await axios.get<{ success: boolean; data: { task: Task } }>(
+            `${process.env.REACT_APP_API_WORKSPACE_URL}/tasks/check`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+              params: { task_id: taskId },
             }
-          })
-          .catch(() => {
-            setError('Error fetching tasks');
-          });
+          );
+          if (response.data.success) {
+            setTask(response.data.data.task);
+          }
+        } catch (error) {
+          setError('Error fetching task details');
+        }
+      } else {
+        setError('Task ID is missing');
       }
     };
 
-    fetchData();
-  }, []);
+    fetchTask();
+  }, [taskId]);
 
   useEffect(() => {
     if (!fileURL) {
@@ -93,9 +110,6 @@ const TaskResultPage: React.FC = () => {
     link.download = `${taskName}_result.obj`;
     link.click();
   };
-
-  const currentTask = tasks.find((task) => task.task_name === taskName);
-  console.log(currentTask); 
 
   return (
     <div style={styles.container}>
@@ -121,12 +135,18 @@ const TaskResultPage: React.FC = () => {
       <div style={styles.rightPane}>
         <img src={backIcon} alt="작업 공간" style={styles.backButton} onClick={() => navigate('/api/display/workspace')} />
         <h1 style={styles.heading}>Task Result</h1>
-        {currentTask && (
+        {task && (
           <div style={styles.taskInfo}>
-            <h4>{currentTask.task_name}</h4>
-            <p>생성 일자 : {new Date(currentTask.date).toLocaleString()}</p>
-            <p>잡음 유형 : {currentTask.noise_type}</p>
-            <p>잡음 레벨 : {currentTask.noise_level}</p>
+            <h4>{task.task_name}</h4>
+            <p>생성 일자 : {new Date(task.date).toLocaleString()}</p>
+            {task.noise ? (
+              <>
+                <p>잡음 유형: {task.noise.noise_type}</p>
+                <p>잡음 레벨: {task.noise.noise_level}</p>
+              </>
+            ) : (
+              <p>   </p>
+            )}
           </div>
         )}
         <button
