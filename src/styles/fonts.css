@@ -1,0 +1,28 @@
+@font-face {
+font-family: 'NanumSquare';
+src: url('../assets/font/NanumSquareOTF_acL.otf') format('opentype');
+font-weight: normal;
+font-style: normal;
+font-display: swap;
+}
+@font-face {
+font-family: 'NanumSquare';
+src: url('../assets/font/NanumSquareOTF_acB.otf') format('opentype');
+font-weight: bold;
+font-style: normal;
+font-display: swap;
+}
+@font-face {
+font-family: 'NanumSquare';
+src: url('../assets/font/NanumSquareOTF_acR.otf') format('opentype');
+font-weight: normal;
+font-style: normal;
+font-display: swap;
+}
+@font-face {
+font-family: 'NanumSquare';
+src: url('../assets/font/NanumSquareOTF_acEB.otf') format('opentype');
+font-weight: bolder;
+font-style: normal;
+font-display: swap;
+}

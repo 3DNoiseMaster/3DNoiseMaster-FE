@@ -6,6 +6,10 @@ import bunnyIcon from '../assets/icon/BlackBunny.png';
 import workSpaceEx1 from '../assets/image/workSpace_example_1.png';
 import ImageSlider from '../components/ImageSlider';
 import '../styles/MainPage.css';
+import '../styles/fonts.css';
+
+import noiseImage1 from '../assets/image/noise.png'; 
+import noiseImage2 from '../assets/image/denoising.png'; 
 
 const MainPage: React.FC = () => {
   const [userName, setUserName] = useState<string | null>(null);
@@ -79,7 +83,7 @@ const MainPage: React.FC = () => {
           <Link to="/api/display/workSpace" className="work-space">Get Denoising the 3D mesh</Link>
         </div>
         <div className="image-slider-container">
-          <ImageSlider />
+          <ImageSlider firstImage={noiseImage1} secondImage={noiseImage2}/>
         </div>
       </div>
 
