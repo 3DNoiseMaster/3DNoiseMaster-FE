@@ -201,7 +201,7 @@ const handleTaskResult = (taskId: string, taskName: string) => {
           setIsLoading(false);
           const blob = new Blob([response.data as BlobPart], { type: 'application/x-obj' });
           const url = window.URL.createObjectURL(blob);
-          navigate('/api/display/workspace/taskResult', { state: { fileURL: url, taskName } });
+          navigate('/api/display/workspace/taskResult', { state: { fileURL: url, taskName: taskName, taskId: taskId } });
       })
       .catch(error => {
           setIsLoading(false);
