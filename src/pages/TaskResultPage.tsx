@@ -13,7 +13,6 @@ interface Task {
   task_name: string;
   status: number;
   date: string;
-  
   noise_type: string;
   noise_level: number;
 }
@@ -35,6 +34,7 @@ const ObjModel = ({ url, wireframe }: { url: string, wireframe: boolean }) => {
     const scaleFactor = desiredSize / maxDimension;
 
     obj.scale.set(scaleFactor, scaleFactor, scaleFactor);
+    obj.position.set(0, 0, 0);
 
     obj.traverse((child) => {
       if ((child as any).isMesh) {
@@ -43,7 +43,7 @@ const ObjModel = ({ url, wireframe }: { url: string, wireframe: boolean }) => {
         });
       }
     });
-  }, [obj, wireframe]);
+  }, [obj]);
 
   return <primitive object={obj} />;
 };
@@ -57,24 +57,37 @@ const TaskResultPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchData = () => {
+    const fetchTasks = async () => {
       const token = localStorage.getItem('token');
       if (token) {
-        axios.get<{ success: boolean; data: { tasks: Task[] } }>(`${process.env.REACT_APP_API_WORKSPACE_URL}/tasks`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-          .then((response) => {
-            if (response.data.success) {
-              setTasks(response.data.data.tasks);
-            }
-          })
-          .catch(() => {
-            setError('Error fetching tasks');
-          });
+        try {
+          const response = await axios.get<{ success: boolean; data: { tasks: Task[] } }>(
+            `${process.env.REACT_APP_API_WORKSPACE_URL}/tasks`,
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+          if (response.data.success) {
+            const tasksWithNoise = await Promise.all(
+              response.data.data.tasks.map(async (task) => {
+                const noiseResponse = await axios.get(
+                  `${process.env.REACT_APP_API_WORKSPACE_URL}/tasks/check?task_id=${task.task_id}`,
+                  { headers: { Authorization: `Bearer ${token}` } }
+                );
+                return {
+                  ...task,
+                  noise_type: noiseResponse.data.noise_type,
+                  noise_level: noiseResponse.data.noise_level,
+                };
+              })
+            );
+            setTasks(tasksWithNoise);
+          }
+        } catch (error) {
+          setError('Error fetching tasks');
+        }
       }
     };
 
-    fetchData();
+    fetchTasks();
   }, []);
 
   useEffect(() => {
@@ -95,7 +108,7 @@ const TaskResultPage: React.FC = () => {
   };
 
   const currentTask = tasks.find((task) => task.task_name === taskName);
-  console.log(currentTask); 
+  console.log(currentTask);
 
   return (
     <div style={styles.container}>
