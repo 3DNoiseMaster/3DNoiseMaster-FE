@@ -5,123 +5,111 @@ html, body {
   height: 100%;
 }
 
-.signup-container {
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  background-color: #222;
-  display: flex;
-  flex-direction: column;
-  width: 100vw;
-  height: 100vh;
-}
+  body .signup-container {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    background-color: #222;
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+  }
 
-.signup-box {
-  text-align: center;
-  background-color: #ffffff;
-  padding: 50px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
-  margin: auto;
-}
+    .signup-container .signup-box {
+      text-align: center;
+      background-color: #ffffff;
+      padding: 50px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      margin: auto;
+    }
 
-.signup-header{
-  margin: 20px;
-  font-family: 'NanumSquare_EB';
-  font-size: 36px;
-  color: #333;
-}
+    .signup-box .signup-header{
+      margin: 20px;
+      font-family: 'NanumSquare_EB';
+      font-size: 36px;
+      color: #333;
+    }
 
-.signup-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 20px;
-  width: 100%;
-}
+    .signup-box .signup-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+      width: 100%;
+    }
 
-.signup-form label {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 80%;
-  margin-bottom: 15px;
-}
+    .signup-box .signup-form label {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 80%;
+      margin-bottom: 15px;
+    }
 
-.input {
-  display: block;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  width: 90%;
-  background-color: rgb(212, 212, 212);
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-}
+    .signup-box .input {
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      width: 90%;
+      background-color: rgb(212, 212, 212);
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+    }
 
-.passwordContainer {
-  display: flex;
-  align-items: center;
-}
+    .signup-box .passwordContainer {
+      position: relative;
+      width: 100%;
+    }
 
-.showButton {
-  padding: 8px 10px;
-  border: none;
-  background-color: #ffffff;
-  cursor: pointer;
-  
-}
+      .passwordContainer .showButton {
+        padding: 8px 10px;
+        border: none;
+        background-color: #ffffff00;
+        cursor: pointer;
+        position: absolute;
+        right: 5px;
+        transform: translateY(-110%);
+      }
 
-.eyeIcon {
-  width: 25px;
-  height: 25px;
-}
+      .passwordContainer .eyeIcon {
+        cursor: pointer;
+        width: 25px;
+        height: 25px;
+      }
 
-.password-input {
-  display: block;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  width: 90%;
-  background-color: rgb(212, 212, 212);
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px; 
-  padding-right: 100px;
-  box-sizing: border-box; 
-}
+      .passwordContainer .password-input {
+        display: block;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        width: 90%;
+        background-color: rgb(212, 212, 212);
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px; 
+        padding-right: 100px;
+        box-sizing: border-box; 
+      }
 
-.signup-button-container {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-} 
+    .signup-box .signup-button-container {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+    } 
 
-.signup-button {
-  margin: 20px 15px;
-  padding: 10px 20px;
-  background-color: #333;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-family: 'NanumSquare_L';
-  font-size: 16px;
-}
-
-.links {
-  margin-top: 20px;
-}
-
-.linkButton {
-  display: inline-block;
-  margin: 0 10px;
-  padding: 10px 10px;
-  color: rgb(0, 0, 0);
-  text-decoration: none;
-  border-radius: 5px;
-  font-family: 'NanumSquare_L';
-  font-size: 16px;
-}
+    .signup-box .signup-button {
+      margin: 20px 15px;
+      padding: 10px 20px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'NanumSquare_L';
+      font-size: 16px;
+    }

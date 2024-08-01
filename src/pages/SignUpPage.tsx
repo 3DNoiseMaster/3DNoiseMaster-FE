@@ -50,6 +50,16 @@ const SignUpPage: React.FC = () => {
       return;
     }
 
+    if (formData.password.length < 8) {
+      setPasswordError('비밀번호는 최소 8자 이상이여야 합니다.');
+      return;
+    }
+
+    if (formData.phone.length < 10) {
+      setPasswordError('유효한 전화번호를 입력하세요 (예시: 01012345678)');
+      return;
+    }
+
     const signUpUrl = `${process.env.REACT_APP_API_USER_URL}/signup`;
     axios.post<SignUpResponse>(signUpUrl, formData)
       .then(res => {
@@ -88,15 +98,15 @@ const SignUpPage: React.FC = () => {
                 name="password" 
                 value={formData.password} 
                 onChange={handleChange} 
-                className="password-input" 
+                className="input" 
                 required 
               />
-              <button 
+              <button
                 type="button" 
                 onClick={() => setShowPassword(!showPassword)} 
                 className="showButton"
               >
-                <img 
+                <img
                   src={showPassword ? eyeOpenIcon : eyeCloseIcon} 
                   alt={showPassword ? 'Hide' : 'Show'} 
                   className="eyeIcon"
@@ -108,15 +118,15 @@ const SignUpPage: React.FC = () => {
             Confirm Password
             <div className="passwordContainer">
               <input 
-                type={showPassword ? 'text' : 'password'} 
+                type={showConfirmPassword ? 'text' : 'password'} 
                 name="confirmPassword" 
                 value={formData.confirmPassword} 
-                onChange={handleChange} 
-                className="password-input"
-                required 
+                onChange={handleChange}
+                className="input"
+                required
               />
               <button 
-                type="button" 
+                type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
                 className="showButton"
               >

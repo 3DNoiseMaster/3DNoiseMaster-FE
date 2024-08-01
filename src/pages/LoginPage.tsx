@@ -68,16 +68,16 @@ const LoginPage: React.FC = () => {
           </label>
           <label> 
             Password
-            <div className="login-button-container">
+            <div className="passwordContainer">
             <input 
                 type={showPassword ? 'text' : 'password'} 
                 name="password" 
                 value={formData.password} 
                 onChange={handleChange} 
-                className="password-input" 
+                className="input" 
                 required 
               />
-              <button 
+              <button
                 type="button" 
                 onClick={() => setShowPassword(!showPassword)} 
                 className="showButton"

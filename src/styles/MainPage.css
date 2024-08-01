@@ -1,3 +1,35 @@
+@font-face {
+  font-family: 'NanumSquare_B';
+  src: url('../assets/font/NanumSquareOTF_acB.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'NanumSquare_L';
+  src: url('../assets/font/NanumSquareOTF_acL.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'NanumSquare_EB';
+  src: url('../assets/font/NanumSquareOTF_acEB.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NanumSquare_R';
+  src: url('../assets/font/NanumSquareOTF_acR.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+
 .main-container {
   text-align: center;
   background-color: #222;
@@ -48,7 +80,7 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-family: 'NanumSquare_L';
+  font-family: 'NanumSquare_L', Arial, sans-serif;
   font-size: 16px;
 }
 
@@ -62,7 +94,7 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-family: 'NanumSquare_L';
+  font-family: 'NanumSquare_L', Arial, sans-serif;
   font-size: 16px;
 }
 
@@ -74,7 +106,7 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-family: 'NanumSquare_L';
+  font-family: 'NanumSquare_L', Arial, sans-serif;
   font-size: 16px;
 }
 
@@ -85,40 +117,40 @@
 
 .page-container-1 {
   background-color: #000;
+  width: 100%;
+  text-align: left;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  width: 100%;
+  position: relative;
 }
 
-.page-text {
+.page-container-1 .page-text {
   text-align: left;
   padding: 100px;
   padding-right: 20px;
   width: 50%;
 }
+  .page-text .heading {
+    font-family: 'NanumSquare_EB', Arial, sans-serif;
+    font-size: 40px;
+    letter-spacing: 1.5px; 
+    line-height: 1.5;
+    color: #fff;
+  }
+  .page-text .subheading {
+    font-family: 'NanumSquare_L', Arial, sans-serif;
+    font-size: 20px;
+    color: #ccc;
+    letter-spacing: 1.5px; 
+    line-height: 1.5;
+    margin-top: 20px;
+  }
 
-.image-slider-container {
-  text-align: right;
-  padding: 20px;
+.page-container-1 .image-slider-container {
   width: 50%;
-}
-
-.heading {
-  font-family: 'NanumSquare_B';
-  font-size: 40px;
-  letter-spacing: 1.5px; 
-  line-height: 1.5;
-  color: #fff;
-}
-
-.subheading {
-  font-family: 'NanumSquare_L';
-  font-size: 20px;
-  color: #ccc;
-  letter-spacing: 1.5px; 
-  line-height: 1.5;
-  margin-top: 20px;
+  height: 550px;
+  position: absolute;
+  right: 0px;
 }
 
 .work-space {
@@ -131,7 +163,7 @@
   text-decoration: none;
   border-radius: 5px;
   cursor: pointer;
-  font-family: 'NanumSquare_L';
+  font-family: 'NanumSquare_L', Arial, sans-serif;
   font-size: 20px;
 }
 
@@ -151,7 +183,7 @@
 }
 
 .heading-2 {
-  font-family: 'NanumSquare_EB';
+  font-family: 'NanumSquare_EB', Arial, sans-serif;
   font-size: 35px;
   letter-spacing: 1.5px; 
   line-height: 1.5;
@@ -159,7 +191,7 @@
 }
 
 .subheading-2 {
-  font-family: 'NanumSquare_L';
+  font-family: 'NanumSquare_L', Arial, sans-serif;
   font-size: 16px;
   color: #666;
   letter-spacing: 1.5px; 
@@ -213,7 +245,7 @@
 }
 
 .heading-3 {
-  font-family: 'NanumSquare_EB';
+  font-family: 'NanumSquare_EB', Arial, sans-serif;
   font-size: 35px;
   letter-spacing: 1.5px; 
   line-height: 1.5;
@@ -221,7 +253,7 @@
 }
 
 .subheading-2 {
-  font-family: 'NanumSquare_L';
+  font-family: 'NanumSquare_L', Arial, sans-serif;
   font-size: 16px;
   color: #666;
   letter-spacing: 1.5px; 
@@ -290,7 +322,7 @@
 }
 
 .heading-4 {
-  font-family: 'NanumSquare_B';
+  font-family: 'NanumSquare_EB', Arial, sans-serif;
   font-size: 35px;
   letter-spacing: 1.5px; 
   line-height: 1.5;
@@ -298,7 +330,7 @@
 }
 
 .subheading-4 {
-  font-family: 'NanumSquare_L';
+  font-family: 'NanumSquare_L', Arial, sans-serif;
   font-size: 20px;
   color: #ccc;
   letter-spacing: 1.5px; 
@@ -381,7 +413,7 @@
 
 .selectionContainer .cardText {
   font-size: 18px;
-  font-family: 'NanumSquare_B';
+  font-family: 'NanumSquare_EB', Arial, sans-serif;
   margin-top: 20px;
   color: #000000;
   font-weight: bold;

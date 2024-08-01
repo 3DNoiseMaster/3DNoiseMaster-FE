@@ -61,18 +61,16 @@ html, body {
   padding: 10px;
 }
 
-.password-input {
-  display: block;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  width: 90%;
-  background-color: rgb(212, 212, 212);
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px; 
-  padding-right: 100px;
-  box-sizing: border-box; 
+.passwordContainer {
+  position: relative;
+  width: 100%;
 }
+  .passwordContainer .showButton {
+    background-color: #00000000;
+    position: absolute;
+    right: 5px;
+    transform: translateY(-110%);
+  }
 
 .login-button-container {
   display: flex;
