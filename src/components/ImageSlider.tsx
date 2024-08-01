@@ -1,4 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+/*
+두개의 이미지에 대해 기준선(divider)을 중심으로 
+왼편에 첫번째 그림, 오른쪽에 두번째 그림을 표시함으로
+두 이미지를 교차하여 보여주는 기능입니다 
+*/
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 interface ImageSliderProps {
@@ -55,7 +60,7 @@ const Divider = styled.div<{ position: number }>`
   top: 0;
   width: 2px;
   height: 100%;
-  background-color: #ffffff00;
+  background-color: #fffcc;
   cursor: default;
   left: ${(props) => props.position}px;
 `;
@@ -63,10 +68,6 @@ const Divider = styled.div<{ position: number }>`
 const ImageSlider: React.FC<ImageSliderProps> = ({ firstImage, secondImage }) => {
   const [dividerPosition, setDividerPosition] = useState<number>(window.innerWidth / 2);
   const sliderRef = useRef<HTMLDivElement>(null);
-
-  const updateDividerPosition = useCallback((newDividerPosition: number) => {
-    setDividerPosition(newDividerPosition);
-  }, []);
 
   const handleMouseMove = (event: React.MouseEvent) => {
     if (sliderRef.current) {
@@ -76,7 +77,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ firstImage, secondImage }) =>
       const minPosition = rect.width * 0.1;
       const maxPosition = rect.width * 0.9;
       if (newDividerPosition >= minPosition && newDividerPosition <= maxPosition) {
-        requestAnimationFrame(() => updateDividerPosition(newDividerPosition));
+        setDividerPosition(newDividerPosition);
       }
     }
   };
