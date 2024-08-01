@@ -21,6 +21,7 @@ import WorkspaceEx2_2 from '../assets/image/workSpace_example_2-2.png';
 const MainPage: React.FC = () => {
   /*로그인 여부에 따른 유저 정보 불러오기*/
   const [userName, setUserName] = useState<string | null>(null);
+  const [containerWidth, setContainerWidth] = useState('45%');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -85,7 +86,6 @@ const MainPage: React.FC = () => {
     setContainerWidth('50%');
   };
 
-  /*폰트 로드 확인*/
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
   useEffect(() => {
@@ -159,7 +159,6 @@ const MainPage: React.FC = () => {
             />
           </div>
         </div>
-
         <div className='page-container-3'>
           <div className='image-cross-container'>
             <ImageCrossFade firstImage={WorkspaceEx2_1} secondImage={WorkspaceEx2_2} />
